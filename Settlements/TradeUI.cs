@@ -1,10 +1,11 @@
 using Godot;
 using System;
 
-public partial class TradeLogic : Node
+public partial class TradeUI : Control
 {
+    public static TradeUI Instance { get; set; }
 
-	private float determineProsperityModifier(SettlementData settlementData, Item item, bool playerBuying)
+    private float determineProsperityModifier(SettlementData settlementData, Item item, bool playerBuying)
 	{
 		switch (settlementData.prosperityScore)
 		{
@@ -200,7 +201,7 @@ public partial class TradeLogic : Node
 		float warModifier = determineWarfareModifier(settlementData, item);
 		float sizeModifier = determineSizeModifier(settlementData, item);
 
-		return (int) Math.Floor(item.price * prosperityModifier * warModifier * sizeModifier);
+		return (int) Math.Floor(item.price * prosperityModifier * warModifier * sizeModifier * 1.1);
 	}
 
 	public int determineSellPrice(SettlementData settlementData, Item item)
@@ -208,16 +209,25 @@ public partial class TradeLogic : Node
 		float prosperityModifier = determineProsperityModifier(settlementData, item, false);
 		float warModifier = determineWarfareModifier(settlementData, item);
 		float sizeModifier = determineSizeModifier(settlementData, item);
-		return (int) Math.Floor(item.price * prosperityModifier * warModifier * sizeModifier);
+		return (int) Math.Floor(item.price * prosperityModifier * warModifier * sizeModifier * 0.9);
 	}
 
-	// Called when the node enters the scene tree for the first time.
-	public override void _Ready()
-	{
-	}
+    // Called when the node enters the scene tree for the first time.
+    public override void _Ready()
+    {
+        Instance = this;
+    }
 
-	// Called every frame. 'delta' is the elapsed time since the previous frame.
-	public override void _Process(double delta)
-	{
-	}
+    public void OpenUI(SettlementData settlementData)
+    {
+        GetNode<RichTextLabel>("Background/Labels/SettlementName").Text = "[b]" + settlementData.settlementName + "[/b]";
+
+        Visible = true;
+    }
+
+    public void OnLeaveDown()
+    {
+        Visible = false;
+        GetNode<PlayerController>("/root/BaseNode/Player").IsMovementDisabled = false;
+    }
 }

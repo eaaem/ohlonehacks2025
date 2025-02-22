@@ -1,11 +1,11 @@
-[gd_scene load_steps=19 format=3 uid="uid://dnfji7mj4yoig"]
+[gd_scene load_steps=22 format=3 uid="uid://dnfji7mj4yoig"]
 
 [ext_resource type="Script" path="res://Player/PlayerController.cs" id="1_dssx5"]
 [ext_resource type="Script" path="res://Civilizations/CivilizationHolder.cs" id="1_t52sj"]
 [ext_resource type="Script" path="res://Civilizations/Civilization.cs" id="2_2n0uq"]
 [ext_resource type="Script" path="res://Settlements/SettlementData.cs" id="4_gx7j4"]
 [ext_resource type="Script" path="res://Settlements/SettlementUI.cs" id="5_ukmxp"]
-[ext_resource type="Script" path="res://Combat/OverworldWarband.cs" id="6_tmmh1"]
+[ext_resource type="Script" path="res://Settlements/TradeUI.cs" id="6_286tm"]
 
 [sub_resource type="Resource" id="Resource_uby4a"]
 script = ExtResource("2_2n0uq")
@@ -81,6 +81,9 @@ size = Vector3(0.5, 1, 0.5)
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_8uqoa"]
 bg_color = Color(0.261333, 0.28, 0.168, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_2s6jd"]
+bg_color = Color(0.262745, 0.278431, 0.168627, 1)
 
 [node name="BaseNode" type="Node3D"]
 
@@ -253,21 +256,45 @@ offset_bottom = 911.0
 theme_override_font_sizes/font_size = 25
 text = "Leave"
 
-[node name="Warband" type="CharacterBody3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.238739, 0)
+[node name="Trade" type="Button" parent="UI/SettlementScreen/Background/Buttons"]
+layout_mode = 0
+offset_left = 185.0
+offset_top = 750.0
+offset_right = 385.0
+offset_bottom = 800.0
+theme_override_font_sizes/font_size = 25
+text = "Trade"
+
+[node name="TradeScreen" type="Control" parent="UI"]
 visible = false
-collision_layer = 9
-collision_mask = 2
-script = ExtResource("6_tmmh1")
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+script = ExtResource("6_286tm")
 
-[node name="Mesh" type="MeshInstance3D" parent="Warband"]
-mesh = SubResource("CapsuleMesh_ap2np")
-skeleton = NodePath("../..")
+[node name="Background" type="Panel" parent="UI/TradeScreen"]
+layout_mode = 0
+offset_right = 1920.0
+offset_bottom = 1080.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_2s6jd")
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="Warband"]
-shape = SubResource("CapsuleShape3D_7ri0q")
+[node name="Labels" type="Control" parent="UI/TradeScreen/Background"]
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="SettlementName" type="RichTextLabel" parent="UI/TradeScreen/Background/Labels"]
+layout_mode = 0
+offset_left = 185.0
+offset_top = 104.0
+offset_right = 1185.0
+offset_bottom = 204.0
+theme_override_font_sizes/bold_font_size = 50
+bbcode_enabled = true
+text = "[b]Settlement Name[/b]"
 
 [connection signal="input_event" from="Map/StaticBody3D" to="Player" method="_InputEvent"]
 [connection signal="body_entered" from="Settlement/Collision" to="Settlement" method="OnPlayerEntered"]
 [connection signal="input_event" from="Settlement/Collision" to="Player" method="_InputEvent"]
 [connection signal="button_down" from="UI/SettlementScreen/Background/Buttons/Leave" to="UI/SettlementScreen" method="OnLeaveDown"]
+[connection signal="button_down" from="UI/SettlementScreen/Background/Buttons/Trade" to="UI/SettlementScreen" method="OnTradeDown"]
