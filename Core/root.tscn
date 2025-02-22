@@ -1,9 +1,9 @@
-[gd_scene load_steps=18 format=3 uid="uid://dnfji7mj4yoig"]
+[gd_scene load_steps=20 format=3 uid="uid://dnfji7mj4yoig"]
 
 [ext_resource type="Script" path="res://Player/PlayerController.cs" id="1_dssx5"]
 [ext_resource type="Script" path="res://Civilizations/CivilizationHolder.cs" id="1_t52sj"]
 [ext_resource type="Script" path="res://Civilizations/Civilization.cs" id="2_2n0uq"]
-[ext_resource type="PackedScene" uid="uid://bq3o5scv4qbgn" path="res://Settlements/settlement.tscn" id="4_rgwow"]
+[ext_resource type="Script" path="res://Settlements/SettlementData.cs" id="4_gx7j4"]
 [ext_resource type="Script" path="res://Settlements/SettlementUI.cs" id="5_ukmxp"]
 
 [sub_resource type="Resource" id="Resource_uby4a"]
@@ -72,6 +72,12 @@ height = 0.5
 radius = 0.1
 height = 0.5
 
+[sub_resource type="BoxMesh" id="BoxMesh_2t707"]
+size = Vector3(0.25, 0.25, 0.5)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_73c1e"]
+size = Vector3(0.5, 1, 0.5)
+
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_8uqoa"]
 bg_color = Color(0.261333, 0.28, 0.168, 1)
 
@@ -111,17 +117,45 @@ shape = SubResource("CapsuleShape3D_7ri0q")
 [node name="PlayerCamera" type="Camera3D" parent="Player/CameraTarget"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.434646, 2.80815)
 
-[node name="Horse" parent="." instance=ExtResource("4_rgwow")]
+[node name="Settlement" type="Node3D" parent="." node_paths=PackedStringArray("troops", "buildings")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.49117, 0, -1.46652)
+script = ExtResource("4_gx7j4")
+settlementName = "Horse's Hoof"
+prosperityScore = 4
+population = 552
+militaryStrength = 2
+settlementType = 2
+troops = []
+buildings = []
 
-[node name="Haven" parent="." instance=ExtResource("4_rgwow")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.39841, 0, -3.95892)
-settlementName = "Haven"
-settlementType = 1
+[node name="CityPhysical" type="Node3D" parent="Settlement"]
 
-[node name="Fox" parent="." instance=ExtResource("4_rgwow")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.68936, 0, -3.52582)
-settlementName = "Fox's Whimper"
-settlementType = 0
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Settlement/CityPhysical"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.357242, 0.12392, 0)
+mesh = SubResource("BoxMesh_2t707")
+skeleton = NodePath("../..")
+
+[node name="MeshInstance3D2" type="MeshInstance3D" parent="Settlement/CityPhysical"]
+transform = Transform3D(0.740077, 0, -0.672522, 0, 1, 0, 0.672522, 0, 0.740077, 0.212467, 0.12392, 0.234883)
+mesh = SubResource("BoxMesh_2t707")
+skeleton = NodePath("../..")
+
+[node name="MeshInstance3D3" type="MeshInstance3D" parent="Settlement/CityPhysical"]
+transform = Transform3D(-0.547154, 0, -0.837032, 0, 1, 0, 0.837032, 0, -0.547154, 0.0362787, 0.12392, -0.355001)
+mesh = SubResource("BoxMesh_2t707")
+skeleton = NodePath("../..")
+
+[node name="Name" type="Label3D" parent="Settlement"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.489251, 0)
+billboard = 1
+no_depth_test = true
+text = "Settlement"
+
+[node name="Collision" type="Area3D" parent="Settlement"]
+collision_mask = 2
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Settlement/Collision"]
+shape = SubResource("BoxShape3D_73c1e")
 
 [node name="UI" type="Control" parent="."]
 layout_mode = 3
@@ -219,4 +253,6 @@ theme_override_font_sizes/font_size = 25
 text = "Leave"
 
 [connection signal="input_event" from="Map/StaticBody3D" to="Player" method="_InputEvent"]
+[connection signal="body_entered" from="Settlement/Collision" to="Settlement" method="OnPlayerEntered"]
+[connection signal="input_event" from="Settlement/Collision" to="Player" method="_InputEvent"]
 [connection signal="button_down" from="UI/SettlementScreen/Background/Buttons/Leave" to="UI/SettlementScreen" method="OnLeaveDown"]
