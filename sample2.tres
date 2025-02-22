@@ -1,9 +1,0 @@
-[gd_resource type="Resource" script_class="SampleResource" load_steps=2 format=3 uid="uid://dk1ragldch3nm"]
-
-[ext_resource type="Script" path="res://SampleResource.cs" id="1_farqo"]
-
-[resource]
-script = ExtResource("1_farqo")
-MyName = "OtherSample"
-id = 1
-modifier = 6.5
