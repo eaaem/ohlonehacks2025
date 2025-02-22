@@ -45,13 +45,18 @@ public partial class SettlementData : Node
 
     public override void _Ready()
     {
-        InitializeAppearance();
+        Initialize();
     }
 
-    void InitializeAppearance()
+    void Initialize()
     {
         Label3D nameLabel = GetNode<Label3D>("Name");
         nameLabel.Text = settlementName;
         nameLabel.Modulate = CivilizationHolder.Instance.civilizations[(int)civilizationType].color;
+    }
+
+    public void OnPlayerEntered(Node3D body)
+    {
+        GetNode<SettlementUI>("/root/BaseNode/UI/SettlementScreen").OpenUI(this);
     }
 }

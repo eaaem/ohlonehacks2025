@@ -12,8 +12,15 @@ public partial class PlayerController : CharacterBody3D
 	private Vector3 moveTarget;
 	private bool isMoving;
 
+	public bool IsMovementDisabled { get; set; }
+
 	public override void _PhysicsProcess(double delta)
 	{
+		if (IsMovementDisabled)
+		{
+			return;
+		}
+
 		if (isMoving)
 		{
 			Vector3 velocity = Velocity;
@@ -48,14 +55,19 @@ public partial class PlayerController : CharacterBody3D
 
 	public override void _Input(InputEvent @event)
 	{
+		if (IsMovementDisabled)
+		{
+			return;
+		}
+
 		if (@event is InputEventMouseMotion mouseMotion && Input.IsActionPressed("move_camera"))
 		{
 			Vector3 rotation = cameraTarget.Rotation;
 
 			rotation.X += mouseMotion.Relative.Y * 0.01f;
-			rotation.Y += mouseMotion.Relative.X * 0.03f;
+			rotation.Y += mouseMotion.Relative.X * 0.01f;
 
-			rotation.X = Mathf.Clamp(rotation.X, Mathf.DegToRad(-90f), Mathf.DegToRad(45f));
+			rotation.X = Mathf.Clamp(rotation.X, Mathf.DegToRad(-90f), Mathf.DegToRad(15f));
 			cameraTarget.Rotation = rotation;
 		}
 
