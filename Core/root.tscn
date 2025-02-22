@@ -1,4 +1,4 @@
-[gd_scene load_steps=17 format=3 uid="uid://dnfji7mj4yoig"]
+[gd_scene load_steps=18 format=3 uid="uid://dnfji7mj4yoig"]
 
 [ext_resource type="Script" path="res://Player/PlayerController.cs" id="1_dssx5"]
 [ext_resource type="Script" path="res://Civilizations/CivilizationHolder.cs" id="1_t52sj"]
@@ -74,6 +74,9 @@ height = 0.5
 [sub_resource type="BoxMesh" id="BoxMesh_2t707"]
 size = Vector3(0.25, 0.25, 0.5)
 
+[sub_resource type="BoxShape3D" id="BoxShape3D_73c1e"]
+size = Vector3(0.5, 1, 0.5)
+
 [node name="BaseNode" type="Node3D"]
 
 [node name="CivilizationHolder" type="Node3D" parent="."]
@@ -94,6 +97,7 @@ transform = Transform3D(0.719776, -0.677672, 0.150609, 0, 0.216951, 0.976183, -0
 
 [node name="Player" type="CharacterBody3D" parent="." node_paths=PackedStringArray("cameraTarget")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.331221, 0)
+visible = false
 script = ExtResource("1_dssx5")
 cameraTarget = NodePath("CameraTarget")
 
@@ -111,6 +115,9 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.434646, 1.31875)
 
 [node name="Settlement" type="Node3D" parent="." node_paths=PackedStringArray("troops", "buildings")]
 script = ExtResource("4_gx7j4")
+settlementName = "Horse's Hoof"
+civilizationType = 3
+settlementType = 2
 troops = []
 buildings = []
 
@@ -130,5 +137,16 @@ skeleton = NodePath("../..")
 transform = Transform3D(-0.547154, 0, -0.837032, 0, 1, 0, 0.837032, 0, -0.547154, 0.0362787, 0.12392, -0.355001)
 mesh = SubResource("BoxMesh_2t707")
 skeleton = NodePath("../..")
+
+[node name="Area3D" type="Area3D" parent="Settlement/CityPhysical"]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Settlement/CityPhysical/Area3D"]
+shape = SubResource("BoxShape3D_73c1e")
+
+[node name="Name" type="Label3D" parent="Settlement"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.489251, 0)
+billboard = 1
+no_depth_test = true
+text = "Settlement"
 
 [connection signal="input_event" from="Map/StaticBody3D" to="Player" method="_InputEvent"]
