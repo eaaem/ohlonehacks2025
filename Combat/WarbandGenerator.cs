@@ -16,37 +16,41 @@ public partial class WarbandGenerator : Node
 	{
 		while (true)
 		{
-			await ToSignal(GetTree().CreateTimer(5f), Timer.SignalName.Timeout);
+			await ToSignal(GetTree().CreateTimer(2.5f), Timer.SignalName.Timeout);
 
 			int chance = GD.RandRange(0, 1);
 
 			if (chance == 0)
 			{
 				OverworldWarband warband = GD.Load<PackedScene>(warbandScene.ResourcePath).Instantiate<OverworldWarband>();
+				GetNode<Node3D>("/root/BaseNode").AddChild(warband);
 
 				int affiliation = GD.RandRange(0, CivilizationHolder.Instance.civilizations.Length + 3);
 
 				if (affiliation < CivilizationHolder.Instance.civilizations.Length - 2)
 				{
-					SettlementData settlementToSpawnAt = CivilizationHolder.Instance.civilizations[affiliation].settlements[GD.RandRange(0, 
-															CivilizationHolder.Instance.civilizations[affiliation].settlements.Length)];
+					// TEST: REMOVE THIS LINE LATER
+					affiliation = 0;
+					int settlementID = GD.RandRange(0, CivilizationHolder.Instance.civilizations[affiliation].settlements.Length - 1);
+					SettlementData settlementToSpawnAt = CivilizationHolder.Instance.civilizations[affiliation].settlements[settlementID];
 
 					float troopAmountModifier = ((int)settlementToSpawnAt.militaryStrength + 1) / 2f;
 
 					warband.warbandName = "Troops of " + CivilizationHolder.Instance.civilizations[affiliation].civilizationName;
-					//warband.CreateWarband(GD.RandRange(30, 45) * troopAmountModifier, TroopType.Archer, GD.RandRange(2, ))
+					warband.CreateWarband((int)(GD.RandRange(30, 45) * troopAmountModifier), TroopType.Archer, 
+										  GD.RandRange(2, (int)settlementToSpawnAt.militaryStrength + 1));
+					warband.Position = GetNode<Node3D>(((CivilizationType)affiliation).ToString()).GetChild<Node3D>(settlementID).Position;
 				}
 				else // Bandit
 				{
 					warband.warbandName = "Bandits";
 					warband.CreateWarband(GD.RandRange(2, 30), TroopType.Infantry, GD.RandRange(1, 2));
+					warband.isHostileToPlayer = true;
+					warband.civilizationAffiliation = CivilizationType.None;
+					Vector3 playerPosition = GetNode<PlayerController>("/root/BaseNode/Player").Position;
+					warband.Position = new Vector3(playerPosition.X + 5f, 0f, playerPosition.Z + 5f);
 				}
 			}
 		}
-	}
-
-	// Called every frame. 'delta' is the elapsed time since the previous frame.
-	public override void _Process(double delta)
-	{
 	}
 }

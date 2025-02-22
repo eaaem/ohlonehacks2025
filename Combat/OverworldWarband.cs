@@ -6,7 +6,7 @@ public partial class OverworldWarband : CharacterBody3D
 {
 	public string warbandName;
 	public CivilizationType civilizationAffiliation;
-	public List<Troop> troops;
+	private List<Troop> troops = new List<Troop>();
 	public bool isHostileToPlayer;
 
 	private bool hasGoal = false;
@@ -87,7 +87,7 @@ public partial class OverworldWarband : CharacterBody3D
 					int targetSettlementID = GD.RandRange(0,
 								CivilizationHolder.Instance.civilizations[(int)civilizationAffiliation].settlements.Length);
 
-					movementTarget = GetNode<Node3D>(civilizationAffiliation.ToString()).GetChild<Node3D>(targetSettlementID).Position;
+					movementTarget = GetNode<Node3D>("/root/BaseNode/" + civilizationAffiliation.ToString()).GetChild<Node3D>(targetSettlementID).Position;
 					isMoving = true;
 					hasGoal = true;
 					goingToSettlement = true;
@@ -96,7 +96,55 @@ public partial class OverworldWarband : CharacterBody3D
 		}	
 	}
 
-	public override void _Process(double delta)
+    public void OnMouseEntered()
+	{
+		Control tooltip = GD.Load<PackedScene>("res://Combat/warband_tooltip.tscn").Instantiate<Control>();
+
+		tooltip.GetNode<RichTextLabel>("Title").Text = "[center]" + warbandName;
+
+		PackedScene unitLabelScene = GD.Load<PackedScene>("res://Combat/unit_label.tscn");
+
+		for (int i = 0; i < troops.Count; i++)
+		{
+			RichTextLabel label = unitLabelScene.Instantiate<RichTextLabel>();
+			string unitType = "";
+
+			switch (troops[i].troopType)
+			{
+				case TroopType.Infantry:
+					unitType = ((InfantryTroopTier)troops[i].tier).ToString();
+					break;
+				case TroopType.Archer:
+					unitType = ((ArcherTroopTier)troops[i].tier).ToString();
+					break;
+				case TroopType.Cavalry:
+					unitType = ((CavalryTroopTier)troops[i].tier).ToString();
+					break;
+				case TroopType.Mage:
+					unitType = ((MageTroopTier)troops[i].tier).ToString();
+					break;
+			}
+
+			unitType.Replace("_", " ");
+
+			label.Text = troops[i].quantity + " " + unitType + " (" + troops[i].troopType.ToString() + ")";
+			tooltip.GetNode<VBoxContainer>("VBoxContainer").AddChild(label);
+		}
+
+		tooltip.GetNode<Panel>("Panel").Size = new Vector2(250, 25 + (tooltip.GetNode<VBoxContainer>("VBoxContainer").GetChildCount() * 20));
+
+		tooltip.Name = "WarbandTooltip";
+		GetNode<Node3D>("/root/BaseNode").AddChild(tooltip);
+	}
+
+	public void OnMouseExited()
+	{
+		Control tooltip = GetNode<Control>("/root/BaseNode/WarbandTooltip");
+		GetNode<Node3D>("/root/BaseNode").RemoveChild(tooltip);
+		tooltip.QueueFree();
+	}
+
+    public override void _Process(double delta)
 	{
 		if (isMoving)
 		{

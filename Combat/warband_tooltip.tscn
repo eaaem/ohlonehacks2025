@@ -1,0 +1,32 @@
+[gd_scene load_steps=2 format=3 uid="uid://d1hi7i5uv3gsd"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_tuifo"]
+
+[node name="WarbandTooltip" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Panel" type="Panel" parent="."]
+layout_mode = 0
+offset_right = 250.0
+offset_bottom = 125.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_tuifo")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+layout_mode = 2
+offset_top = 21.0
+offset_right = 250.0
+offset_bottom = 171.0
+theme_override_constants/separation = 0
+
+[node name="Title" type="RichTextLabel" parent="."]
+layout_mode = 2
+offset_right = 250.0
+offset_bottom = 25.0
+theme_override_colors/default_color = Color(0, 0, 0, 1)
+bbcode_enabled = true
+text = "[center]Title"
