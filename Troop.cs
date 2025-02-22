@@ -40,7 +40,7 @@ public enum MageTroopTier {
 	Sorcerer
 }
 
-public partial class Troops : Node
+public partial class Troop : Node
 {
 	public int quantity;
 	public TroopType troopType;
