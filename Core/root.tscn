@@ -1,8 +1,9 @@
-[gd_scene load_steps=15 format=3 uid="uid://dnfji7mj4yoig"]
+[gd_scene load_steps=17 format=3 uid="uid://dnfji7mj4yoig"]
 
 [ext_resource type="Script" path="res://Player/PlayerController.cs" id="1_dssx5"]
 [ext_resource type="Script" path="res://Civilizations/CivilizationHolder.cs" id="1_t52sj"]
 [ext_resource type="Script" path="res://Civilizations/Civilization.cs" id="2_2n0uq"]
+[ext_resource type="Script" path="res://Settlements/SettlementData.cs" id="4_gx7j4"]
 
 [sub_resource type="Resource" id="Resource_uby4a"]
 script = ExtResource("2_2n0uq")
@@ -70,6 +71,9 @@ height = 0.5
 radius = 0.1
 height = 0.5
 
+[sub_resource type="BoxMesh" id="BoxMesh_2t707"]
+size = Vector3(0.25, 0.25, 0.5)
+
 [node name="BaseNode" type="Node3D"]
 
 [node name="CivilizationHolder" type="Node3D" parent="."]
@@ -104,5 +108,27 @@ shape = SubResource("CapsuleShape3D_7ri0q")
 
 [node name="PlayerCamera" type="Camera3D" parent="Player/CameraTarget"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.434646, 1.31875)
+
+[node name="Settlement" type="Node3D" parent="." node_paths=PackedStringArray("troops", "buildings")]
+script = ExtResource("4_gx7j4")
+troops = []
+buildings = []
+
+[node name="CityPhysical" type="Node3D" parent="Settlement"]
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Settlement/CityPhysical"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.357242, 0.12392, 0)
+mesh = SubResource("BoxMesh_2t707")
+skeleton = NodePath("../..")
+
+[node name="MeshInstance3D2" type="MeshInstance3D" parent="Settlement/CityPhysical"]
+transform = Transform3D(0.740077, 0, -0.672522, 0, 1, 0, 0.672522, 0, 0.740077, 0.212467, 0.12392, 0.234883)
+mesh = SubResource("BoxMesh_2t707")
+skeleton = NodePath("../..")
+
+[node name="MeshInstance3D3" type="MeshInstance3D" parent="Settlement/CityPhysical"]
+transform = Transform3D(-0.547154, 0, -0.837032, 0, 1, 0, 0.837032, 0, -0.547154, 0.0362787, 0.12392, -0.355001)
+mesh = SubResource("BoxMesh_2t707")
+skeleton = NodePath("../..")
 
 [connection signal="input_event" from="Map/StaticBody3D" to="Player" method="_InputEvent"]

@@ -17,6 +17,13 @@ public enum MilitaryStrength {
     Extraordinary
 }
 
+public enum SettlementType
+{
+    Village,
+    Town,
+    City
+}
+
 [GlobalClass]
 public partial class SettlementData : Node
 {
@@ -30,6 +37,8 @@ public partial class SettlementData : Node
     public MilitaryStrength militaryStrength;
     [Export]
     public Civilization civilization;  
+    [Export]
+    public SettlementType settlementType;
     [Export]
     public Troop[] troops; 
     [Export]
