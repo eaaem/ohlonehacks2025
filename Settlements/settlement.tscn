@@ -1,0 +1,44 @@
+[gd_scene load_steps=6 format=3 uid="uid://bq3o5scv4qbgn"]
+
+[ext_resource type="Script" path="res://Settlements/SettlementData.cs" id="1_b0wo1"]
+[ext_resource type="PackedScene" uid="uid://cfiaen2qxqpkx" path="res://Settlements/city_appearance.tscn" id="2_2dakm"]
+[ext_resource type="PackedScene" uid="uid://bvehq4388vj6q" path="res://Settlements/town_appearance.tscn" id="3_jxefm"]
+[ext_resource type="PackedScene" uid="uid://c63iy3a8wvs5" path="res://Settlements/village_appearance.tscn" id="4_odrkg"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_73c1e"]
+size = Vector3(0.5, 1, 0.5)
+
+[node name="Settlement" type="Node3D" node_paths=PackedStringArray("troops", "buildings")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.49117, 0, -1.46652)
+script = ExtResource("1_b0wo1")
+settlementName = "Horse's Hoof"
+prosperityScore = 4
+population = 552
+militaryStrength = 2
+settlementType = 2
+troops = []
+buildings = []
+
+[node name="CityAppearance" parent="." instance=ExtResource("2_2dakm")]
+visible = false
+
+[node name="TownAppearance" parent="." instance=ExtResource("3_jxefm")]
+visible = false
+
+[node name="VillageAppearance" parent="." instance=ExtResource("4_odrkg")]
+visible = false
+
+[node name="Name" type="Label3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.489251, 0)
+billboard = 1
+no_depth_test = true
+text = "Settlement"
+
+[node name="Collision" type="Area3D" parent="."]
+collision_layer = 0
+collision_mask = 2
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Collision"]
+shape = SubResource("BoxShape3D_73c1e")
+
+[connection signal="body_entered" from="Collision" to="." method="OnPlayerEntered"]

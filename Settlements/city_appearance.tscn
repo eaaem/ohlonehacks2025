@@ -1,0 +1,21 @@
+[gd_scene load_steps=2 format=3 uid="uid://cfiaen2qxqpkx"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_2t707"]
+size = Vector3(0.25, 0.25, 0.5)
+
+[node name="CityAppearance" type="Node3D"]
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.357242, 0.12392, 0)
+mesh = SubResource("BoxMesh_2t707")
+skeleton = NodePath("../..")
+
+[node name="MeshInstance3D2" type="MeshInstance3D" parent="."]
+transform = Transform3D(0.740077, 0, -0.672522, 0, 1, 0, 0.672522, 0, 0.740077, 0.212467, 0.12392, 0.234883)
+mesh = SubResource("BoxMesh_2t707")
+skeleton = NodePath("../..")
+
+[node name="MeshInstance3D3" type="MeshInstance3D" parent="."]
+transform = Transform3D(-0.547154, 0, -0.837032, 0, 1, 0, 0.837032, 0, -0.547154, 0.0362787, 0.12392, -0.355001)
+mesh = SubResource("BoxMesh_2t707")
+skeleton = NodePath("../..")

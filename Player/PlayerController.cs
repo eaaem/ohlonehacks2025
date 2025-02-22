@@ -3,6 +3,7 @@ using System;
 
 public partial class PlayerController : CharacterBody3D
 {
+	// Input map actions need to be replaced
 	public const float Speed = 5.0f;
 	public const float JumpVelocity = 4.5f;
 
@@ -75,7 +76,7 @@ public partial class PlayerController : CharacterBody3D
 		{
 			if (mouseButton.ButtonIndex == MouseButton.WheelUp)
 			{
-				if (cameraTarget.GetNode<Camera3D>("PlayerCamera").Position.Z > 1f)
+				if (cameraTarget.GetNode<Camera3D>("PlayerCamera").Position.Z > 3.5f)
 				{
 					cameraTarget.GetNode<Camera3D>("PlayerCamera").Position -= (Vector3.Back * 0.5f);
 				}

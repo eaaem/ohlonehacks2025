@@ -53,6 +53,7 @@ public partial class SettlementData : Node
         Label3D nameLabel = GetNode<Label3D>("Name");
         nameLabel.Text = settlementName;
         nameLabel.Modulate = CivilizationHolder.Instance.civilizations[(int)civilizationType].color;
+        GetNode<Node3D>(settlementType.ToString() + "Appearance").Visible = true;
     }
 
     public void OnPlayerEntered(Node3D body)
