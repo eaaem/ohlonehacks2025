@@ -65,3 +65,4 @@ mouse_down={
 3d_physics/layer_1="base"
 3d_physics/layer_2="player"
 3d_physics/layer_3="terrain"
+3d_physics/layer_4="warband"

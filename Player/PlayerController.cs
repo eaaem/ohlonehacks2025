@@ -13,6 +13,7 @@ public partial class PlayerController : CharacterBody3D
 	private Vector3 moveTarget;
 	public bool IsMoving { get; set; }
 	public bool IsMovementDisabled { get; set; }
+	private bool isHoldingMiddleMouse = false;
 
 	public override void _PhysicsProcess(double delta)
 	{
@@ -45,7 +46,7 @@ public partial class PlayerController : CharacterBody3D
 	{
 		if (@event is InputEventMouseButton mouseButton)
 		{
-			if (mouseButton.ButtonIndex == MouseButton.Left && Input.IsActionJustPressed("mouse_down"))
+			if (mouseButton.ButtonIndex == MouseButton.Left)
 			{
 				moveTarget = eventPosition;
 				IsMoving = true;
@@ -60,7 +61,7 @@ public partial class PlayerController : CharacterBody3D
 			return;
 		}
 
-		if (@event is InputEventMouseMotion mouseMotion && Input.IsActionPressed("move_camera"))
+		if (@event is InputEventMouseMotion mouseMotion && isHoldingMiddleMouse)
 		{
 			Vector3 rotation = cameraTarget.Rotation;
 
@@ -85,6 +86,17 @@ public partial class PlayerController : CharacterBody3D
 				if (cameraTarget.GetNode<Camera3D>("PlayerCamera").Position.Z < 15f)
 				{
 					cameraTarget.GetNode<Camera3D>("PlayerCamera").Position += (Vector3.Back * 0.5f);
+				}
+			}
+			else if (mouseButton.ButtonIndex == MouseButton.Middle)
+			{
+				if (mouseButton.IsReleased())
+				{
+					isHoldingMiddleMouse = false;
+				}
+				else
+				{
+					isHoldingMiddleMouse = true;
 				}
 			}
 		}

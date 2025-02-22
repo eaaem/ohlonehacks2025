@@ -1,10 +1,11 @@
-[gd_scene load_steps=18 format=3 uid="uid://dnfji7mj4yoig"]
+[gd_scene load_steps=19 format=3 uid="uid://dnfji7mj4yoig"]
 
 [ext_resource type="Script" path="res://Player/PlayerController.cs" id="1_dssx5"]
 [ext_resource type="Script" path="res://Civilizations/CivilizationHolder.cs" id="1_t52sj"]
 [ext_resource type="Script" path="res://Civilizations/Civilization.cs" id="2_2n0uq"]
 [ext_resource type="PackedScene" uid="uid://bq3o5scv4qbgn" path="res://Settlements/settlement.tscn" id="4_rgwow"]
 [ext_resource type="Script" path="res://Settlements/SettlementUI.cs" id="5_ukmxp"]
+[ext_resource type="Script" path="res://Combat/OverworldWarband.cs" id="6_tmmh1"]
 
 [sub_resource type="Resource" id="Resource_uby4a"]
 script = ExtResource("2_2n0uq")
@@ -217,6 +218,20 @@ offset_right = 385.0
 offset_bottom = 911.0
 theme_override_font_sizes/font_size = 25
 text = "Leave"
+
+[node name="Warband" type="CharacterBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.238739, 0)
+visible = false
+collision_layer = 9
+collision_mask = 2
+script = ExtResource("6_tmmh1")
+
+[node name="Mesh" type="MeshInstance3D" parent="Warband"]
+mesh = SubResource("CapsuleMesh_ap2np")
+skeleton = NodePath("../..")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Warband"]
+shape = SubResource("CapsuleShape3D_7ri0q")
 
 [connection signal="input_event" from="Map/StaticBody3D" to="Player" method="_InputEvent"]
 [connection signal="button_down" from="UI/SettlementScreen/Background/Buttons/Leave" to="UI/SettlementScreen" method="OnLeaveDown"]
