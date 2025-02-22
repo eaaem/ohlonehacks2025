@@ -29,5 +29,9 @@ public partial class SettlementData : Node
     [Export]
     public MilitaryStrength militaryStrength;
     [Export]
-    public Civilization civilization;   
+    public Civilization civilization;  
+    [Export]
+    public Troop[] troops; 
+    [Export]
+    public Building[] buildings;
 }
