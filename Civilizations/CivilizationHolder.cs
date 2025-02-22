@@ -9,7 +9,8 @@ public enum CivilizationType
 	Thaelanar,
 	Korokdaron,
 	Grokaria,
-	Player
+	Player,
+	None
 }
 
 public partial class CivilizationHolder : Node

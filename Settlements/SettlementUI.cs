@@ -14,6 +14,8 @@ public partial class SettlementUI : Control
 	public void OpenUI(SettlementData settlementData)
 	{
 		GetNode<PlayerController>("/root/BaseNode/Player").IsMovementDisabled = true;
+		GetNode<PlayerController>("/root/BaseNode/Player").IsMoving = false;
+
 		Civilization civilization = CivilizationHolder.Instance.civilizations[(int)settlementData.civilizationType];
 
 		if (settlementData.civilizationType == CivilizationType.GreatExpanse)

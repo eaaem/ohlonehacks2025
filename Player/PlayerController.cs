@@ -11,8 +11,7 @@ public partial class PlayerController : CharacterBody3D
 	private Node3D cameraTarget;
 
 	private Vector3 moveTarget;
-	private bool isMoving;
-
+	public bool IsMoving { get; set; }
 	public bool IsMovementDisabled { get; set; }
 
 	public override void _PhysicsProcess(double delta)
@@ -22,7 +21,7 @@ public partial class PlayerController : CharacterBody3D
 			return;
 		}
 
-		if (isMoving)
+		if (IsMoving)
 		{
 			Vector3 velocity = Velocity;
 
@@ -33,7 +32,7 @@ public partial class PlayerController : CharacterBody3D
 
 			if (GlobalPosition.DistanceSquaredTo(moveTarget) < 0.01f)
 			{
-				isMoving = false;
+				IsMoving = false;
 				return;
 			}
 
@@ -49,7 +48,7 @@ public partial class PlayerController : CharacterBody3D
 			if (mouseButton.ButtonIndex == MouseButton.Left && Input.IsActionJustPressed("mouse_down"))
 			{
 				moveTarget = eventPosition;
-				isMoving = true;
+				IsMoving = true;
 			}
 		}
 	}
