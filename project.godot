@@ -15,14 +15,6 @@ run/main_scene="res://Core/root.tscn"
 config/features=PackedStringArray("4.3", "C#", "Forward Plus")
 config/icon="res://icon.svg"
 
-[display]
-
-window/size/viewport_width=1920
-window/size/viewport_height=1080
-window/size/window_width_override=1300
-window/size/window_height_override=600
-window/vsync/vsync_mode=0
-
 [dotnet]
 
 project/assembly_name="OhloneHacks2025"

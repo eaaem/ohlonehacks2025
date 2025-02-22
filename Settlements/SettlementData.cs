@@ -42,6 +42,8 @@ public partial class SettlementData : Node
     public Troop[] troops; 
     [Export]
     public Building[] buildings;
+    [Export]
+    public bool atWar;
 
     public override void _Ready()
     {
