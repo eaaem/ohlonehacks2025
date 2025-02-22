@@ -1,0 +1,28 @@
+[gd_scene load_steps=4 format=3 uid="uid://cfnqvwpqt361k"]
+
+[ext_resource type="Script" path="res://Combat/OverworldWarband.cs" id="1_jl73x"]
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_ap2np"]
+radius = 0.1
+height = 0.5
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_7ri0q"]
+radius = 0.1
+height = 0.5
+
+[node name="Warband" type="CharacterBody3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.238739, 0)
+collision_layer = 9
+collision_mask = 2
+script = ExtResource("1_jl73x")
+
+[node name="Mesh" type="MeshInstance3D" parent="."]
+mesh = SubResource("CapsuleMesh_ap2np")
+skeleton = NodePath("../..")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+shape = SubResource("CapsuleShape3D_7ri0q")
+
+[connection signal="input_event" from="." to="." method="_InputEvent"]
+[connection signal="mouse_entered" from="." to="." method="OnMouseEntered"]
+[connection signal="mouse_exited" from="." to="." method="OnMouseExited"]

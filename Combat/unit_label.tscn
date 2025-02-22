@@ -1,0 +1,8 @@
+[gd_scene format=3 uid="uid://s248gxaqrfcb"]
+
+[node name="Unit" type="RichTextLabel"]
+custom_minimum_size = Vector2(0, 20)
+theme_override_colors/default_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/normal_font_size = 13
+bbcode_enabled = true
+text = "100 Infantry"
