@@ -42,6 +42,11 @@ public enum MageTroopTier {
 
 public partial class Troop : Node
 {
+	public Troop(int _quantity, TroopType _troopType, int _tier) {
+		quantity = _quantity;
+		troopType = _troopType;
+		tier = _tier;
+	}
 	public int quantity;
 	public TroopType troopType;
 	public int tier;
