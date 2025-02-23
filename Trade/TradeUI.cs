@@ -241,13 +241,25 @@ public partial class TradeUI : Control
 	{
 		List<ItemListing> itemListings = new();
 		Item[] allItems = GetNode<ItemList>("/root/BaseNode/ItemReference").items;
-
 		foreach (Item item in allItems)
 		{
+			int boughtQuantity = 0;
+
+			if (selfSettlementData.boughtItems != null)
+			{
+				//boughtQuantity = selfSettlementData.boughtItems.ToList().Find(settlementItem => settlementItem.item.itemName == item.itemName).quantity;
+				foreach (InventoryItem inventoryItem in selfSettlementData.boughtItems)
+				{
+					if (inventoryItem.item != null && inventoryItem.item.itemName == item.itemName)
+					{
+						boughtQuantity = inventoryItem.quantity;
+					}
+				}
+			}
 			int quantity = DetermineItemQuantity(item);
 			if (quantity > 0)
 			{
-				itemListings.Add(new ItemListing(item, quantity, DetemineBuyPrice(item), DetermineSellPrice(item)));
+				itemListings.Add(new ItemListing(item, quantity - boughtQuantity, DetemineBuyPrice(item), DetermineSellPrice(item)));
 			}
 		}
 		return itemListings;
@@ -272,16 +284,24 @@ public partial class TradeUI : Control
 		}
 
 		List<InventoryItem> settlementItems = new();
-		foreach(InventoryItem invItem in selfSettlementData.boughtItems) 
+		
+		foreach (InventoryItem invItem in selfSettlementData.boughtItems)
 		{
-			if (invItem.Name == item.item.itemName) 
+			if (invItem.item.itemName == item.item.itemName)
 			{
-				if (item.quantity <= invItem.quantity) 
+				if (item.quantity <= invItem.quantity)
 				{
 					return;
 				}
 				settlementItems.Add(new InventoryItem(invItem.item, invItem.quantity + 1));
 			}
+			else
+			{
+				settlementItems.Add(invItem);
+			}
+		}
+		if (!settlementItems.Any(settlementItem => settlementItem.item.itemName == item.item.itemName)) {
+			settlementItems.Add(new InventoryItem(item.item, 1));
 		}
 		selfSettlementData.boughtItems = settlementItems.ToArray();
 		Player.Instance.gold -= item.buyPrice;
@@ -322,7 +342,7 @@ public partial class TradeUI : Control
 		Player.Instance.inventory.Add(new InventoryItem(item.item, 1));
 	}
 
-	public void SellItem(ItemListing item) 
+	public void SellItem(ItemListing item)
 	{
 		if (isBuying)
 		{
@@ -331,16 +351,14 @@ public partial class TradeUI : Control
 
 		Player.Instance.gold += item.sellPrice;
 		List<InventoryItem> settlementItems = new();
-		foreach(InventoryItem invItem in selfSettlementData.boughtItems) 
+		foreach (InventoryItem invItem in selfSettlementData.boughtItems)
 		{
-			if (invItem.Name == item.item.itemName) 
+			if (invItem.Name == item.item.itemName)
 			{
 				settlementItems.Add(new InventoryItem(invItem.item, invItem.quantity - 1));
 			}
 		}
 		selfSettlementData.boughtItems = settlementItems.ToArray();
-
-		GD.Print(item.sellPrice);
 
 		GetNode<RichTextLabel>("Background/Labels/Gold").Text = "Gold: " + Player.Instance.gold;
 
@@ -389,7 +407,7 @@ public partial class TradeUI : Control
 		GetNode<RichTextLabel>("Background/Labels/Title").Text = "[b]Trading with " + selfSettlementData.settlementName + "[/b]";
 
 		GetNode<RichTextLabel>("Background/Labels/Gold").Text = "Gold: " + Player.Instance.gold;
-		
+
 		OnBuyButtonDown();
 
 		Visible = true;
