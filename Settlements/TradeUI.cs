@@ -1,8 +1,17 @@
 using Godot;
 using System;
+using System.Collections.Generic;
 
 public partial class TradeUI : Control
 {
+
+    public class ItemListing {
+        public Item item;
+        public int quantity;
+        public int buyPrice;
+        public int sellPrice;
+    }
+
     public static TradeUI Instance { get; set; }
 
     private SettlementData selfSettlementData;
@@ -221,6 +230,12 @@ public partial class TradeUI : Control
 		return (int) Math.Floor(item.rarity * prosperityModifier * warModifier * sizeModifier);
     }
 
+    public List<ItemListing> GetItemListings() {
+        List<ItemListing> itemListings = new();
+
+        return itemListings;
+    }
+
     // Called when the node enters the scene tree for the first time.
     public override void _Ready()
     {
@@ -231,7 +246,11 @@ public partial class TradeUI : Control
     {
         GetNode<RichTextLabel>("Background/Labels/SettlementName").Text = "[b]" + settlementData.settlementName + "[/b]";
 
-        
+        PackedScene shopItemsScene = GD.Load<PackedScene>("res://Settlements/trade.tscn");
+        foreach (ItemListing item in GetItemListings()) {
+            //RichTextLabel itemName = shopItemsScene.Instantiate();
+        }
+        GetNode<VBoxContainer>("VBoxContainer");
 
         Visible = true;
     }
