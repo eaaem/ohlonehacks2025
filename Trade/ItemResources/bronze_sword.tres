@@ -1,0 +1,10 @@
+[gd_resource type="Resource" script_class="Item" load_steps=2 format=3 uid="uid://be38wy7xjp543"]
+
+[ext_resource type="Script" path="res://Trade/Item.cs" id="1_qukpt"]
+
+[resource]
+script = ExtResource("1_qukpt")
+itemName = ""
+price = 30
+itemType = 0
+rarity = 10
