@@ -1,4 +1,4 @@
-[gd_scene load_steps=27 format=3 uid="uid://dnfji7mj4yoig"]
+[gd_scene load_steps=28 format=3 uid="uid://dnfji7mj4yoig"]
 
 [ext_resource type="Script" path="res://Trade/ItemList.cs" id="1_40pj1"]
 [ext_resource type="Script" path="res://Combat/Combat.cs" id="1_bmbdo"]
@@ -13,6 +13,7 @@
 [ext_resource type="PackedScene" uid="uid://cfnqvwpqt361k" path="res://Combat/warband.tscn" id="4_l5mx6"]
 [ext_resource type="Script" path="res://Settlements/SettlementUI.cs" id="5_ukmxp"]
 [ext_resource type="Script" path="res://Core/Player.cs" id="7_8p2op"]
+[ext_resource type="Script" path="res://Trade/TradeUI.cs" id="13_dqaxb"]
 
 [sub_resource type="Resource" id="Resource_uby4a"]
 script = ExtResource("2_2n0uq")
@@ -318,11 +319,12 @@ visible = false
 anchors_preset = 0
 offset_right = 40.0
 offset_bottom = 40.0
+script = ExtResource("13_dqaxb")
 
 [node name="Background" type="Panel" parent="UI/TradeScreen"]
 layout_mode = 0
-offset_right = 1920.0
-offset_bottom = 1080.0
+offset_right = 40.0
+offset_bottom = 40.0
 
 [node name="Labels" type="Control" parent="UI/TradeScreen/Background"]
 anchors_preset = 0
@@ -468,6 +470,116 @@ offset_bottom = 983.0
 theme_override_font_sizes/font_size = 40
 text = "Lick your wounds..."
 
+[node name="PlayerScreen" type="Control" parent="UI"]
+visible = false
+anchors_preset = 0
+offset_right = 1920.0
+offset_bottom = 1080.0
+
+[node name="Background" type="Panel" parent="UI/PlayerScreen"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_8uqoa")
+
+[node name="Labels" type="Control" parent="UI/PlayerScreen/Background"]
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="Name" type="RichTextLabel" parent="UI/PlayerScreen/Background/Labels"]
+layout_mode = 0
+offset_left = 185.0
+offset_top = 104.0
+offset_right = 1185.0
+offset_bottom = 204.0
+theme_override_font_sizes/bold_font_size = 50
+bbcode_enabled = true
+text = "[b]Player Name[/b]"
+
+[node name="Gold" type="RichTextLabel" parent="UI/PlayerScreen/Background/Labels"]
+layout_mode = 0
+offset_left = 185.0
+offset_top = 206.0
+offset_right = 1685.0
+offset_bottom = 256.0
+theme_override_font_sizes/normal_font_size = 30
+theme_override_font_sizes/bold_font_size = 30
+bbcode_enabled = true
+text = "Gold: #"
+
+[node name="Level" type="RichTextLabel" parent="UI/PlayerScreen/Background/Labels"]
+layout_mode = 0
+offset_left = 185.0
+offset_top = 248.0
+offset_right = 1685.0
+offset_bottom = 298.0
+theme_override_font_sizes/normal_font_size = 30
+theme_override_font_sizes/bold_font_size = 30
+bbcode_enabled = true
+text = "Level:"
+
+[node name="Race" type="RichTextLabel" parent="UI/PlayerScreen/Background/Labels"]
+layout_mode = 0
+offset_left = 185.0
+offset_top = 166.0
+offset_right = 1685.0
+offset_bottom = 216.0
+theme_override_font_sizes/normal_font_size = 30
+theme_override_font_sizes/bold_font_size = 30
+bbcode_enabled = true
+text = "Race:"
+
+[node name="Strength" type="RichTextLabel" parent="UI/PlayerScreen/Background/Labels"]
+layout_mode = 0
+offset_left = 185.0
+offset_top = 290.0
+offset_right = 1685.0
+offset_bottom = 340.0
+theme_override_font_sizes/normal_font_size = 30
+theme_override_font_sizes/bold_font_size = 30
+bbcode_enabled = true
+text = "Strength:"
+
+[node name="Intelligence" type="RichTextLabel" parent="UI/PlayerScreen/Background/Labels"]
+layout_mode = 0
+offset_left = 185.0
+offset_top = 429.0
+offset_right = 1685.0
+offset_bottom = 479.0
+theme_override_font_sizes/normal_font_size = 30
+theme_override_font_sizes/bold_font_size = 30
+bbcode_enabled = true
+text = "Intelligence:"
+
+[node name="Charisma" type="RichTextLabel" parent="UI/PlayerScreen/Background/Labels"]
+layout_mode = 0
+offset_left = 185.0
+offset_top = 597.0
+offset_right = 1685.0
+offset_bottom = 647.0
+theme_override_font_sizes/normal_font_size = 30
+theme_override_font_sizes/bold_font_size = 30
+bbcode_enabled = true
+text = "Charisma:"
+
+[node name="Buttons" type="Control" parent="UI/PlayerScreen/Background"]
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="Leave" type="Button" parent="UI/PlayerScreen/Background/Buttons"]
+layout_mode = 0
+offset_left = 185.0
+offset_top = 861.0
+offset_right = 385.0
+offset_bottom = 911.0
+theme_override_font_sizes/font_size = 25
+text = "Exit"
+
 [node name="DetachedCameraHolder" type="CharacterBody3D" parent="."]
 collision_layer = 0
 collision_mask = 0
@@ -497,3 +609,4 @@ settlementType = 0
 [connection signal="button_down" from="UI/BattleUI/EncounterBackground/Button" to="Combat" method="BeginCombat"]
 [connection signal="button_down" from="UI/BattleUI/VictoryBackground/Button" to="Combat" method="ExitCombat"]
 [connection signal="button_down" from="UI/BattleUI/DefeatBackground/Button" to="Combat" method="ExitCombat"]
+[connection signal="button_down" from="UI/PlayerScreen/Background/Buttons/Leave" to="Player" method="ClosePlayerScreen"]

@@ -151,14 +151,21 @@ public partial class PlayerController : CharacterBody3D
 			return;
 		}
 
-		if (@event is InputEventKey key && key.Keycode == Key.Escape)
+		if (@event is InputEventKey key)
 		{
-			if (cameraIsDetached)
+			if (key.Keycode == Key.Escape && cameraIsDetached)
 			{
 				cameraIsDetached = false;
 				detachedCameraTarget.RemoveChild(camera);
 				cameraTarget.AddChild(camera);
 				cameraTarget.Rotation = detachedCameraTarget.Rotation;
+			}
+			else if (key.Keycode == Key.E)
+			{
+				if (!GetNode<Control>("/root/BaseNode/UI/PlayerScreen").Visible)
+				{
+					OpenPlayerScreen();
+				}
 			}
 		}
 
@@ -217,5 +224,28 @@ public partial class PlayerController : CharacterBody3D
 				}
 			}
 		}
+	}
+
+	void OpenPlayerScreen()
+	{
+		GlobalPauseState.Instance.IsPaused = true;
+
+		Panel playerScreen = GetNode<Panel>("/root/BaseNode/UI/PlayerScreen/Background");
+
+		playerScreen.GetNode<RichTextLabel>("Labels/Name").Text = "[b]" + playerData.name;
+		playerScreen.GetNode<RichTextLabel>("Labels/Race").Text = "Race: " + playerData.race.ToString();
+		playerScreen.GetNode<RichTextLabel>("Labels/Gold").Text = "Gold: " + playerData.gold;
+		playerScreen.GetNode<RichTextLabel>("Labels/Level").Text = "Level: " + playerData.level;
+		playerScreen.GetNode<RichTextLabel>("Labels/Strength").Text = "Strength: " + playerData.strength;
+		playerScreen.GetNode<RichTextLabel>("Labels/Intelligence").Text = "Intelligence: " + playerData.intelligence;
+		playerScreen.GetNode<RichTextLabel>("Labels/Charisma").Text = "Charisma: " + playerData.charisma;
+
+		playerScreen.GetParent<Control>().Visible = true;
+	}
+
+	void ClosePlayerScreen()
+	{
+		GlobalPauseState.Instance.IsPaused = false;
+		GetNode<Control>("/root/BaseNode/UI/PlayerScreen").Visible = false;
 	}
 }
