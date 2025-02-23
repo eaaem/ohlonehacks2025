@@ -170,14 +170,19 @@ public partial class Combat : Node
 		int totalTroopsLost = 0;
 		if (playerPower > enemyPower)
 		{
-			// less losses if you win
-			int powerDiff = playerPower - enemyPower;
-			totalTroopsLost = (int)Math.Floor(Math.Pow(powerDiff / 10, 1 / 3));
+			int totalTroopQuantity = 0;
+			foreach (Troop troop in  playerTroops) {
+				totalTroopQuantity += troop.quantity;
+			}
+			// lose 10% of your troops at equal power, and 0% at double power
+			float powerMultiplier = playerPower / enemyPower;
+
+			totalTroopsLost = (int)Math.Floor(totalTroopQuantity * 0.1 / powerMultiplier);
 		}
 		else
 		{
-			int powerDiff = playerPower - enemyPower;
-			totalTroopsLost = (int)Math.Floor(Math.Sqrt(powerDiff / 10));
+			int powerDiff = enemyPower - playerPower;
+			totalTroopsLost = (int)Math.Floor(Math.Pow(powerDiff / 10, 1 / 5));
 		}
 
 		Dictionary<int, List<Troop>> troopsByLevel = new Dictionary<int, List<Troop>>();
@@ -206,7 +211,7 @@ public partial class Combat : Node
 		// the power differential will determine how many of each side dies after the battle
 		GD.Print("Fighting");
 		Player player = GetNode<Player>("/root/BaseNode/Player/PlayerData");
-		
+
 		Troop[] lostTroops = calculateTroopLoss(player.troops.ToArray(), playerPower, enemyPower);
 		foreach (Troop troop in lostTroops)
 		{
