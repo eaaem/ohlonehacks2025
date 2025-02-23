@@ -159,7 +159,7 @@ public partial class OverworldWarband : CharacterBody3D
 	{
 		if (isHostileToPlayer)
 		{
-			GetNode<Combat>("/root/BaseNode/Combat").beginCombat(player.GetNode<Player>("PlayerData"), this, Terrain.Plains);
+			bool battleWon = GetNode<Combat>("/root/BaseNode/Combat").beginCombat(player.GetNode<Player>("PlayerData"), this, Terrain.Plains);
 		}
 	}
 
