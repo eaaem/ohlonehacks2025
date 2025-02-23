@@ -41,10 +41,12 @@ public partial class Player : Node
 
 	public override void _Ready()
 	{
-		name = "Test";
-		gold = 50;
-		troops.Add(new Troop(200, TroopType.Infantry, 1));
+		name = "Player";
+		gold = 300;
 		level = 1;
+		strength = 0;
+		charisma = 0;
+		intelligence = 0;
 		Instance = this;
 	}
 }

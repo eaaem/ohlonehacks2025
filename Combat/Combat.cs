@@ -332,7 +332,6 @@ public partial class Combat : Node
 		GetNode<Control>("/root/BaseNode/UI/BattleUI").Visible = false;
 		GetNode<Control>("/root/BaseNode/UI/BattleUI/DefeatBackground").Visible = false;
 		GetNode<Control>("/root/BaseNode/UI/BattleUI/VictoryBackground").Visible = false;
-		SetProcess(true);
 		isInCombat = false;
 		GetNode<PlayerController>("/root/BaseNode/Player").IsMovementDisabled = false;
 	}
