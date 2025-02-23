@@ -107,6 +107,12 @@ public partial class RecruitScreen : Control
 			}
 		}
 
+		// arbitrarily reduce the amount of recruitable troops by 3
+		infantry -= 3;
+		archers -= 3;
+		cavalry -= 3;
+		mage -= 3;
+
 		List<Troop> troops = new();
 
 		if (infantry > 0) {
