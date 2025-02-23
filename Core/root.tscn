@@ -324,7 +324,6 @@ script = ExtResource("13_jxn0w")
 layout_mode = 0
 offset_right = 1920.0
 offset_bottom = 1080.0
-theme_override_styles/panel = SubResource("StyleBoxFlat_p44ig")
 
 [node name="Labels" type="Control" parent="UI/TradeScreen/Background"]
 anchors_preset = 0
