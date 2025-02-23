@@ -316,8 +316,8 @@ public partial class TradeUI : Control
 
 				if (shopButton.itemListing.quantity <= 0)
 				{
-					container.RemoveChild(shopButton);
-					shopButton.QueueFree();
+					container.RemoveChild(control);
+					control.QueueFree();
 				}
 				else
 				{
@@ -372,8 +372,8 @@ public partial class TradeUI : Control
 
 				if (shopButton.itemListing.quantity <= 0)
 				{
-					container.RemoveChild(shopButton);
-					shopButton.QueueFree();
+					container.RemoveChild(control);
+					control.QueueFree();
 				}
 				else
 				{

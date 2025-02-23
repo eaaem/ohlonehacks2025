@@ -1,4 +1,4 @@
-[gd_resource type="Resource" script_class="Item" load_steps=2 format=3 uid="uid://c3ba620byumxu"]
+[gd_resource type="Resource" script_class="Item" load_steps=2 format=3 uid="uid://b2r0vspy23x7u"]
 
 [ext_resource type="Script" path="res://Trade/Item.cs" id="1_q878a"]
 

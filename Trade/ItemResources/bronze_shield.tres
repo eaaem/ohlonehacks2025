@@ -1,10 +1,10 @@
-[gd_resource type="Resource" script_class="Item" load_steps=2 format=3 uid="uid://da2yet53j88cc"]
+[gd_resource type="Resource" script_class="Item" load_steps=2 format=3 uid="uid://c16sxq7l3gwo5"]
 
 [ext_resource type="Script" path="res://Trade/Item.cs" id="1_f41rx"]
 
 [resource]
 script = ExtResource("1_f41rx")
-itemName = ""
+itemName = "Bronze Shield"
 price = 30
 itemType = 0
 rarity = 5
