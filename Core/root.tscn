@@ -150,13 +150,13 @@ offset_bottom = 40.0
 mouse_filter = 2
 
 [node name="SettlementScreen" type="Control" parent="UI"]
-visible = false
 anchors_preset = 0
 offset_right = 1920.0
 offset_bottom = 1080.0
 script = ExtResource("5_ukmxp")
 
 [node name="Background" type="Panel" parent="UI/SettlementScreen"]
+visible = false
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -238,6 +238,15 @@ offset_bottom = 911.0
 theme_override_font_sizes/font_size = 25
 text = "Leave"
 
+[node name="Recruit" type="Button" parent="UI/SettlementScreen/Background/Buttons"]
+layout_mode = 0
+offset_left = 185.0
+offset_top = 780.0
+offset_right = 385.0
+offset_bottom = 830.0
+theme_override_font_sizes/font_size = 25
+text = "Recruit"
+
 [node name="Trade" type="Button" parent="UI/SettlementScreen/Background/Buttons"]
 layout_mode = 0
 offset_left = 185.0
@@ -245,6 +254,53 @@ offset_top = 600.0
 offset_right = 385.0
 offset_bottom = 650.0
 text = "Trade"
+
+[node name="Recruit" type="Panel" parent="UI/SettlementScreen"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_8uqoa")
+
+[node name="Labels" type="Control" parent="UI/SettlementScreen/Recruit"]
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="Population" type="RichTextLabel" parent="UI/SettlementScreen/Recruit/Labels"]
+layout_mode = 0
+offset_top = 294.0
+offset_right = 1920.0
+offset_bottom = 344.0
+theme_override_font_sizes/normal_font_size = 30
+theme_override_font_sizes/bold_font_size = 30
+bbcode_enabled = true
+text = "[center]# #s would like to join you, for # gold."
+
+[node name="Buttons" type="Control" parent="UI/SettlementScreen/Recruit"]
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="Recruit" type="Button" parent="UI/SettlementScreen/Recruit/Buttons"]
+layout_mode = 0
+offset_left = 1098.0
+offset_top = 602.0
+offset_right = 1298.0
+offset_bottom = 652.0
+theme_override_font_sizes/font_size = 25
+text = "Recruit"
+
+[node name="Trade" type="Button" parent="UI/SettlementScreen/Recruit/Buttons"]
+layout_mode = 0
+offset_left = 641.0
+offset_top = 600.0
+offset_right = 841.0
+offset_bottom = 650.0
+theme_override_font_sizes/font_size = 25
+text = "Cancel"
 
 [node name="PauseLabel" type="RichTextLabel" parent="UI"]
 visible = false
