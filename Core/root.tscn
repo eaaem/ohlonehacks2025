@@ -272,11 +272,12 @@ offset_bottom = 40.0
 layout_mode = 0
 offset_top = 294.0
 offset_right = 1920.0
-offset_bottom = 344.0
+offset_bottom = 394.0
 theme_override_font_sizes/normal_font_size = 30
 theme_override_font_sizes/bold_font_size = 30
 bbcode_enabled = true
-text = "[center]# #s would like to join you, for # gold."
+text = "[center]# #s would like to join you for # gold.
+You have # gold."
 
 [node name="Buttons" type="Control" parent="UI/SettlementScreen/Recruit"]
 anchors_preset = 0
