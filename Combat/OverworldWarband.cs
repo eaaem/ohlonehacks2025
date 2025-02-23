@@ -21,6 +21,9 @@ public partial class OverworldWarband : CharacterBody3D
     public override void _Ready()
     {
 		player = GetNode<PlayerController>("/root/BaseNode/Player");
+
+		MouseEntered += OnMouseEntered;
+		MouseExited += OnMouseExited;
     }
 
     public void CreateWarband(int numberOfTroops, TroopType favoredTroopType, int averageStrength)
@@ -105,7 +108,6 @@ public partial class OverworldWarband : CharacterBody3D
 
     public void OnMouseEntered()
 	{
-		GD.Print("eNTERED");
 		Control tooltip = GD.Load<PackedScene>("res://Combat/warband_tooltip.tscn").Instantiate<Control>();
 
 		tooltip.GetNode<RichTextLabel>("Title").Text = "[center]" + warbandName;

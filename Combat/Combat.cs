@@ -175,9 +175,13 @@ public partial class Combat : Node
 			totalTroopsLost = (int)Math.Floor(Math.Sqrt(powerDiff / 10));
 		}
 
-		Dictionary<int, List<Troop>> troopsByLevel = new();
+		Dictionary<int, List<Troop>> troopsByLevel = new Dictionary<int, List<Troop>>();
 		foreach (Troop troop in playerTroops)
 		{
+			if (!troopsByLevel.ContainsKey(troop.tier))
+			{
+				troopsByLevel.Add(troop.tier, new List<Troop>());
+			}
 			troopsByLevel[troop.tier].Add(troop);
 		}
 		foreach (List<Troop> troops in troopsByLevel.Values.ToList())
@@ -219,6 +223,7 @@ public partial class Combat : Node
 			.ToArray();
 			// player troops = new troops
 		}
+		GD.Print("Battle over");
 	}
 
 	// Called when the node enters the scene tree for the first time.

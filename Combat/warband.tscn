@@ -27,10 +27,11 @@ skeleton = NodePath("../..")
 shape = SubResource("CapsuleShape3D_7ri0q")
 
 [node name="Hitbox" type="Area3D" parent="."]
+collision_layer = 0
+collision_mask = 2
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Hitbox"]
 shape = SubResource("BoxShape3D_fkqwg")
 
 [connection signal="input_event" from="." to="." method="_InputEvent"]
-[connection signal="mouse_entered" from="." to="." method="OnMouseEntered"]
-[connection signal="mouse_exited" from="." to="." method="OnMouseExited"]
+[connection signal="body_entered" from="Hitbox" to="." method="OnPlayerEntered"]
