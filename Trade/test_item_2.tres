@@ -4,7 +4,7 @@
 
 [resource]
 script = ExtResource("1_xnfts")
-itemName = ""
-price = 0
-itemType = 0
-rarity = 0
+itemName = "test_2"
+price = 10
+itemType = 1
+rarity = 3
