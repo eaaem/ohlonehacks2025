@@ -283,6 +283,8 @@ public partial class TradeUI : Control
 			return;
 		}
 
+		GD.Print("Buying");
+
 		List<InventoryItem> settlementItems = new();
 		
 		foreach (InventoryItem invItem in selfSettlementData.boughtItems)
@@ -291,7 +293,7 @@ public partial class TradeUI : Control
 			{
 				if (item.quantity <= invItem.quantity)
 				{
-					return;
+					//return;
 				}
 				settlementItems.Add(new InventoryItem(invItem.item, invItem.quantity + 1));
 			}
@@ -426,6 +428,7 @@ public partial class TradeUI : Control
 			Control control = shopItemsScene.Instantiate<Control>();
 			control.GetNode<ShopButton>("Name").Text = item.item.itemName + " (" + item.quantity + "; cost for 1: " + item.buyPrice + ")";
 			control.GetNode<ShopButton>("Name").itemListing = item;
+			control.GetNode<ShopButton>("Name").Initialize();
 
 			container.AddChild(control);
 		}
@@ -446,6 +449,7 @@ public partial class TradeUI : Control
 			Control control = shopItemsScene.Instantiate<Control>();
 			control.GetNode<ShopButton>("Name").Text = item.item.itemName + " (" + item.quantity + "; sell price for 1: " + itemListing.sellPrice + ")";
 			control.GetNode<ShopButton>("Name").itemListing = itemListing;
+			control.GetNode<ShopButton>("Name").Initialize();
 
 			container.AddChild(control);
 		}
