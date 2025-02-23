@@ -1,6 +1,7 @@
 using Godot;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 public partial class RecruitScreen : Node
 {
@@ -91,20 +92,46 @@ public partial class RecruitScreen : Node
 		int cavalry = getTroopAmount(TroopType.Cavalry, settlement);
 		int mage = getTroopAmount(TroopType.Mage, settlement);
 
-		List<Troop> troops = new()
-        {
-            new Troop(infantry, TroopType.Infantry, 0),
-			new Troop(archers, TroopType.Archer, 0),
-			new Troop(cavalry, TroopType.Cavalry, 0),
-			new Troop(mage, TroopType.Mage, 0)
-        };
+		foreach (Troop recruitedTroop in settlement.recruitedTroops)
+		{
+			if (recruitedTroop.troopType == TroopType.Infantry) {
+				infantry -= recruitedTroop.quantity;
+			} else if (recruitedTroop.troopType == TroopType.Archer) {
+				archers -= recruitedTroop.quantity;
+			} else if (recruitedTroop.troopType == TroopType.Cavalry) {
+				cavalry -= recruitedTroop.quantity;
+			} else {
+				mage -= recruitedTroop.quantity;
+			}
+		}
+
+		List<Troop> troops = new();
+
+		if (infantry > 0) {
+			troops.Add(new Troop(infantry, TroopType.Infantry, 0));
+		}
+
+		if (archers > 0) {
+			troops.Add(new Troop(archers, TroopType.Archer, 0));
+		}
+
+		if (cavalry > 0) {
+			troops.Add(new Troop(cavalry, TroopType.Cavalry, 0));
+		}
+
+		if (mage > 0) {
+			troops.Add(new Troop(mage, TroopType.Mage, 0));
+		}
 		
 		return troops.ToArray();
 	}
 
-	private void RecruitTroop(Troop troop)
+	private void RecruitTroop(Troop troop, SettlementData settlement)
 	{
 		int troopPrice = troop.troopType == TroopType.Mage ? 20 : 10;
+		if (Player.Instance.gold <= troopPrice) {
+			return;
+		}
 		List<Troop> newTroops = new();
 		foreach (Troop playerTroop in Player.Instance.troops) {
 			if (playerTroop.troopType == troop.troopType && playerTroop.tier == troop.tier) {
@@ -113,7 +140,21 @@ public partial class RecruitScreen : Node
 				newTroops.Add(playerTroop);
 			}
 		}
+
+		List<Troop> newSettlementTroops = new();
+		if (settlement.troops.Any(settlementTroop => settlementTroop.troopType == troop.troopType)) {
+			foreach (Troop settlementTroop in settlement.troops) {
+				if (settlementTroop.troopType == troop.troopType) {
+					newSettlementTroops.Add(new Troop(settlementTroop.quantity + 1, settlementTroop.troopType, settlementTroop.tier));
+				} else {
+					newSettlementTroops.Add(settlementTroop);
+				}
+			}
+		}
+		settlement.troops = newSettlementTroops.ToArray();
+
 		Player.Instance.troops = newTroops;
+		Player.Instance.gold -= troopPrice;
 	}
 
 	public void OpenRecruitScreen(SettlementData settlement)
