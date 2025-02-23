@@ -280,7 +280,7 @@ public partial class Combat : Node
 			GetNode<RichTextLabel>("/root/BaseNode/UI/BattleUI/DefeatBackground/Info").Text = "[center]You have been defeated on the field of combat.\n"
 						 	+ "You have been routed to " + targetSettlement.settlementName + ", and have lost the following troops:";
 
-			GetNode<PlayerController>("/root/BaseNode/Player").Position = targetSettlement.Position;
+			GetNode<PlayerController>("/root/BaseNode/Player").Position = new Vector3(targetSettlement.Position.X, 0.25f, targetSettlement.Position.Z);
 
 			GetNode<Control>("/root/BaseNode/UI/BattleUI/DefeatBackground").Visible = true;
 		}
