@@ -44,6 +44,7 @@ public partial class SettlementData : Node3D
     public Building[] buildings;
     [Export]
     public bool atWar;
+    public InventoryItem[] boughtItems;
 
     public override void _Ready()
     {

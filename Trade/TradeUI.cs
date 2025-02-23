@@ -273,8 +273,18 @@ public partial class TradeUI : Control
 		Instance = this;
 	}
 
-	private static void BuyItem(ItemListing item)
+	private static void BuyItem(ItemListing item, SettlementData settlementData, int itemQuantity)
 	{
+		List<InventoryItem> settlementItems = new();
+		foreach(InventoryItem invItem in settlementData.boughtItems) {
+			if (invItem.Name == item.item.itemName) {
+				if (itemQuantity <= invItem.quantity) {
+					return;
+				}
+				settlementItems.Add(new InventoryItem(invItem.item, invItem.quantity + 1));
+			}
+		}
+		settlementData.boughtItems = settlementItems.ToArray();
 		Player.Instance.gold -= item.buyPrice;
 		List<InventoryItem> newInventory = new();
 		foreach (InventoryItem invItem in Player.Instance.inventory) {
@@ -285,6 +295,17 @@ public partial class TradeUI : Control
 			}
 		}
 		Player.Instance.inventory = newInventory;
+	}
+
+	private void SellItem(ItemListing item, SettlementData settlementData) {
+		Player.Instance.gold += item.sellPrice;
+		List<InventoryItem> settlementItems = new();
+		foreach(InventoryItem invItem in settlementData.boughtItems) {
+			if (invItem.Name == item.item.itemName) {
+				settlementItems.Add(new InventoryItem(invItem.item, invItem.quantity - 1));
+			}
+		}
+		settlementData.boughtItems = settlementItems.ToArray();
 	}
 
 	public void OpenUI(SettlementData settlementData)
@@ -298,9 +319,9 @@ public partial class TradeUI : Control
 			Control control = shopItemsScene.Instantiate<Control>();
 
 			control.GetNode<RichTextLabel>("Name").Text = item.item.itemName;
-			control.GetNode<RichTextLabel>("Quantity").Text = item.quantity.ToString();
+			control.GetNode<RichTextLabel>("Quantity").Text = Math.Max(item.quantity, 0).ToString();
 			control.GetNode<Button>("Buy").Text = item.buyPrice.ToString();
-			control.GetNode<Button>("Buy").ButtonDown += () => BuyItem(item);
+			control.GetNode<Button>("Buy").ButtonDown += () => BuyItem(item, settlementData, item.quantity);
 			tradeItems.GetNode<VBoxContainer>("VBoxContainer").AddChild(control); ; ; ; ; ; ; ; ; ; ; ; ;
 		}
 
