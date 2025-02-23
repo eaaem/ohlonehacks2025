@@ -1,11 +1,21 @@
 using Godot;
 using System;
 using System.Collections.Generic;
+using System.Numerics;
+using Vector2 = Godot.Vector2;
 
 public partial class TradeUI : Control
 {
 
     public class ItemListing {
+
+		public ItemListing(Item _item, int _quantity, int _buyPrice, int _sellPrice) {
+			item = _item;
+			quantity = _quantity;
+			buyPrice = _buyPrice;
+			sellPrice = _sellPrice;
+		}
+
         public Item item;
         public int quantity;
         public int buyPrice;
@@ -230,9 +240,16 @@ public partial class TradeUI : Control
 		return (int) Math.Floor(item.rarity * prosperityModifier * warModifier * sizeModifier);
     }
 
-    public List<ItemListing> GetItemListings() {
+    public List<ItemListing> GetItemListings(SettlementData settlementData) {
         List<ItemListing> itemListings = new();
-
+		Item[] allItems = GetNode<ItemList>("/root/BaseNode/ItemReference").items;
+		GD.Print(allItems);
+		foreach (Item item in allItems) {
+			int quantity = DetermineItemQuantity(settlementData, item);
+			if (quantity > 0) {
+				itemListings.Add(new ItemListing(item, quantity, DetemineBuyPrice(settlementData, item), DetermineSellPrice(settlementData, item)));
+			}
+		}
         return itemListings;
     }
 
@@ -246,19 +263,16 @@ public partial class TradeUI : Control
     {
         GetNode<RichTextLabel>("Background/Labels/SettlementName").Text = "[b]" + settlementData.settlementName + "[/b]";
 
+		Control tradeItems = GetNode<Control>("Background/TradeItems");
         PackedScene shopItemsScene = GD.Load<PackedScene>("res://Settlements/trade.tscn");
-        foreach (ItemListing item in GetItemListings()) {
-            RichTextLabel itemName = shopItemsScene.Instantiate<RichTextLabel>();
-            RichTextLabel itemQuantity = shopItemsScene.Instantiate<RichTextLabel>();
-            Button sellItem = shopItemsScene.Instantiate<Button>();
-            Button buyItem = shopItemsScene.Instantiate<Button>();
+        foreach (ItemListing item in GetItemListings(settlementData)) {
+			Control control = shopItemsScene.Instantiate<Control>();
 
-            itemName.Text = item.item.itemName;
-            itemQuantity.Text = item.quantity.ToString();
-            sellItem.Text = item.sellPrice.ToString();
-            buyItem.Text = item.buyPrice.ToString();
+			control.GetNode<RichTextLabel>("Name").Text = item.item.itemName;
+			control.GetNode<RichTextLabel>("Quantity").Text = item.quantity.ToString();
+			control.GetNode<Button>("Buy").Text = item.buyPrice.ToString();
+			tradeItems.GetNode<VBoxContainer>("VBoxContainer").AddChild(control);;;;;;;;;;;;;
         }
-        GetNode<VBoxContainer>("VBoxContainer");
 
         Visible = true;
     }

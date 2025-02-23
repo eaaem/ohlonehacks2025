@@ -1,0 +1,6 @@
+[gd_scene format=3 uid="uid://bovgqkvnvp3kp"]
+
+[node name="Button" type="Button"]
+custom_minimum_size = Vector2(0, 50)
+offset_right = 8.0
+offset_bottom = 8.0
