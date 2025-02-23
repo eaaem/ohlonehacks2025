@@ -95,7 +95,7 @@ public partial class OverworldWarband : CharacterBody3D
 				else // Go to a settlement
 				{
 					int targetSettlementID = GD.RandRange(0,
-								CivilizationHolder.Instance.civilizations[(int)civilizationAffiliation].settlements.Length);
+								CivilizationHolder.Instance.civilizations[(int)civilizationAffiliation].settlements.Length - 1);
 
 					movementTarget = CivilizationHolder.Instance.civilizations[(int)civilizationAffiliation].settlements[targetSettlementID].Position;
 					isMoving = true;
@@ -159,7 +159,7 @@ public partial class OverworldWarband : CharacterBody3D
 	{
 		if (isHostileToPlayer)
 		{
-			bool battleWon = GetNode<Combat>("/root/BaseNode/Combat").beginCombat(player.GetNode<Player>("PlayerData"), this, Terrain.Plains);
+			GetNode<Combat>("/root/BaseNode/Combat").OpenCombatUI(player.GetNode<Player>("PlayerData"), this, Terrain.Plains);
 		}
 	}
 

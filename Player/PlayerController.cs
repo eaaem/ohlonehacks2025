@@ -11,11 +11,16 @@ public partial class PlayerController : CharacterBody3D
 	private Node3D cameraTarget;
 	[Export]
 	private Player playerData;
-
+	[Export]
+	private Node3D detachedCameraTarget;
+	[Export]
+	private Camera3D camera;
 	private Vector3 moveTarget;
 	public bool IsMoving { get; set; }
 	public bool IsMovementDisabled { get; set; }
 	private bool isHoldingMiddleMouse = false;
+
+	private bool cameraIsDetached = false;
 
 	private Control tooltip = null;
 
@@ -44,6 +49,30 @@ public partial class PlayerController : CharacterBody3D
 
 			Velocity = velocity;
 			MoveAndSlide();
+		}
+
+		Vector2 inputDir = Input.GetVector("move_left", "move_right", "move_forward", "move_backward");
+
+		if (inputDir != Vector2.Zero)
+		{
+			if (!cameraIsDetached)
+			{
+				cameraIsDetached = true;
+				cameraTarget.RemoveChild(camera);
+				detachedCameraTarget.AddChild(camera);
+				detachedCameraTarget.Rotation = cameraTarget.Rotation;
+			}
+
+			Vector3 position = detachedCameraTarget.Position;
+
+			//Vector3 relative = detachedCameraTarget.Transform.Basis * new Vector3(inputDir.X + po, 0, inputDir.Y);
+			Vector3 cameraRightDir = camera.GlobalTransform.Basis.X;
+			Vector3 cameraFrontDir = camera.GlobalTransform.Basis.Z;
+			position += inputDir.X * cameraRightDir;
+			position += inputDir.Y * cameraFrontDir;
+			position.Y = detachedCameraTarget.Position.Y;
+
+			detachedCameraTarget.Position = position;
 		}
 	}
 
@@ -80,7 +109,6 @@ public partial class PlayerController : CharacterBody3D
 		tooltip.GetNode<RichTextLabel>("Title").Text = "[center]" + playerData.name + "'s Party";
 
 		PackedScene unitLabelScene = GD.Load<PackedScene>("res://Combat/unit_label.tscn");
-
 
 		for (int i = 0; i < playerData.troops.Count; i++)
 		{
@@ -123,31 +151,58 @@ public partial class PlayerController : CharacterBody3D
 			return;
 		}
 
+		if (@event is InputEventKey key && key.Keycode == Key.Escape)
+		{
+			if (cameraIsDetached)
+			{
+				cameraIsDetached = false;
+				detachedCameraTarget.RemoveChild(camera);
+				cameraTarget.AddChild(camera);
+				cameraTarget.Rotation = detachedCameraTarget.Rotation;
+			}
+		}
+
 		if (@event is InputEventMouseMotion mouseMotion && isHoldingMiddleMouse)
 		{
-			Vector3 rotation = cameraTarget.Rotation;
+			Vector3 rotation;
+			if (!cameraIsDetached)
+			{
+				rotation = cameraTarget.Rotation;
+			}
+			else
+			{
+				rotation = detachedCameraTarget.Rotation;
+			}
 
 			rotation.X += mouseMotion.Relative.Y * 0.01f;
 			rotation.Y += mouseMotion.Relative.X * 0.01f;
 
 			rotation.X = Mathf.Clamp(rotation.X, Mathf.DegToRad(-90f), Mathf.DegToRad(15f));
-			cameraTarget.Rotation = rotation;
+
+			if (!cameraIsDetached)
+			{
+				cameraTarget.Rotation = rotation;
+			}
+			else
+			{
+				detachedCameraTarget.Rotation = rotation;
+			}
 		}
 
 		if (@event is InputEventMouseButton mouseButton)
 		{
 			if (mouseButton.ButtonIndex == MouseButton.WheelUp)
 			{
-				if (cameraTarget.GetNode<Camera3D>("PlayerCamera").Position.Z > 3.5f)
+				if (camera.Position.Z > 3.5f)
 				{
-					cameraTarget.GetNode<Camera3D>("PlayerCamera").Position -= (Vector3.Back * 0.5f);
+					camera.Position -= (Vector3.Back * 0.5f);
 				}
 			}
 			else if (mouseButton.ButtonIndex == MouseButton.WheelDown)
 			{
-				if (cameraTarget.GetNode<Camera3D>("PlayerCamera").Position.Z < 15f)
+				if (camera.Position.Z < 15f)
 				{
-					cameraTarget.GetNode<Camera3D>("PlayerCamera").Position += (Vector3.Back * 0.5f);
+					camera.Position += (Vector3.Back * 0.5f);
 				}
 			}
 			else if (mouseButton.ButtonIndex == MouseButton.Middle)

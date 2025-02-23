@@ -14,6 +14,10 @@ public enum Terrain
 
 public partial class Combat : Node
 {
+	private OverworldWarband currentEnemy;
+	private Terrain currentTerrain;
+	private int playerPower;
+	private int enemyPower;
 
 	private int getTroopPower(Troop troop)
 	{
@@ -195,10 +199,138 @@ public partial class Combat : Node
 		return lostTroops.ToArray();
 	}
 
-	public bool beginCombat(Player player, OverworldWarband warband, Terrain terrain)
+	public bool BeginCombat()
 	{
 		// determine the power of both sides, and whoever has more wins
 		// the power differential will determine how many of each side dies after the battle
+		GD.Print("Fighting");
+		Player player = GetNode<Player>("/root/BaseNode/Player/PlayerData");
+		
+		Troop[] lostTroops = calculateTroopLoss(player.troops.ToArray(), playerPower, enemyPower);
+		foreach (Troop troop in lostTroops)
+		{
+			Troop existingElement = Array.Find(player.troops.ToArray(), playerTroop => playerTroop.troopType == troop.troopType && playerTroop.tier == troop.tier);
+			Troop[] newTroops = player.troops.ConvertAll(playerTroop =>
+			playerTroop.troopType == troop.troopType && playerTroop.tier == troop.tier ?
+				new Troop(playerTroop.quantity - troop.quantity, playerTroop.troopType, playerTroop.tier) :
+				playerTroop)
+			.ToArray();
+			player.troops = newTroops.ToList();
+		}
+
+		/*foreach (Troop troop in player.troops)
+		{
+			if (troop.quantity <= 0)
+			{
+				player.troops.Remove(troop);
+			}
+		}*/
+
+		for (int i = 0; i < player.troops.Count; i++)
+		{
+			if (player.troops[i].quantity <= 0)
+			{
+				player.troops.Remove(player.troops[i]);
+				i--;
+			}
+		}
+
+		ShowCombatResults(playerPower > enemyPower, lostTroops);
+
+		return playerPower > enemyPower;
+	}
+
+	void ShowCombatResults(bool won, Troop[] lostTroops)
+	{
+		GetNode<Control>("/root/BaseNode/UI/BattleUI/EncounterBackground").Visible = false;
+		VBoxContainer container;
+
+		if (won)
+		{
+			container = GetNode<VBoxContainer>("/root/BaseNode/UI/BattleUI/VictoryBackground/VBoxContainer");
+
+			currentEnemy.GetParent().RemoveChild(currentEnemy);
+			currentEnemy.QueueFree();
+
+			GetNode<Control>("/root/BaseNode/UI/BattleUI/VictoryBackground").Visible = true;
+		}
+		else
+		{
+			container = GetNode<VBoxContainer>("/root/BaseNode/UI/BattleUI/DefeatBackground/VBoxContainer");
+
+			int civilization = GD.RandRange(0, CivilizationHolder.Instance.civilizations.Length - 1);
+
+			// TESTING ONLY: REMOVE WHEN OTHER CIVILIZATIONS ARE ADDED
+			civilization = 0;
+
+			Node3D settlementParent = GetNode<Node3D>("/root/BaseNode/" + (CivilizationType)civilization);
+			SettlementData targetSettlement = settlementParent.GetChild<SettlementData>(GD.RandRange(0, settlementParent.GetChildCount() - 1));
+
+			GetNode<RichTextLabel>("/root/BaseNode/UI/BattleUI/DefeatBackground/Info").Text = "[center]You have been defeated on the field of combat.\n"
+						 	+ "You have been routed to " + targetSettlement.settlementName + ", and have lost the following troops:";
+
+			GetNode<PlayerController>("/root/BaseNode/Player").Position = targetSettlement.Position;
+
+			GetNode<Control>("/root/BaseNode/UI/BattleUI/DefeatBackground").Visible = true;
+		}
+
+		foreach (RichTextLabel label in container.GetChildren())
+		{
+			container.RemoveChild(label);
+			label.QueueFree();
+		}
+
+		for (int i = 0; i < lostTroops.Length; i++)
+		{
+			RichTextLabel label = new RichTextLabel();
+
+			label.CustomMinimumSize = new Vector2(0, 55f);
+			label.AddThemeFontSizeOverride("normal_font_size", 30);
+
+			string unitType = "";
+
+			switch (lostTroops[i].troopType)
+			{
+				case TroopType.Infantry:
+					unitType = ((InfantryTroopTier)lostTroops[i].tier).ToString();
+					break;
+				case TroopType.Archer:
+					unitType = ((ArcherTroopTier)lostTroops[i].tier).ToString();
+					break;
+				case TroopType.Cavalry:
+					unitType = ((CavalryTroopTier)lostTroops[i].tier).ToString();
+					break;
+				case TroopType.Mage:
+					unitType = ((MageTroopTier)lostTroops[i].tier).ToString();
+					break;
+			}
+
+			unitType = unitType.Replace("_", " ");
+
+			label.Text = lostTroops[i].quantity + " " + unitType + " (" + lostTroops[i].troopType.ToString() + ")";
+
+			container.AddChild(label);
+		}
+	}
+
+	void ExitCombat()
+	{
+		GetNode<Control>("/root/BaseNode/UI/BattleUI").Visible = false;
+		GetNode<Control>("/root/BaseNode/UI/BattleUI/DefeatBackground").Visible = false;
+		GetNode<Control>("/root/BaseNode/UI/BattleUI/VictoryBackground").Visible = false;
+	}
+
+	public void OpenCombatUI(Player player, OverworldWarband warband, Terrain terrain)
+	{
+		GlobalPauseState.Instance.IsPaused = true;
+
+		GetNode<Control>("/root/BaseNode/UI/BattleUI").Visible = true;
+
+		GetNode<PlayerController>("/root/BaseNode/Player").IsMovementDisabled = true;
+		GetNode<PlayerController>("/root/BaseNode/Player").IsMoving = false;
+
+		Control battleUI = GetNode<Control>("/root/BaseNode/UI/BattleUI/EncounterBackground");
+
 		int playerPower = 0;
 		int enemyPower = 0;
 		Random random = new();
@@ -212,19 +344,14 @@ public partial class Combat : Node
 			enemyPower += calculateTroopPower(troop, terrain, random);
 		}
 
-		Troop[] lostTroops = calculateTroopLoss(player.troops.ToArray(), playerPower, enemyPower);
-		foreach (Troop troop in lostTroops)
-		{
-			Troop existingElement = Array.Find(player.troops.ToArray(), playerTroop => playerTroop.troopType == troop.troopType && playerTroop.tier == troop.tier);
-			Troop[] newTroops = player.troops.ConvertAll(playerTroop =>
-			playerTroop.troopType == troop.troopType && playerTroop.tier == troop.tier ?
-				new Troop(playerTroop.quantity - troop.quantity, playerTroop.troopType, playerTroop.tier) :
-				playerTroop)
-			.ToArray();
-			player.troops = newTroops.ToList();
-		}
+		battleUI.GetNode<RichTextLabel>("Info").Text = "[center]You have been challenged by [b]" + warband.warbandName + "[/b].\nTheir strength "
+			+ "is " + enemyPower + ".\nYour strength is " + playerPower + ".";
+		battleUI.Visible = true;
 
-		return playerPower > enemyPower;
+		this.playerPower = playerPower;
+		this.enemyPower = enemyPower;
+		currentEnemy = warband;
+		currentTerrain = terrain;
 	}
 
 	// Called when the node enters the scene tree for the first time.

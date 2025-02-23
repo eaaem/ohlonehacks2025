@@ -23,5 +23,16 @@ public partial class CivilizationHolder : Node
     public override void _Ready()
     {
         Instance = this;
+
+		for (int i = 0; i < 1; i++)
+		{
+			Node3D settlementParent = GetNode<Node3D>("/root/BaseNode/" + (CivilizationType)i);
+			civilizations[i].settlements = new SettlementData[settlementParent.GetChildCount()];
+
+			for (int j = 0; j < civilizations[i].settlements.Length; j++)
+			{
+				civilizations[i].settlements[j] = settlementParent.GetChild<SettlementData>(j);
+			}
+		}
     }
 }
