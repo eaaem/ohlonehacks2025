@@ -1,4 +1,4 @@
-[gd_scene load_steps=25 format=3 uid="uid://dnfji7mj4yoig"]
+[gd_scene load_steps=26 format=3 uid="uid://dnfji7mj4yoig"]
 
 [ext_resource type="Script" path="res://Trade/ItemList.cs" id="1_40pj1"]
 [ext_resource type="Script" path="res://Combat/Combat.cs" id="1_bmbdo"]
@@ -7,7 +7,7 @@
 [ext_resource type="Script" path="res://Civilizations/CivilizationHolder.cs" id="1_t52sj"]
 [ext_resource type="Script" path="res://Civilizations/Civilization.cs" id="2_2n0uq"]
 [ext_resource type="Resource" uid="uid://ccphrn31wlya1" path="res://Trade/test_item.tres" id="2_d0ph0"]
-[ext_resource type="Resource" uid="uid://b3dyt6p65omym" path="res://Trade/test_item_2.tres" id="3_483pe"]
+[ext_resource type="Resource" uid="uid://bw536kfientsq" path="res://Trade/test_item_2.tres" id="3_483pe"]
 [ext_resource type="Script" path="res://Combat/WarbandGenerator.cs" id="3_p4msl"]
 [ext_resource type="PackedScene" uid="uid://bq3o5scv4qbgn" path="res://Settlements/settlement.tscn" id="4_jbg7a"]
 [ext_resource type="PackedScene" uid="uid://cfnqvwpqt361k" path="res://Combat/warband.tscn" id="4_l5mx6"]
@@ -232,6 +232,14 @@ offset_bottom = 911.0
 theme_override_font_sizes/font_size = 25
 text = "Leave"
 
+[node name="Trade" type="Button" parent="UI/SettlementScreen/Background/Buttons"]
+layout_mode = 0
+offset_left = 185.0
+offset_top = 600.0
+offset_right = 385.0
+offset_bottom = 650.0
+text = "Trade"
+
 [node name="PauseLabel" type="RichTextLabel" parent="UI"]
 visible = false
 layout_mode = 0
@@ -241,14 +249,6 @@ offset_bottom = 176.0
 theme_override_font_sizes/normal_font_size = 50
 bbcode_enabled = true
 text = "[center]Game Paused"
-
-[node name="Trade" type="Button" parent="UI/SettlementScreen/Background/Buttons"]
-layout_mode = 0
-offset_left = 185.0
-offset_top = 600.0
-offset_right = 385.0
-offset_bottom = 650.0
-text = "Trade"
 
 [node name="TradeScreen" type="Control" parent="UI"]
 visible = false

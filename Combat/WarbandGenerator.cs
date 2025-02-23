@@ -16,17 +16,7 @@ public partial class WarbandGenerator : Node
 	{
 		while (true)
 		{
-			while (GlobalPauseState.Instance.IsPaused)
-			{
-				await ToSignal(GetTree().CreateTimer(0.01f), Timer.SignalName.Timeout);
-			}
-
 			await ToSignal(GetTree().CreateTimer(2.5f), Timer.SignalName.Timeout);
-
-			if (GlobalPauseState.Instance.IsPaused)
-			{
-				return;
-			}
 
 			int chance = GD.RandRange(0, 1);
 
