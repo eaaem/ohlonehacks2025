@@ -1,0 +1,10 @@
+[gd_resource type="Resource" script_class="Item" load_steps=2 format=3 uid="uid://c2linfij41khn"]
+
+[ext_resource type="Script" path="res://Trade/Item.cs" id="1_rggug"]
+
+[resource]
+script = ExtResource("1_rggug")
+itemName = "Pottery"
+price = 35
+itemType = 2
+rarity = 8
