@@ -16,7 +16,7 @@ public partial class GlobalPauseState : Node
 			isPaused = value;
 			if (value)
 			{ 
-				pauseLabel.Visible = true; 
+				//pauseLabel.Visible = true; 
 			} 
 			else 
 			{ 
