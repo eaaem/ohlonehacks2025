@@ -4,7 +4,7 @@
 
 [resource]
 script = ExtResource("1_qukpt")
-itemName = ""
+itemName = "Bronze Sword"
 price = 30
 itemType = 0
 rarity = 10

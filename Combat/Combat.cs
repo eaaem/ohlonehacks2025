@@ -254,6 +254,12 @@ public partial class Combat : Node
 			currentEnemy.QueueFree();
 
 			GetNode<Control>("/root/BaseNode/UI/BattleUI/VictoryBackground").Visible = true;
+
+			int goldGain = GD.RandRange(15, 100);
+			Player.Instance.gold += goldGain;
+			GetNode<RichTextLabel>("/root/BaseNode/UI/BattleUI/VictoryBackground/Info").Text = "[center]You are victorious! You gain " + goldGain + " gold.\n"
+									+ "You have lost the following troops:";
+
 		}
 		else
 		{
