@@ -3,8 +3,10 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-public partial class RecruitScreen : Node
+public partial class RecruitScreen : Control
 {
+	private Troop[] recruitableTroops = new Troop[0];
+	private SettlementData settlementData;
 
 	private int determineProsperityModifier(TroopType troopType, SettlementData settlementData)
 	{
@@ -126,48 +128,101 @@ public partial class RecruitScreen : Node
 		return troops.ToArray();
 	}
 
-	private void RecruitTroop(Troop troop, SettlementData settlement)
+	private bool RecruitTroop(Troop troop, SettlementData settlement)
 	{
 		int troopPrice = troop.troopType == TroopType.Mage ? 20 : 10;
-		if (Player.Instance.gold <= troopPrice) {
-			return;
-		}
-		List<Troop> newTroops = new();
-		foreach (Troop playerTroop in Player.Instance.troops) {
-			if (playerTroop.troopType == troop.troopType && playerTroop.tier == troop.tier) {
-				newTroops.Add(new Troop(playerTroop.quantity + 1, playerTroop.troopType, playerTroop.tier));
-			} else {
-				newTroops.Add(playerTroop);
-			}
+		if (Player.Instance.gold < troopPrice) {
+			return false;
 		}
 
-		List<Troop> newSettlementTroops = new();
-		if (settlement.troops.Any(settlementTroop => settlementTroop.troopType == troop.troopType)) {
-			foreach (Troop settlementTroop in settlement.troops) {
-				if (settlementTroop.troopType == troop.troopType) {
-					newSettlementTroops.Add(new Troop(settlementTroop.quantity + 1, settlementTroop.troopType, settlementTroop.tier));
-				} else {
-					newSettlementTroops.Add(settlementTroop);
-				}
-			}
-		}
-		settlement.troops = newSettlementTroops.ToArray();
-
-		Player.Instance.troops = newTroops;
 		Player.Instance.gold -= troopPrice;
+
+		for (int i = 0; i < Player.Instance.troops.Count; i++)
+		{
+			if (Player.Instance.troops[i].troopType == troop.troopType && Player.Instance.troops[i].tier == troop.tier)
+			{
+				GD.Print(Player.Instance.troops[i].quantity);
+				Player.Instance.troops[i].quantity++;
+				return true;
+			}
+		}
+
+		Player.Instance.troops.Add(new Troop(1, troop.troopType, troop.tier));
+		return true;
 	}
 
-	public void OpenRecruitScreen(SettlementData settlement)
-	{
+    public override void _Ready()
+    {
+        GetNode<Button>("Labels/VBoxContainer/Infantry/Button").ButtonDown += () => OnRecruitButtonDown(0);
+        GetNode<Button>("Labels/VBoxContainer/Archer/Button").ButtonDown += () => OnRecruitButtonDown(1);
+        GetNode<Button>("Labels/VBoxContainer/Cavalry/Button").ButtonDown += () => OnRecruitButtonDown(2);
+        GetNode<Button>("Labels/VBoxContainer/Mage/Button").ButtonDown += () => OnRecruitButtonDown(3);
+    }
 
-	}
-	// Called when the node enters the scene tree for the first time.
-	public override void _Ready()
+    public void OpenRecruitScreen(SettlementData settlement)
 	{
+		recruitableTroops = getRecruitableTroops(settlement);
+
+		settlementData = settlement;
+
+		HideAll();
+
+		GetNode<Button>("Labels/VBoxContainer/Infantry/Button").Disabled = false;
+        GetNode<Button>("Labels/VBoxContainer/Archer/Button").Disabled = false;
+        GetNode<Button>("Labels/VBoxContainer/Cavalry/Button").Disabled = false;
+        GetNode<Button>("Labels/VBoxContainer/Mage/Button").Disabled = false;
+
+        GetNode<RichTextLabel>("Labels/Gold").Text = "[center]Gold: " + Player.Instance.gold;
+
+		for (int i = 0; i < recruitableTroops.Length; i++)
+		{
+			if (recruitableTroops[i].quantity > 0)
+			{
+				Control label = GetNode<Control>("Labels/VBoxContainer/" + recruitableTroops[i].troopType.ToString());
+				label.GetNode<RichTextLabel>("RichTextLabel").Text = recruitableTroops[i].quantity + " " + recruitableTroops[i].troopType;
+				label.Visible = true;
+			}
+		}
+
+		Visible = true;
 	}
 
-	// Called every frame. 'delta' is the elapsed time since the previous frame.
-	public override void _Process(double delta)
+	void OnRecruitButtonDown(int id)
 	{
+		for (int i = 0; i < recruitableTroops.Length; i++)
+		{
+			if (recruitableTroops[i].troopType == (TroopType)id)
+			{
+				if (RecruitTroop(recruitableTroops[i], settlementData))
+				{
+					recruitableTroops[i].quantity--;
+
+					GetNode<RichTextLabel>("Labels/VBoxContainer/" + ((TroopType)(id)).ToString() + "/RichTextLabel").Text = recruitableTroops[i].quantity + " " + recruitableTroops[i].troopType;
+
+					if (recruitableTroops[i].quantity <= 0)
+					{
+						GetNode<Button>("Labels/VBoxContainer/" + ((TroopType)(id)).ToString() + "/Button").Disabled = true;
+					}
+
+        			GetNode<RichTextLabel>("Labels/Gold").Text = "[center]Gold: " + Player.Instance.gold;
+				}	
+			
+				return;
+			}
+		}
+	}
+
+	void HideAll()
+	{
+		foreach (Control control in GetNode<VBoxContainer>("Labels/VBoxContainer").GetChildren())
+		{
+			control.Visible = false;
+		}
+	}
+
+	void OnBackButtonDown()
+	{
+		Visible = false;
+		GetNode<SettlementUI>("/root/BaseNode/UI/SettlementScreen").OpenUI(settlementData);
 	}
 }

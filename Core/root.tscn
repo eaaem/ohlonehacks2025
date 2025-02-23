@@ -1,4 +1,4 @@
-[gd_scene load_steps=29 format=3 uid="uid://dnfji7mj4yoig"]
+[gd_scene load_steps=30 format=3 uid="uid://dnfji7mj4yoig"]
 
 [ext_resource type="Script" path="res://Trade/ItemList.cs" id="1_40pj1"]
 [ext_resource type="Script" path="res://Combat/Combat.cs" id="1_bmbdo"]
@@ -14,6 +14,7 @@
 [ext_resource type="Script" path="res://Settlements/SettlementUI.cs" id="5_ukmxp"]
 [ext_resource type="Script" path="res://Core/Player.cs" id="7_8p2op"]
 [ext_resource type="Script" path="res://Trade/TradeUI.cs" id="13_dqaxb"]
+[ext_resource type="Script" path="res://Settlements/RecruitScreen.cs" id="13_qvcfq"]
 [ext_resource type="PackedScene" uid="uid://cyrmdctcfk00i" path="res://Combat/troop_panel.tscn" id="14_vyytf"]
 
 [sub_resource type="Resource" id="Resource_uby4a"]
@@ -265,45 +266,130 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_8uqoa")
+script = ExtResource("13_qvcfq")
 
 [node name="Labels" type="Control" parent="UI/SettlementScreen/Recruit"]
 anchors_preset = 0
 offset_right = 40.0
 offset_bottom = 40.0
 
-[node name="Population" type="RichTextLabel" parent="UI/SettlementScreen/Recruit/Labels"]
+[node name="Info" type="RichTextLabel" parent="UI/SettlementScreen/Recruit/Labels"]
 layout_mode = 0
-offset_top = 294.0
+offset_top = 104.0
 offset_right = 1920.0
-offset_bottom = 394.0
+offset_bottom = 204.0
 theme_override_font_sizes/normal_font_size = 30
 theme_override_font_sizes/bold_font_size = 30
 bbcode_enabled = true
-text = "[center]# #s would like to join you for # gold.
-You have # gold."
+text = "[center]The following recruits are willing to join you, for a price:"
+
+[node name="Gold" type="RichTextLabel" parent="UI/SettlementScreen/Recruit/Labels"]
+layout_mode = 0
+offset_top = 136.0
+offset_right = 1920.0
+offset_bottom = 236.0
+theme_override_font_sizes/normal_font_size = 25
+theme_override_font_sizes/bold_font_size = 30
+bbcode_enabled = true
+text = "[center]Gold:"
+
+[node name="VBoxContainer" type="VBoxContainer" parent="UI/SettlementScreen/Recruit/Labels"]
+layout_mode = 0
+offset_left = 585.0
+offset_top = 178.0
+offset_right = 1335.0
+offset_bottom = 678.0
+theme_override_constants/separation = 85
+
+[node name="Infantry" type="Control" parent="UI/SettlementScreen/Recruit/Labels/VBoxContainer"]
+layout_mode = 2
+
+[node name="RichTextLabel" type="RichTextLabel" parent="UI/SettlementScreen/Recruit/Labels/VBoxContainer/Infantry"]
+layout_mode = 0
+offset_right = 550.0
+offset_bottom = 40.0
+theme_override_font_sizes/normal_font_size = 25
+text = "# #s"
+
+[node name="Button" type="Button" parent="UI/SettlementScreen/Recruit/Labels/VBoxContainer/Infantry"]
+layout_mode = 0
+offset_left = 523.0
+offset_top = 1.0
+offset_right = 723.0
+offset_bottom = 46.0
+theme_override_font_sizes/font_size = 25
+text = "Recruit"
+
+[node name="Archer" type="Control" parent="UI/SettlementScreen/Recruit/Labels/VBoxContainer"]
+layout_mode = 2
+
+[node name="RichTextLabel" type="RichTextLabel" parent="UI/SettlementScreen/Recruit/Labels/VBoxContainer/Archer"]
+layout_mode = 0
+offset_right = 550.0
+offset_bottom = 40.0
+theme_override_font_sizes/normal_font_size = 25
+text = "# #s"
+
+[node name="Button" type="Button" parent="UI/SettlementScreen/Recruit/Labels/VBoxContainer/Archer"]
+layout_mode = 0
+offset_left = 523.0
+offset_top = -2.0
+offset_right = 723.0
+offset_bottom = 48.0
+theme_override_font_sizes/font_size = 25
+text = "Recruit"
+
+[node name="Cavalry" type="Control" parent="UI/SettlementScreen/Recruit/Labels/VBoxContainer"]
+layout_mode = 2
+
+[node name="RichTextLabel" type="RichTextLabel" parent="UI/SettlementScreen/Recruit/Labels/VBoxContainer/Cavalry"]
+layout_mode = 0
+offset_right = 550.0
+offset_bottom = 40.0
+theme_override_font_sizes/normal_font_size = 25
+text = "# #s"
+
+[node name="Button" type="Button" parent="UI/SettlementScreen/Recruit/Labels/VBoxContainer/Cavalry"]
+layout_mode = 0
+offset_left = 523.0
+offset_top = -2.0
+offset_right = 723.0
+offset_bottom = 48.0
+theme_override_font_sizes/font_size = 25
+text = "Recruit"
+
+[node name="Mage" type="Control" parent="UI/SettlementScreen/Recruit/Labels/VBoxContainer"]
+layout_mode = 2
+
+[node name="RichTextLabel" type="RichTextLabel" parent="UI/SettlementScreen/Recruit/Labels/VBoxContainer/Mage"]
+layout_mode = 0
+offset_right = 550.0
+offset_bottom = 40.0
+theme_override_font_sizes/normal_font_size = 25
+text = "# #s"
+
+[node name="Button" type="Button" parent="UI/SettlementScreen/Recruit/Labels/VBoxContainer/Mage"]
+layout_mode = 0
+offset_left = 523.0
+offset_top = -2.0
+offset_right = 723.0
+offset_bottom = 48.0
+theme_override_font_sizes/font_size = 25
+text = "Recruit"
 
 [node name="Buttons" type="Control" parent="UI/SettlementScreen/Recruit"]
 anchors_preset = 0
 offset_right = 40.0
 offset_bottom = 40.0
 
-[node name="Recruit" type="Button" parent="UI/SettlementScreen/Recruit/Buttons"]
+[node name="Leave" type="Button" parent="UI/SettlementScreen/Recruit/Buttons"]
 layout_mode = 0
-offset_left = 1098.0
-offset_top = 602.0
-offset_right = 1298.0
-offset_bottom = 652.0
+offset_left = 651.0
+offset_top = 712.0
+offset_right = 851.0
+offset_bottom = 762.0
 theme_override_font_sizes/font_size = 25
-text = "Recruit"
-
-[node name="Trade" type="Button" parent="UI/SettlementScreen/Recruit/Buttons"]
-layout_mode = 0
-offset_left = 641.0
-offset_top = 600.0
-offset_right = 841.0
-offset_bottom = 650.0
-theme_override_font_sizes/font_size = 25
-text = "Cancel"
+text = "Leave"
 
 [node name="PauseLabel" type="RichTextLabel" parent="UI"]
 visible = false
@@ -736,7 +822,9 @@ settlementType = 0
 [connection signal="mouse_entered" from="Player" to="Player" method="OnMouseEntered"]
 [connection signal="mouse_exited" from="Player" to="Player" method="OnMouseExited"]
 [connection signal="button_down" from="UI/SettlementScreen/Background/Buttons/Leave" to="UI/SettlementScreen" method="OnLeaveDown"]
+[connection signal="button_down" from="UI/SettlementScreen/Background/Buttons/Recruit" to="UI/SettlementScreen" method="OnRecruitDown"]
 [connection signal="button_down" from="UI/SettlementScreen/Background/Buttons/Trade" to="UI/SettlementScreen" method="OnTradeDown"]
+[connection signal="button_down" from="UI/SettlementScreen/Recruit/Buttons/Leave" to="UI/SettlementScreen/Recruit" method="OnBackButtonDown"]
 [connection signal="button_down" from="UI/TradeScreen/Background/Buttons/Buy" to="UI/TradeScreen" method="OnBuyButtonDown"]
 [connection signal="button_down" from="UI/TradeScreen/Background/Buttons/Sell" to="UI/TradeScreen" method="OnSellButtonDown"]
 [connection signal="button_down" from="UI/TradeScreen/Background/Buttons/Leave" to="UI/TradeScreen" method="OnBackDown"]

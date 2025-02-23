@@ -249,12 +249,15 @@ public partial class PlayerController : CharacterBody3D
 		playerScreen.GetNode<RichTextLabel>("Labels/Charisma").Text = "Charisma: " + playerData.charisma;
 
 		playerScreen.GetParent<Control>().Visible = true;
+
+		IsMovementDisabled = true;
 	}
 
 	void ClosePlayerScreen()
 	{
 		GlobalPauseState.Instance.IsPaused = false;
 		GetNode<Control>("/root/BaseNode/UI/PlayerScreen").Visible = false;
+		IsMovementDisabled = false;
 	}
 
 	void OpenTrainingScreen()
@@ -277,6 +280,8 @@ public partial class PlayerController : CharacterBody3D
 		GetNode<RichTextLabel>("/root/BaseNode/UI/TrainerScreen/Background/Labels/Gold").Text = "Gold: " + playerData.gold;
 
 		GetNode<Control>("/root/BaseNode/UI/TrainerScreen").Visible = true;
+
+		IsMovementDisabled = true;
 	}
 
 	Control CreateTroopPanel(Troop troop, PackedScene troopPanel)
@@ -401,6 +406,7 @@ public partial class PlayerController : CharacterBody3D
 	void CloseTrainerScreen()
 	{
 		GetNode<Control>("/root/BaseNode/UI/TrainerScreen").Visible = false;
+		IsMovementDisabled = false;
 	}
 
 	int GetCostForUpgrade(Troop troop)

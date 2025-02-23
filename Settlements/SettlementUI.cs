@@ -49,6 +49,12 @@ public partial class SettlementUI : Control
 		GetNode<TradeUI>("/root/BaseNode/UI/TradeScreen").OpenUI(selfSettlementData);
 	}
 
+	public void OnRecruitDown()
+	{
+		//Visible = false;
+		GetNode<RecruitScreen>("Recruit").OpenRecruitScreen(selfSettlementData);
+	}
+
 	public void OnLeaveDown()
 	{
 		Visible = false;
