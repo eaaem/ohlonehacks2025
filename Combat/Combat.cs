@@ -261,9 +261,6 @@ public partial class Combat : Node
 
 			int civilization = GD.RandRange(0, CivilizationHolder.Instance.civilizations.Length - 1);
 
-			// TESTING ONLY: REMOVE WHEN OTHER CIVILIZATIONS ARE ADDED
-			civilization = 0;
-
 			Node3D settlementParent = GetNode<Node3D>("/root/BaseNode/" + (CivilizationType)civilization);
 			SettlementData targetSettlement = settlementParent.GetChild<SettlementData>(GD.RandRange(0, settlementParent.GetChildCount() - 1));
 
@@ -321,6 +318,7 @@ public partial class Combat : Node
 		GetNode<Control>("/root/BaseNode/UI/BattleUI/VictoryBackground").Visible = false;
 		SetProcess(true);
 		isInCombat = false;
+		GetNode<PlayerController>("/root/BaseNode/Player").IsMovementDisabled = false;
 	}
 
 	public void OpenCombatUI(Player player, OverworldWarband warband, Terrain terrain)
