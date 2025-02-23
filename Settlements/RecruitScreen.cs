@@ -102,9 +102,18 @@ public partial class RecruitScreen : Node
 		return troops.ToArray();
 	}
 
-	private void recruitTroop(Troop troop)
+	private void RecruitTroop(Troop troop)
 	{
-
+		int troopPrice = troop.troopType == TroopType.Mage ? 20 : 10;
+		List<Troop> newTroops = new();
+		foreach (Troop playerTroop in Player.Instance.troops) {
+			if (playerTroop.troopType == troop.troopType && playerTroop.tier == troop.tier) {
+				newTroops.Add(new Troop(playerTroop.quantity + 1, playerTroop.troopType, playerTroop.tier));
+			} else {
+				newTroops.Add(playerTroop);
+			}
+		}
+		Player.Instance.troops = newTroops;
 	}
 
 	public void OpenRecruitScreen(SettlementData settlement)
