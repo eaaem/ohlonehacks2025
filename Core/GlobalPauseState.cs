@@ -5,6 +5,11 @@ public partial class GlobalPauseState : Node
 {
 	public static GlobalPauseState Instance { get; private set; }
 
+	[Signal]
+	public delegate void PauseEventHandler();
+	[Signal]
+	public delegate void UnpauseEventHandler();
+
 	private bool isPaused;
 	public bool IsPaused { 
 		get
@@ -16,10 +21,12 @@ public partial class GlobalPauseState : Node
 			isPaused = value;
 			if (value)
 			{ 
+				EmitSignal(SignalName.Pause);
 				//pauseLabel.Visible = true; 
 			} 
 			else 
 			{ 
+				EmitSignal(SignalName.Unpause);
 				pauseLabel.Visible = false;
 			}
 		}

@@ -29,8 +29,6 @@ public partial class WarbandGenerator : Node
 
 				if (affiliation < CivilizationHolder.Instance.civilizations.Length - 2)
 				{
-					// TEST: REMOVE THIS LINE LATER
-					affiliation = 0;
 					int settlementID = GD.RandRange(0, CivilizationHolder.Instance.civilizations[affiliation].settlements.Length - 1);
 					SettlementData settlementToSpawnAt = CivilizationHolder.Instance.civilizations[affiliation].settlements[settlementID];
 

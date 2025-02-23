@@ -7,6 +7,11 @@ public partial class SettlementUI : Control
 
 	public SettlementData selfSettlementData;
 
+	[Signal]
+	public delegate void OpenUISignalEventHandler();
+	[Signal]
+	public delegate void CloseUIEventHandler();
+
 	// Called when the node enters the scene tree for the first time.
 	public override void _Ready()
 	{
@@ -15,6 +20,8 @@ public partial class SettlementUI : Control
 
 	public void OpenUI(SettlementData settlementData)
 	{
+		GlobalPauseState.Instance.IsPaused = true;
+
 		if (GetNode<Node3D>("/root/BaseNode").HasNode("WarbandTooltip"))
 		{
 			Control tooltip = GetNode<Control>("/root/BaseNode/WarbandTooltip");
@@ -49,6 +56,8 @@ public partial class SettlementUI : Control
 																	+ settlementData.militaryStrength.ToString() + "[/b].";
 		GetNode<RichTextLabel>("Background/Labels/Population").Text = "Its population is [b]" + settlementData.population + "[/b].";
 
+		EmitSignal(SignalName.OpenUISignal);
+
 		Visible = true;
 	}
 
@@ -60,15 +69,14 @@ public partial class SettlementUI : Control
 
 	public void OnRecruitDown()
 	{
-		//Visible = false;
 		GetNode<RecruitScreen>("Recruit").OpenRecruitScreen(selfSettlementData);
 	}
 
 	public void OnLeaveDown()
 	{
+		GlobalPauseState.Instance.IsPaused = false;
 		Visible = false;
 		GetNode<PlayerController>("/root/BaseNode/Player").IsMovementDisabled = false;
-
-		SetProcess(true);
+		EmitSignal(SignalName.CloseUI);
 	}
 }
