@@ -1,4 +1,4 @@
-[gd_scene load_steps=34 format=3 uid="uid://dnfji7mj4yoig"]
+[gd_scene load_steps=40 format=3 uid="uid://dnfji7mj4yoig"]
 
 [ext_resource type="Script" path="res://Trade/ItemList.cs" id="1_40pj1"]
 [ext_resource type="Script" path="res://Combat/Combat.cs" id="1_bmbdo"]
@@ -69,15 +69,36 @@ race = 2
 color = Color(1, 0, 0, 1)
 settlements = []
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_10ow6"]
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_tn57y"]
 albedo_color = Color(0.185963, 0.47, 0.1222, 1)
 
 [sub_resource type="PlaneMesh" id="PlaneMesh_02tsx"]
-material = SubResource("StandardMaterial3D_10ow6")
-size = Vector2(100, 100)
+material = SubResource("StandardMaterial3D_tn57y")
+size = Vector2(50, 50)
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_7thnd"]
-size = Vector3(100, 0.01, 100)
+size = Vector3(50, 0.01, 50)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_0q4dr"]
+albedo_color = Color(0.216055, 0.512918, 0.324332, 1)
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_yv2k7"]
+material = SubResource("StandardMaterial3D_0q4dr")
+size = Vector2(50, 50)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_i1fyu"]
+albedo_color = Color(0, 0.295764, 0.114016, 1)
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_gc47k"]
+material = SubResource("StandardMaterial3D_i1fyu")
+size = Vector2(50, 50)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_1srjf"]
+albedo_color = Color(0.27, 0.27, 0.27, 1)
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_init0"]
+material = SubResource("StandardMaterial3D_1srjf")
+size = Vector2(50, 50)
 
 [sub_resource type="CapsuleMesh" id="CapsuleMesh_ap2np"]
 radius = 0.1
@@ -112,13 +133,44 @@ civilizations = [SubResource("Resource_uby4a"), SubResource("Resource_sfet4"), S
 script = ExtResource("3_p4msl")
 warbandScene = ExtResource("4_l5mx6")
 
-[node name="Map" type="MeshInstance3D" parent="."]
+[node name="Plains" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 25, 0, -25)
 mesh = SubResource("PlaneMesh_02tsx")
 
-[node name="StaticBody3D" type="StaticBody3D" parent="Map"]
+[node name="StaticBody3D" type="Area3D" parent="Plains"]
 collision_layer = 5
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="Map/StaticBody3D"]
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Plains/StaticBody3D"]
+shape = SubResource("BoxShape3D_7thnd")
+
+[node name="River" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 25, 0, 25)
+mesh = SubResource("PlaneMesh_yv2k7")
+
+[node name="StaticBody3D" type="Area3D" parent="River"]
+collision_layer = 5
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="River/StaticBody3D"]
+shape = SubResource("BoxShape3D_7thnd")
+
+[node name="Hills" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -25, 0, 25)
+mesh = SubResource("PlaneMesh_gc47k")
+
+[node name="StaticBody3D" type="Area3D" parent="Hills"]
+collision_layer = 5
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Hills/StaticBody3D"]
+shape = SubResource("BoxShape3D_7thnd")
+
+[node name="Mountains" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -25, 0, -25)
+mesh = SubResource("PlaneMesh_init0")
+
+[node name="StaticBody3D" type="Area3D" parent="Mountains"]
+collision_layer = 5
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Mountains/StaticBody3D"]
 shape = SubResource("BoxShape3D_7thnd")
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
@@ -1045,7 +1097,10 @@ militaryStrength = 0
 civilizationType = 5
 settlementType = 1
 
-[connection signal="input_event" from="Map/StaticBody3D" to="Player" method="_InputEvent"]
+[connection signal="input_event" from="Plains/StaticBody3D" to="Player" method="_InputEvent"]
+[connection signal="input_event" from="River/StaticBody3D" to="Player" method="_InputEvent"]
+[connection signal="input_event" from="Hills/StaticBody3D" to="Player" method="_InputEvent"]
+[connection signal="input_event" from="Mountains/StaticBody3D" to="Player" method="_InputEvent"]
 [connection signal="mouse_entered" from="Player" to="Player" method="OnMouseEntered"]
 [connection signal="mouse_exited" from="Player" to="Player" method="OnMouseExited"]
 [connection signal="button_down" from="UI/SettlementScreen/Background/Buttons/Leave" to="UI/SettlementScreen" method="OnLeaveDown"]

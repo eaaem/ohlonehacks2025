@@ -162,7 +162,40 @@ public partial class OverworldWarband : CharacterBody3D
 
 		if (isHostileToPlayer)
 		{
-			GetNode<Combat>("/root/BaseNode/Combat").OpenCombatUI(player.GetNode<Player>("PlayerData"), this, randomTerrain);
+			PhysicsDirectSpaceState3D spaceState3D = GetWorld3D().DirectSpaceState;
+
+			Vector3 origin = player.GlobalPosition;
+			Vector3 target = player.GlobalPosition - (Vector3.Up * 50f);
+			var query = PhysicsRayQueryParameters3D.Create(origin, target, 4);
+			query.CollideWithAreas = true;
+
+			var result = spaceState3D.IntersectRay(query);
+
+			Terrain terrain = Terrain.Plains;
+
+			if (result.Count > 0)
+			{
+				GD.Print(result.Count);
+				Area3D area = (Area3D)result["collider"];
+				GD.Print(area.GetParent().Name);
+
+				if (area.GetParent().Name == "River")
+				{
+					terrain = Terrain.River;
+				}
+				else if (area.GetParent().Name == "Hills")
+				{
+					terrain = Terrain.Hills;
+				}
+				else if (area.GetParent().Name == "Mountains")
+				{
+					terrain = Terrain.Mountain;
+				}
+			}
+
+			GD.Print(terrain);
+
+			GetNode<Combat>("/root/BaseNode/Combat").OpenCombatUI(player.GetNode<Player>("PlayerData"), this, terrain);
 
 			if (GetNode<Node3D>("/root/BaseNode").HasNode("WarbandTooltip"))
 			{

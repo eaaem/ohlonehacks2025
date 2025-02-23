@@ -16,7 +16,7 @@ public partial class WarbandGenerator : Node
 	{
 		while (true)
 		{
-			await ToSignal(GetTree().CreateTimer(7.5f), Timer.SignalName.Timeout);
+			await ToSignal(GetTree().CreateTimer(3f), Timer.SignalName.Timeout);
 
 			int chance = GD.RandRange(0, 1);
 

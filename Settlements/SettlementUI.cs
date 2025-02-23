@@ -15,9 +15,18 @@ public partial class SettlementUI : Control
 
 	public void OpenUI(SettlementData settlementData)
 	{
+		if (GetNode<Node3D>("/root/BaseNode").HasNode("WarbandTooltip"))
+		{
+			Control tooltip = GetNode<Control>("/root/BaseNode/WarbandTooltip");
+			GetNode<Node3D>("/root/BaseNode").RemoveChild(tooltip);
+			tooltip.QueueFree();
+		}
+
 		selfSettlementData = settlementData;
 		GetNode<PlayerController>("/root/BaseNode/Player").IsMovementDisabled = true;
 		GetNode<PlayerController>("/root/BaseNode/Player").IsMoving = false;
+
+		SetProcess(false);
 
 		Civilization civilization = CivilizationHolder.Instance.civilizations[(int)settlementData.civilizationType];
 
@@ -59,5 +68,7 @@ public partial class SettlementUI : Control
 	{
 		Visible = false;
 		GetNode<PlayerController>("/root/BaseNode/Player").IsMovementDisabled = false;
+
+		SetProcess(true);
 	}
 }
