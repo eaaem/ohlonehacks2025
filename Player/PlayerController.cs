@@ -80,6 +80,21 @@ public partial class PlayerController : CharacterBody3D
 
 			detachedCameraTarget.Position = position;
 		}
+
+		if (IsMoving)
+		{
+			return;
+		}
+
+		if (Input.IsActionJustPressed("pause"))
+		{
+			GlobalPauseState.Instance.IsPaused = false;
+		}
+
+		if (Input.IsActionJustReleased("pause"))
+		{
+			GlobalPauseState.Instance.IsPaused = true;
+		}
 	}
 
 	public override void _InputEvent(Camera3D camera, InputEvent @event, Vector3 eventPosition, Vector3 normal, int shapeIdx)

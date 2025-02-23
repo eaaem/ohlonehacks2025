@@ -6,20 +6,20 @@
 [ext_resource type="Script" path="res://Core/GlobalPauseState.cs" id="1_sl3qh"]
 [ext_resource type="Script" path="res://Civilizations/CivilizationHolder.cs" id="1_t52sj"]
 [ext_resource type="Script" path="res://Civilizations/Civilization.cs" id="2_2n0uq"]
-[ext_resource type="Resource" path="res://Trade/ItemResources/bread.tres" id="3_c1j4e"]
+[ext_resource type="Resource" uid="uid://c0gqx33bmvtqu" path="res://Trade/ItemResources/bread.tres" id="3_c1j4e"]
 [ext_resource type="Script" path="res://Combat/WarbandGenerator.cs" id="3_p4msl"]
 [ext_resource type="Resource" uid="uid://be38wy7xjp543" path="res://Trade/ItemResources/bronze_sword.tres" id="4_dbxyr"]
 [ext_resource type="PackedScene" uid="uid://bq3o5scv4qbgn" path="res://Settlements/settlement.tscn" id="4_jbg7a"]
 [ext_resource type="PackedScene" uid="uid://cfnqvwpqt361k" path="res://Combat/warband.tscn" id="4_l5mx6"]
-[ext_resource type="Resource" path="res://Trade/ItemResources/cabbage.tres" id="5_j7va3"]
+[ext_resource type="Resource" uid="uid://drbkpjy4v3ceb" path="res://Trade/ItemResources/cabbage.tres" id="5_j7va3"]
 [ext_resource type="Script" path="res://Settlements/SettlementUI.cs" id="5_ukmxp"]
-[ext_resource type="Resource" path="res://Trade/ItemResources/leather_armor.tres" id="6_vrh2e"]
-[ext_resource type="Resource" path="res://Trade/ItemResources/pendant.tres" id="7_2xoey"]
+[ext_resource type="Resource" uid="uid://b333dxjcqanjf" path="res://Trade/ItemResources/leather_armor.tres" id="6_vrh2e"]
+[ext_resource type="Resource" uid="uid://b2r0vspy23x7u" path="res://Trade/ItemResources/pendant.tres" id="7_2xoey"]
 [ext_resource type="Script" path="res://Core/Player.cs" id="7_8p2op"]
-[ext_resource type="Resource" path="res://Trade/ItemResources/pottery.tres" id="8_7guhg"]
+[ext_resource type="Resource" uid="uid://c2linfij41khn" path="res://Trade/ItemResources/pottery.tres" id="8_7guhg"]
 [ext_resource type="Script" path="res://Trade/TradeUI.cs" id="13_dqaxb"]
 [ext_resource type="Script" path="res://Settlements/RecruitScreen.cs" id="13_qvcfq"]
-[ext_resource type="PackedScene" path="res://Combat/troop_panel.tscn" id="14_vyytf"]
+[ext_resource type="PackedScene" uid="uid://cyrmdctcfk00i" path="res://Combat/troop_panel.tscn" id="14_vyytf"]
 
 [sub_resource type="Resource" id="Resource_uby4a"]
 script = ExtResource("2_2n0uq")
@@ -206,6 +206,16 @@ anchors_preset = 0
 offset_right = 40.0
 offset_bottom = 40.0
 mouse_filter = 2
+
+[node name="PauseLabel" type="RichTextLabel" parent="UI"]
+visible = false
+layout_mode = 0
+offset_top = 76.0
+offset_right = 1920.0
+offset_bottom = 176.0
+theme_override_font_sizes/normal_font_size = 50
+bbcode_enabled = true
+text = "[center]Game Paused"
 
 [node name="SettlementScreen" type="Control" parent="UI"]
 visible = false
@@ -447,16 +457,6 @@ offset_right = 851.0
 offset_bottom = 762.0
 theme_override_font_sizes/font_size = 25
 text = "Leave"
-
-[node name="PauseLabel" type="RichTextLabel" parent="UI"]
-visible = false
-layout_mode = 0
-offset_top = 76.0
-offset_right = 1920.0
-offset_bottom = 176.0
-theme_override_font_sizes/normal_font_size = 50
-bbcode_enabled = true
-text = "[center]Game Paused"
 
 [node name="TradeScreen" type="Control" parent="UI" node_paths=PackedStringArray("container")]
 visible = false
