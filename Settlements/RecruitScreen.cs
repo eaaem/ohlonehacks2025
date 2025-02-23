@@ -150,7 +150,7 @@ public partial class RecruitScreen : Control
 		List<Troop> newRecruitedTroops = new();
 		foreach (Troop recruitedTroop in settlement.recruitedTroops)
 		{
-			if (recruitedTroop.troopType == troop.troopType && recruitedTroop.tier == troop.tier)
+			if (recruitedTroop.troopType == troop.troopType)
 			{
 				newRecruitedTroops.Add(new Troop(recruitedTroop.quantity + 1, recruitedTroop.troopType, recruitedTroop.tier));
 			}
@@ -159,9 +159,10 @@ public partial class RecruitScreen : Control
 				newRecruitedTroops.Add(recruitedTroop);
 			}
 		}
-		if (!newRecruitedTroops.Any(recruitedTroop => recruitedTroop.troopType == troop.troopType && recruitedTroop.tier == troop.tier)) {
+		if (!newRecruitedTroops.Any(recruitedTroop => recruitedTroop.troopType == troop.troopType)) {
 			newRecruitedTroops.Add(new Troop(1, troop.troopType, troop.tier));
 		}
+		settlement.recruitedTroops = newRecruitedTroops.ToArray();
 
 		Player.Instance.troops.Add(new Troop(1, troop.troopType, troop.tier));
 		return true;
