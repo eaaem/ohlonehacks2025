@@ -80,6 +80,21 @@ public partial class PlayerController : CharacterBody3D
 
 			detachedCameraTarget.Position = position;
 		}
+
+		if (IsMoving)
+		{
+			return;
+		}
+
+		if (Input.IsActionJustPressed("pause"))
+		{
+			GlobalPauseState.Instance.IsPaused = false;
+		}
+
+		if (Input.IsActionJustReleased("pause"))
+		{
+			GlobalPauseState.Instance.IsPaused = true;
+		}
 	}
 
 	public override void _InputEvent(Camera3D camera, InputEvent @event, Vector3 eventPosition, Vector3 normal, int shapeIdx)
@@ -260,13 +275,14 @@ public partial class PlayerController : CharacterBody3D
 
 	void ClosePlayerScreen()
 	{
-		GlobalPauseState.Instance.IsPaused = false;
+		//GlobalPauseState.Instance.IsPaused = false;
 		GetNode<Control>("/root/BaseNode/UI/PlayerScreen").Visible = false;
 		IsMovementDisabled = false;
 	}
 
 	void OpenTrainingScreen()
 	{
+		GlobalPauseState.Instance.IsPaused = true;
 		PackedScene troopPanel = GD.Load<PackedScene>("res://Combat/troop_panel.tscn");
 
 		VBoxContainer troopContainer = GetNode<VBoxContainer>("/root/BaseNode/UI/TrainerScreen/Background/Labels/VBoxContainer");
@@ -412,7 +428,7 @@ public partial class PlayerController : CharacterBody3D
 	{
 		GetNode<Control>("/root/BaseNode/UI/TrainerScreen").Visible = false;
 		IsMovementDisabled = false;
-		GlobalPauseState.Instance.IsPaused = false;
+		//GlobalPauseState.Instance.IsPaused = false;
 	}
 
 	int GetCostForUpgrade(Troop troop)

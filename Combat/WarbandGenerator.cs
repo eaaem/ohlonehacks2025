@@ -6,18 +6,32 @@ public partial class WarbandGenerator : Node
 	[Export]
 	private PackedScene warbandScene;
 
+	private int timer = 0;
+
 	// Called when the node enters the scene tree for the first time.
 	public override void _Ready()
 	{
-		GenerateWarbandsOverTime();
+		GetNode<GlobalPauseState>("/root/BaseNode/PauseState").Pause += DisableProcess;
+		GetNode<GlobalPauseState>("/root/BaseNode/PauseState").Unpause += EnableProcess;
+		DisableProcess();
 	}
 
-	async void GenerateWarbandsOverTime()
+	void DisableProcess()
 	{
-		while (true)
-		{
-			await ToSignal(GetTree().CreateTimer(3f), Timer.SignalName.Timeout);
+		SetProcess(false);
+	}
 
+	void EnableProcess()
+	{
+		SetProcess(true);
+	}
+
+    public override void _Process(double delta)
+    {
+		timer++;
+
+		if (timer >= 900)
+		{
 			int chance = GD.RandRange(0, 1);
 
 			if (chance == 0)
@@ -35,20 +49,23 @@ public partial class WarbandGenerator : Node
 					float troopAmountModifier = ((int)settlementToSpawnAt.militaryStrength + 1) / 2f;
 
 					warband.warbandName = "Troops of " + CivilizationHolder.Instance.civilizations[affiliation].civilizationName;
+					warband.civilizationAffiliation = (CivilizationType)affiliation;
+					GD.Print(warband.civilizationAffiliation);
 					warband.CreateWarband((int)(GD.RandRange(30, 45) * troopAmountModifier), TroopType.Archer, 
-										  GD.RandRange(2, (int)settlementToSpawnAt.militaryStrength + 1));
+											GD.RandRange(2, (int)settlementToSpawnAt.militaryStrength + 1));
 					warband.Position = settlementToSpawnAt.Position + (Vector3.Up * 0.25f);
 				}
 				else // Bandit
 				{
 					warband.warbandName = "Bandits";
-					warband.CreateWarband(GD.RandRange(2, 9), TroopType.Infantry, GD.RandRange(1, 2));
+					warband.CreateWarband(GD.RandRange(2, 9), TroopType.Infantry, 1);
 					warband.isHostileToPlayer = true;
 					warband.civilizationAffiliation = CivilizationType.None;
 					Vector3 playerPosition = GetNode<PlayerController>("/root/BaseNode/Player").Position;
 					warband.Position = new Vector3(playerPosition.X + 5f, 0.25f, playerPosition.Z + 5f);
 				}
 			}
+			timer = 0;
 		}
-	}
+    }
 }

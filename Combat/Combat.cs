@@ -293,34 +293,37 @@ public partial class Combat : Node
 
 		for (int i = 0; i < lostTroops.Length; i++)
 		{
-			RichTextLabel label = new RichTextLabel();
-
-			label.CustomMinimumSize = new Vector2(0, 55f);
-			label.AddThemeFontSizeOverride("normal_font_size", 30);
-
-			string unitType = "";
-
-			switch (lostTroops[i].troopType)
+			if (lostTroops[i].quantity > 0)
 			{
-				case TroopType.Infantry:
-					unitType = ((InfantryTroopTier)lostTroops[i].tier).ToString();
-					break;
-				case TroopType.Archer:
-					unitType = ((ArcherTroopTier)lostTroops[i].tier).ToString();
-					break;
-				case TroopType.Cavalry:
-					unitType = ((CavalryTroopTier)lostTroops[i].tier).ToString();
-					break;
-				case TroopType.Mage:
-					unitType = ((MageTroopTier)lostTroops[i].tier).ToString();
-					break;
+				RichTextLabel label = new RichTextLabel();
+
+				label.CustomMinimumSize = new Vector2(0, 55f);
+				label.AddThemeFontSizeOverride("normal_font_size", 30);
+
+				string unitType = "";
+
+				switch (lostTroops[i].troopType)
+				{
+					case TroopType.Infantry:
+						unitType = ((InfantryTroopTier)lostTroops[i].tier).ToString();
+						break;
+					case TroopType.Archer:
+						unitType = ((ArcherTroopTier)lostTroops[i].tier).ToString();
+						break;
+					case TroopType.Cavalry:
+						unitType = ((CavalryTroopTier)lostTroops[i].tier).ToString();
+						break;
+					case TroopType.Mage:
+						unitType = ((MageTroopTier)lostTroops[i].tier).ToString();
+						break;
+				}
+
+				unitType = unitType.Replace("_", " ");
+
+				label.Text = lostTroops[i].quantity + " " + unitType + " (" + lostTroops[i].troopType.ToString() + ")";
+
+				container.AddChild(label);
 			}
-
-			unitType = unitType.Replace("_", " ");
-
-			label.Text = lostTroops[i].quantity + " " + unitType + " (" + lostTroops[i].troopType.ToString() + ")";
-
-			container.AddChild(label);
 		}
 	}
 
@@ -332,7 +335,6 @@ public partial class Combat : Node
 		SetProcess(true);
 		isInCombat = false;
 		GetNode<PlayerController>("/root/BaseNode/Player").IsMovementDisabled = false;
-		GlobalPauseState.Instance.IsPaused = false;
 	}
 
 	public void OpenCombatUI(Player player, OverworldWarband warband, Terrain terrain)
@@ -376,15 +378,5 @@ public partial class Combat : Node
 		this.enemyPower = enemyPower;
 		currentEnemy = warband;
 		currentTerrain = terrain;
-	}
-
-	// Called when the node enters the scene tree for the first time.
-	public override void _Ready()
-	{
-	}
-
-	// Called every frame. 'delta' is the elapsed time since the previous frame.
-	public override void _Process(double delta)
-	{
 	}
 }

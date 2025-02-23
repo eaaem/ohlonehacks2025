@@ -22,7 +22,7 @@ public partial class GlobalPauseState : Node
 			if (value)
 			{ 
 				EmitSignal(SignalName.Pause);
-				//pauseLabel.Visible = true; 
+				pauseLabel.Visible = true; 
 			} 
 			else 
 			{ 
@@ -36,6 +36,7 @@ public partial class GlobalPauseState : Node
 	public override void _Ready()
 	{
 		pauseLabel = GetNode<RichTextLabel>("/root/BaseNode/UI/PauseLabel");
+		IsPaused = true;
 		Instance = this;
 	}
 }
