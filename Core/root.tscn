@@ -13,7 +13,6 @@
 [ext_resource type="PackedScene" uid="uid://cfnqvwpqt361k" path="res://Combat/warband.tscn" id="4_l5mx6"]
 [ext_resource type="Script" path="res://Settlements/SettlementUI.cs" id="5_ukmxp"]
 [ext_resource type="Script" path="res://Core/Player.cs" id="7_8p2op"]
-[ext_resource type="Script" path="res://Trade/TradeUI.cs" id="13_jxn0w"]
 
 [sub_resource type="Resource" id="Resource_uby4a"]
 script = ExtResource("2_2n0uq")
@@ -93,7 +92,7 @@ script = ExtResource("1_sl3qh")
 
 [node name="ItemReference" type="Node3D" parent="."]
 script = ExtResource("1_40pj1")
-items = [ExtResource("2_d0ph0"), ExtResource("3_483pe")]
+items = [ExtResource("2_d0ph0"), ExtResource("3_483pe"), null]
 
 [node name="Combat" type="Node3D" parent="."]
 script = ExtResource("1_bmbdo")
@@ -150,13 +149,13 @@ offset_bottom = 40.0
 mouse_filter = 2
 
 [node name="SettlementScreen" type="Control" parent="UI"]
+visible = false
 anchors_preset = 0
 offset_right = 1920.0
 offset_bottom = 1080.0
 script = ExtResource("5_ukmxp")
 
 [node name="Background" type="Panel" parent="UI/SettlementScreen"]
-visible = false
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -256,6 +255,7 @@ offset_bottom = 650.0
 text = "Trade"
 
 [node name="Recruit" type="Panel" parent="UI/SettlementScreen"]
+visible = false
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -316,29 +316,18 @@ text = "[center]Game Paused"
 [node name="TradeScreen" type="Control" parent="UI"]
 visible = false
 anchors_preset = 0
-offset_right = 1920.0
-offset_bottom = 1080.0
-script = ExtResource("13_jxn0w")
+offset_right = 40.0
+offset_bottom = 40.0
 
 [node name="Background" type="Panel" parent="UI/TradeScreen"]
 layout_mode = 0
-offset_right = 1920.0
-offset_bottom = 1080.0
-theme_override_styles/panel = SubResource("StyleBoxFlat_p44ig")
+offset_right = 40.0
+offset_bottom = 40.0
 
 [node name="Labels" type="Control" parent="UI/TradeScreen/Background"]
 anchors_preset = 0
 offset_right = 40.0
 offset_bottom = 40.0
-
-[node name="SettlementName" type="RichTextLabel" parent="UI/TradeScreen/Background/Labels"]
-layout_mode = 0
-offset_left = 185.0
-offset_top = 104.0
-offset_right = 1185.0
-offset_bottom = 204.0
-theme_override_font_sizes/bold_font_size = 50
-bbcode_enabled = true
 
 [node name="Buttons" type="Control" parent="UI/TradeScreen/Background"]
 anchors_preset = 0
