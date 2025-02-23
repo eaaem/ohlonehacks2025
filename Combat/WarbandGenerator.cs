@@ -30,7 +30,7 @@ public partial class WarbandGenerator : Node
     {
 		timer++;
 
-		if (timer >= 2500)
+		if (timer >= 900)
 		{
 			int chance = GD.RandRange(0, 1);
 
@@ -49,6 +49,8 @@ public partial class WarbandGenerator : Node
 					float troopAmountModifier = ((int)settlementToSpawnAt.militaryStrength + 1) / 2f;
 
 					warband.warbandName = "Troops of " + CivilizationHolder.Instance.civilizations[affiliation].civilizationName;
+					warband.civilizationAffiliation = (CivilizationType)affiliation;
+					GD.Print(warband.civilizationAffiliation);
 					warband.CreateWarband((int)(GD.RandRange(30, 45) * troopAmountModifier), TroopType.Archer, 
 											GD.RandRange(2, (int)settlementToSpawnAt.militaryStrength + 1));
 					warband.Position = settlementToSpawnAt.Position + (Vector3.Up * 0.25f);

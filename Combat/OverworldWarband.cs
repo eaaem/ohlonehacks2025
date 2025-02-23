@@ -176,9 +176,6 @@ public partial class OverworldWarband : CharacterBody3D
 
 	public void OnPlayerEntered(Node3D body)
 	{
-		Random random = new Random();
-		Terrain randomTerrain = (Terrain) (random.NextInt64() % 5);
-
 		if (isHostileToPlayer)
 		{
 			PhysicsDirectSpaceState3D spaceState3D = GetWorld3D().DirectSpaceState;
@@ -231,6 +228,11 @@ public partial class OverworldWarband : CharacterBody3D
 			{
 				movementTarget = player.Position;
 				isMoving = true;
+
+				if (distance < 0.1f)
+				{
+					OnPlayerEntered(null);
+				}
 			}
 			else
 			{
@@ -240,7 +242,6 @@ public partial class OverworldWarband : CharacterBody3D
 
 		if (isMoving)
 		{
-			GD.Print("moving");
 			Vector3 velocity = Velocity;
 
 			Vector3 direction = GlobalPosition.DirectionTo(movementTarget);

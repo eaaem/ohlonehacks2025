@@ -275,13 +275,14 @@ public partial class PlayerController : CharacterBody3D
 
 	void ClosePlayerScreen()
 	{
-		GlobalPauseState.Instance.IsPaused = false;
+		//GlobalPauseState.Instance.IsPaused = false;
 		GetNode<Control>("/root/BaseNode/UI/PlayerScreen").Visible = false;
 		IsMovementDisabled = false;
 	}
 
 	void OpenTrainingScreen()
 	{
+		GlobalPauseState.Instance.IsPaused = true;
 		PackedScene troopPanel = GD.Load<PackedScene>("res://Combat/troop_panel.tscn");
 
 		VBoxContainer troopContainer = GetNode<VBoxContainer>("/root/BaseNode/UI/TrainerScreen/Background/Labels/VBoxContainer");
@@ -427,7 +428,7 @@ public partial class PlayerController : CharacterBody3D
 	{
 		GetNode<Control>("/root/BaseNode/UI/TrainerScreen").Visible = false;
 		IsMovementDisabled = false;
-		GlobalPauseState.Instance.IsPaused = false;
+		//GlobalPauseState.Instance.IsPaused = false;
 	}
 
 	int GetCostForUpgrade(Troop troop)

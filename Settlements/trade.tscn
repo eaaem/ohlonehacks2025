@@ -12,8 +12,9 @@ offset_bottom = 40.0
 custom_minimum_size = Vector2(0, 50)
 layout_mode = 0
 offset_top = 1.0
-offset_right = 296.0
+offset_right = 400.0
 offset_bottom = 51.0
+theme_override_font_sizes/font_size = 23
 text = "Item Name"
 script = ExtResource("1_bi7yq")
 
