@@ -12,10 +12,12 @@ public partial class TradeUI : Control
 	public static TradeUI Instance { get; set; }
 
 	private SettlementData selfSettlementData;
+	[Export]
+	private VBoxContainer container;
 
-	private float determineProsperityModifier(SettlementData settlementData, Item item, bool playerBuying)
+	private float determineProsperityModifier(Item item, bool playerBuying)
 	{
-		switch (settlementData.prosperityScore)
+		switch (selfSettlementData.prosperityScore)
 		{
 			case Prosperity.Poor:
 				if (item.itemType == ItemType.Essential)
@@ -163,18 +165,18 @@ public partial class TradeUI : Control
 		return 1f;
 	}
 
-	float determineWarfareModifier(SettlementData settlementData, Item item)
+	float determineWarfareModifier(Item item)
 	{
-		if (settlementData.atWar && item.itemType == ItemType.Warfare)
+		if (selfSettlementData.atWar && item.itemType == ItemType.Warfare)
 		{
 			return 2f;
 		}
 		return 1f;
 	}
 
-	float determineSizeModifier(SettlementData settlementData, Item item)
+	float determineSizeModifier(Item item)
 	{
-		switch (settlementData.settlementType)
+		switch (selfSettlementData.settlementType)
 		{
 			case SettlementType.Village:
 				if (item.itemType == ItemType.Essential)
@@ -210,42 +212,42 @@ public partial class TradeUI : Control
 		return 1f;
 	}
 
-	public int DetemineBuyPrice(SettlementData settlementData, Item item)
+	public int DetemineBuyPrice(Item item)
 	{
-		float prosperityModifier = determineProsperityModifier(settlementData, item, true);
-		float warModifier = determineWarfareModifier(settlementData, item);
-		float sizeModifier = determineSizeModifier(settlementData, item);
+		float prosperityModifier = determineProsperityModifier(item, true);
+		float warModifier = determineWarfareModifier(item);
+		float sizeModifier = determineSizeModifier(item);
 
 		return (int)Math.Floor(item.price * prosperityModifier * warModifier * sizeModifier * 1.1);
 	}
 
-	public int DetermineSellPrice(SettlementData settlementData, Item item)
+	public int DetermineSellPrice(Item item)
 	{
-		float prosperityModifier = determineProsperityModifier(settlementData, item, false);
-		float warModifier = determineWarfareModifier(settlementData, item);
-		float sizeModifier = determineSizeModifier(settlementData, item);
+		float prosperityModifier = determineProsperityModifier(item, false);
+		float warModifier = determineWarfareModifier(item);
+		float sizeModifier = determineSizeModifier(item);
 		return (int)Math.Floor(item.price * prosperityModifier * warModifier * sizeModifier * 0.9);
 	}
 
-	public int DetermineItemQuantity(SettlementData settlementData, Item item)
+	public int DetermineItemQuantity(Item item)
 	{
-		float prosperityModifier = determineProsperityModifier(settlementData, item, false);
-		float warModifier = determineWarfareModifier(settlementData, item);
-		float sizeModifier = determineSizeModifier(settlementData, item);
+		float prosperityModifier = determineProsperityModifier(item, false);
+		float warModifier = determineWarfareModifier(item);
+		float sizeModifier = determineSizeModifier(item);
 		return (int)Math.Floor(item.rarity * prosperityModifier * warModifier * sizeModifier);
 	}
 
-	public List<ItemListing> GetItemListings(SettlementData settlementData)
+	public List<ItemListing> GetItemListings()
 	{
 		List<ItemListing> itemListings = new();
 		Item[] allItems = GetNode<ItemList>("/root/BaseNode/ItemReference").items;
-		GD.Print(allItems);
+
 		foreach (Item item in allItems)
 		{
-			int quantity = DetermineItemQuantity(settlementData, item);
+			int quantity = DetermineItemQuantity(item);
 			if (quantity > 0)
 			{
-				itemListings.Add(new ItemListing(item, quantity, DetemineBuyPrice(settlementData, item), DetermineSellPrice(settlementData, item)));
+				itemListings.Add(new ItemListing(item, quantity, DetemineBuyPrice(item), DetermineSellPrice(item)));
 			}
 		}
 		return itemListings;
@@ -257,71 +259,187 @@ public partial class TradeUI : Control
 		Instance = this;
 	}
 
-	public static void BuyItem(ItemListing item, SettlementData settlementData, int itemQuantity)
+	public void BuyItem(ItemListing item)
 	{
+		if (!isBuying)
+		{
+			return;
+		}
+
+		if (item.buyPrice > Player.Instance.gold)
+		{
+			return;
+		}
+
 		List<InventoryItem> settlementItems = new();
-		foreach(InventoryItem invItem in settlementData.boughtItems) 
+		foreach(InventoryItem invItem in selfSettlementData.boughtItems) 
 		{
 			if (invItem.Name == item.item.itemName) 
 			{
-				if (itemQuantity <= invItem.quantity) 
+				if (item.quantity <= invItem.quantity) 
 				{
 					return;
 				}
 				settlementItems.Add(new InventoryItem(invItem.item, invItem.quantity + 1));
 			}
 		}
-		settlementData.boughtItems = settlementItems.ToArray();
+		selfSettlementData.boughtItems = settlementItems.ToArray();
 		Player.Instance.gold -= item.buyPrice;
-		List<InventoryItem> newInventory = new();
-		foreach (InventoryItem invItem in Player.Instance.inventory) 
+
+		foreach (Control control in container.GetChildren())
 		{
-			if (invItem.Name == item.item.itemName) 
+			ShopButton shopButton = control.GetNode<ShopButton>("Name");
+
+			if (shopButton.itemListing == item)
 			{
-				newInventory.Add(new InventoryItem(invItem.item, invItem.quantity + 1));
-			} 
-			else 
-			{
-				newInventory.Add(invItem);
+				shopButton.itemListing.quantity--;
+
+				if (shopButton.itemListing.quantity <= 0)
+				{
+					container.RemoveChild(shopButton);
+					shopButton.QueueFree();
+				}
+				else
+				{
+					shopButton.Text = item.item.itemName + " (" + shopButton.itemListing.quantity + "; cost for 1: " + item.sellPrice + ")";
+				}
+
+				break;
 			}
 		}
-		Player.Instance.inventory = newInventory;
+
+		GetNode<RichTextLabel>("Background/Labels/Gold").Text = "Gold: " + Player.Instance.gold;
+
+		for (int i = 0; i < Player.Instance.inventory.Count; i++)
+		{
+			if (Player.Instance.inventory[i].item.itemName == item.item.itemName)
+			{
+				Player.Instance.inventory[i].quantity++;
+				return;
+			}
+		}
+
+		Player.Instance.inventory.Add(new InventoryItem(item.item, 1));
 	}
 
-	public void SellItem(ItemListing item, SettlementData settlementData) 
+	public void SellItem(ItemListing item) 
 	{
+		if (isBuying)
+		{
+			return;
+		}
+
 		Player.Instance.gold += item.sellPrice;
 		List<InventoryItem> settlementItems = new();
-		foreach(InventoryItem invItem in settlementData.boughtItems) 
+		foreach(InventoryItem invItem in selfSettlementData.boughtItems) 
 		{
 			if (invItem.Name == item.item.itemName) 
 			{
 				settlementItems.Add(new InventoryItem(invItem.item, invItem.quantity - 1));
 			}
 		}
-		settlementData.boughtItems = settlementItems.ToArray();
+		selfSettlementData.boughtItems = settlementItems.ToArray();
+
+		GD.Print(item.sellPrice);
+
+		GetNode<RichTextLabel>("Background/Labels/Gold").Text = "Gold: " + Player.Instance.gold;
+
+		foreach (Control control in container.GetChildren())
+		{
+			ShopButton shopButton = control.GetNode<ShopButton>("Name");
+
+			if (shopButton.itemListing == item)
+			{
+				shopButton.itemListing.quantity--;
+
+				if (shopButton.itemListing.quantity <= 0)
+				{
+					container.RemoveChild(shopButton);
+					shopButton.QueueFree();
+				}
+				else
+				{
+					shopButton.Text = item.item.itemName + " (" + shopButton.itemListing.quantity + "; sell price for 1: " + item.sellPrice + ")";
+				}
+
+				break;
+			}
+		}
+
+		for (int i = 0; i < Player.Instance.inventory.Count; i++)
+		{
+			if (Player.Instance.inventory[i].item.itemName == item.item.itemName)
+			{
+				Player.Instance.inventory[i].quantity--;
+
+				if (Player.Instance.inventory[i].quantity <= 0)
+				{
+					Player.Instance.inventory.Remove(Player.Instance.inventory[i]);
+				}
+
+				return;
+			}
+		}
 	}
 
 	public void OpenUI(SettlementData settlementData)
 	{
-		GetNode<RichTextLabel>("Background/Labels/Title").Text = "[b]Trading with " + settlementData.settlementName + "[/b]";
+		selfSettlementData = settlementData;
 
-		VBoxContainer container = GetNode<VBoxContainer>("Background/Labels/ScrollContainer/VBoxContainer");
-		PackedScene shopItemsScene = GD.Load<PackedScene>("res://Settlements/trade.tscn");
-		foreach (ItemListing item in GetItemListings(settlementData))
-		{
-			Control control = shopItemsScene.Instantiate<Control>();
-			control.GetNode<RichTextLabel>("Name").Text = item.item.itemName + " (" + item.quantity + "; cost for 1: " 
-								+ (isBuying ? item.buyPrice : item.sellPrice) + ")"; 
+		GetNode<RichTextLabel>("Background/Labels/Title").Text = "[b]Trading with " + selfSettlementData.settlementName + "[/b]";
 
-			/*control.GetNode<RichTextLabel>("Name").Text = item.item.itemName;
-			control.GetNode<RichTextLabel>("Quantity").Text = Math.Max(item.quantity, 0).ToString();
-			control.GetNode<Button>("Buy").Text = item.buyPrice.ToString();
-			control.GetNode<Button>("Buy").ButtonDown += () => BuyItem(item, settlementData, item.quantity);
-			tradeItems.GetNode<VBoxContainer>("VBoxContainer").AddChild(control); ; ; ; ; ; ; ; ; ; ; ; ;*/
-		}
+		GetNode<RichTextLabel>("Background/Labels/Gold").Text = "Gold: " + Player.Instance.gold;
+		
+		OnBuyButtonDown();
 
 		Visible = true;
+	}
+
+	public void OnBuyButtonDown()
+	{
+		isBuying = true;
+
+		PackedScene shopItemsScene = GD.Load<PackedScene>("res://Settlements/trade.tscn");
+
+		ClearContainer();
+
+		foreach (ItemListing item in GetItemListings())
+		{
+			Control control = shopItemsScene.Instantiate<Control>();
+			control.GetNode<ShopButton>("Name").Text = item.item.itemName + " (" + item.quantity + "; cost for 1: " + item.buyPrice + ")";
+			control.GetNode<ShopButton>("Name").itemListing = item;
+
+			container.AddChild(control);
+		}
+	}
+
+	public void OnSellButtonDown()
+	{
+		isBuying = false;
+
+		PackedScene shopItemsScene = GD.Load<PackedScene>("res://Settlements/trade.tscn");
+
+		ClearContainer();
+
+		foreach (InventoryItem item in Player.Instance.inventory)
+		{
+			ItemListing itemListing = new ItemListing(item.item, item.quantity, 0, DetermineSellPrice(item.item));
+
+			Control control = shopItemsScene.Instantiate<Control>();
+			control.GetNode<ShopButton>("Name").Text = item.item.itemName + " (" + item.quantity + "; sell price for 1: " + itemListing.sellPrice + ")";
+			control.GetNode<ShopButton>("Name").itemListing = itemListing;
+
+			container.AddChild(control);
+		}
+	}
+
+	void ClearContainer()
+	{
+		foreach (Control child in container.GetChildren())
+		{
+			container.RemoveChild(child);
+			child.QueueFree();
+		}
 	}
 
 	public void OnBackDown()

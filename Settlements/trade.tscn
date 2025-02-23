@@ -1,4 +1,6 @@
-[gd_scene format=3 uid="uid://c37dhxvwd20a5"]
+[gd_scene load_steps=2 format=3 uid="uid://c37dhxvwd20a5"]
+
+[ext_resource type="Script" path="res://Trade/ShopButton.cs" id="1_bi7yq"]
 
 [node name="Control" type="Control"]
 layout_mode = 3
@@ -9,9 +11,11 @@ offset_bottom = 40.0
 [node name="Name" type="Button" parent="."]
 custom_minimum_size = Vector2(0, 50)
 layout_mode = 0
+offset_top = 1.0
 offset_right = 296.0
-offset_bottom = 50.0
+offset_bottom = 51.0
 text = "Item Name"
+script = ExtResource("1_bi7yq")
 
 [node name="Quantity" type="RichTextLabel" parent="."]
 visible = false
