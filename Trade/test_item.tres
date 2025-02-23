@@ -5,5 +5,6 @@
 [resource]
 script = ExtResource("1_p3svo")
 itemName = ""
-price = 0
+price = 4
 itemType = 0
+rarity = 10
