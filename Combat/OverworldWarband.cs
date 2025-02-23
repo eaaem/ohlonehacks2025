@@ -75,7 +75,17 @@ public partial class OverworldWarband : CharacterBody3D
 	{
 		while (true)
 		{
+			while (GlobalPauseState.Instance.IsPaused)
+			{
+				await ToSignal(GetTree().CreateTimer(0.01f), Timer.SignalName.Timeout);
+			}
+
 			await ToSignal(GetTree().CreateTimer(5f), Timer.SignalName.Timeout);
+			
+			if (GlobalPauseState.Instance.IsPaused)
+			{
+				return;
+			}
 
 			if (!hasGoal)
 			{

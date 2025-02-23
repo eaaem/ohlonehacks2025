@@ -35,8 +35,9 @@ public partial class PlayerController : CharacterBody3D
 			velocity.X = direction.X * Speed;
 			velocity.Z = direction.Z * Speed;
 
-			if (GlobalPosition.DistanceSquaredTo(moveTarget) < 0.01f)
+			if (GlobalPosition.DistanceSquaredTo(moveTarget) < 0.1f)
 			{
+				GlobalPauseState.Instance.IsPaused = true;
 				IsMoving = false;
 				return;
 			}
@@ -52,6 +53,7 @@ public partial class PlayerController : CharacterBody3D
 		{
 			if (mouseButton.ButtonIndex == MouseButton.Left)
 			{
+				GlobalPauseState.Instance.IsPaused = false;
 				moveTarget = eventPosition;
 				IsMoving = true;
 			}

@@ -223,7 +223,6 @@ public partial class Combat : Node
 			.ToArray();
 			// player troops = new troops
 		}
-		GD.Print("Battle over");
 	}
 
 	// Called when the node enters the scene tree for the first time.
