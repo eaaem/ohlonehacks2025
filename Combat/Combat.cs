@@ -200,8 +200,8 @@ public partial class Combat : Node
 		{
 			foreach (Troop troop in troops)
 			{
-				int lostAmount = (int)Math.Floor(totalTroopsLost * getTroopLossPercent(troop) / 3);
-				lostTroops.Add(new Troop(troop.quantity - lostAmount, troop.troopType, troop.tier));
+				int lostAmount = (int)Math.Floor(totalTroopsLost * (getTroopLossPercent(troop) / 3));
+				lostTroops.Add(new Troop(lostAmount, troop.troopType, troop.tier));
 			}
 		}
 		return lostTroops.ToArray();
