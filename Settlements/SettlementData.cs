@@ -24,7 +24,7 @@ public enum SettlementType
     City
 }
 
-public partial class SettlementData : Node
+public partial class SettlementData : Node3D
 {
     [Export]
     public string settlementName;

@@ -14,9 +14,16 @@ public partial class OverworldWarband : CharacterBody3D
 	private bool goingToSettlement = false;
 	private Vector3 movementTarget = Vector3.Zero;
 
+	PlayerController player;
+
 	private float speed = 5f;
 
-	public void CreateWarband(int numberOfTroops, TroopType favoredTroopType, int averageStrength)
+    public override void _Ready()
+    {
+		player = GetNode<PlayerController>("/root/BaseNode/Player");
+    }
+
+    public void CreateWarband(int numberOfTroops, TroopType favoredTroopType, int averageStrength)
 	{
 		int currentMax = numberOfTroops;
 
@@ -87,7 +94,7 @@ public partial class OverworldWarband : CharacterBody3D
 					int targetSettlementID = GD.RandRange(0,
 								CivilizationHolder.Instance.civilizations[(int)civilizationAffiliation].settlements.Length);
 
-					movementTarget = GetNode<Node3D>("/root/BaseNode/" + civilizationAffiliation.ToString()).GetChild<Node3D>(targetSettlementID).Position;
+					movementTarget = CivilizationHolder.Instance.civilizations[(int)civilizationAffiliation].settlements[targetSettlementID].Position;
 					isMoving = true;
 					hasGoal = true;
 					goingToSettlement = true;
@@ -125,7 +132,7 @@ public partial class OverworldWarband : CharacterBody3D
 					break;
 			}
 
-			unitType.Replace("_", " ");
+			unitType = unitType.Replace("_", " ");
 
 			label.Text = troops[i].quantity + " " + unitType + " (" + troops[i].troopType.ToString() + ")";
 			tooltip.GetNode<VBoxContainer>("VBoxContainer").AddChild(label);
@@ -134,6 +141,7 @@ public partial class OverworldWarband : CharacterBody3D
 		tooltip.GetNode<Panel>("Panel").Size = new Vector2(250, 25 + (tooltip.GetNode<VBoxContainer>("VBoxContainer").GetChildCount() * 20));
 
 		tooltip.Name = "WarbandTooltip";
+		tooltip.Position = GetViewport().GetMousePosition();
 		GetNode<Node3D>("/root/BaseNode").AddChild(tooltip);
 	}
 
@@ -144,8 +152,31 @@ public partial class OverworldWarband : CharacterBody3D
 		tooltip.QueueFree();
 	}
 
+	public void OnPlayerEntered(Node3D body)
+	{
+		if (isHostileToPlayer)
+		{
+			
+		}
+	}
+
     public override void _Process(double delta)
 	{
+		if (isHostileToPlayer)
+		{
+			float distance = Position.DistanceSquaredTo(player.Position);
+
+			if (distance < 15f)
+			{
+				movementTarget = player.Position;
+				isMoving = true;
+			}
+			else
+			{
+				isMoving = false;
+			}
+		}
+
 		if (isMoving)
 		{
 			Vector3 velocity = Velocity;
@@ -155,21 +186,22 @@ public partial class OverworldWarband : CharacterBody3D
 			velocity.X = direction.X * speed;
 			velocity.Z = direction.Z * speed;
 
+			Velocity = velocity;
+			MoveAndSlide();
+
 			if (GlobalPosition.DistanceSquaredTo(movementTarget) < 0.01f)
 			{
 				isMoving = false;
 
 				if (goingToSettlement)
 				{
+					SetPhysicsProcess(false);
 					GetParent().RemoveChild(this);
 					QueueFree();
 				}
 
 				return;
 			}
-
-			Velocity = velocity;
-			MoveAndSlide();
 		}
 	}
 }

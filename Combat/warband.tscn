@@ -1,4 +1,4 @@
-[gd_scene load_steps=4 format=3 uid="uid://cfnqvwpqt361k"]
+[gd_scene load_steps=5 format=3 uid="uid://cfnqvwpqt361k"]
 
 [ext_resource type="Script" path="res://Combat/OverworldWarband.cs" id="1_jl73x"]
 
@@ -9,6 +9,9 @@ height = 0.5
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_7ri0q"]
 radius = 0.1
 height = 0.5
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_fkqwg"]
+size = Vector3(0.3, 1, 0.3)
 
 [node name="Warband" type="CharacterBody3D"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.238739, 0)
@@ -22,6 +25,11 @@ skeleton = NodePath("../..")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
 shape = SubResource("CapsuleShape3D_7ri0q")
+
+[node name="Hitbox" type="Area3D" parent="."]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Hitbox"]
+shape = SubResource("BoxShape3D_fkqwg")
 
 [connection signal="input_event" from="." to="." method="_InputEvent"]
 [connection signal="mouse_entered" from="." to="." method="OnMouseEntered"]

@@ -39,7 +39,7 @@ public partial class WarbandGenerator : Node
 					warband.warbandName = "Troops of " + CivilizationHolder.Instance.civilizations[affiliation].civilizationName;
 					warband.CreateWarband((int)(GD.RandRange(30, 45) * troopAmountModifier), TroopType.Archer, 
 										  GD.RandRange(2, (int)settlementToSpawnAt.militaryStrength + 1));
-					warband.Position = GetNode<Node3D>(((CivilizationType)affiliation).ToString()).GetChild<Node3D>(settlementID).Position;
+					warband.Position = settlementToSpawnAt.Position + (Vector3.Up * 0.25f);
 				}
 				else // Bandit
 				{
@@ -48,7 +48,7 @@ public partial class WarbandGenerator : Node
 					warband.isHostileToPlayer = true;
 					warband.civilizationAffiliation = CivilizationType.None;
 					Vector3 playerPosition = GetNode<PlayerController>("/root/BaseNode/Player").Position;
-					warband.Position = new Vector3(playerPosition.X + 5f, 0f, playerPosition.Z + 5f);
+					warband.Position = new Vector3(playerPosition.X + 5f, 0.25f, playerPosition.Z + 5f);
 				}
 			}
 		}
