@@ -1,4 +1,4 @@
-[gd_scene load_steps=28 format=3 uid="uid://dnfji7mj4yoig"]
+[gd_scene load_steps=29 format=3 uid="uid://dnfji7mj4yoig"]
 
 [ext_resource type="Script" path="res://Trade/ItemList.cs" id="1_40pj1"]
 [ext_resource type="Script" path="res://Combat/Combat.cs" id="1_bmbdo"]
@@ -14,6 +14,7 @@
 [ext_resource type="Script" path="res://Settlements/SettlementUI.cs" id="5_ukmxp"]
 [ext_resource type="Script" path="res://Core/Player.cs" id="7_8p2op"]
 [ext_resource type="Script" path="res://Trade/TradeUI.cs" id="13_dqaxb"]
+[ext_resource type="PackedScene" uid="uid://cyrmdctcfk00i" path="res://Combat/troop_panel.tscn" id="14_vyytf"]
 
 [sub_resource type="Resource" id="Resource_uby4a"]
 script = ExtResource("2_2n0uq")
@@ -580,6 +581,71 @@ offset_bottom = 911.0
 theme_override_font_sizes/font_size = 25
 text = "Exit"
 
+[node name="TrainerScreen" type="Control" parent="UI"]
+visible = false
+anchors_preset = 0
+offset_right = 1920.0
+offset_bottom = 1080.0
+
+[node name="Background" type="Panel" parent="UI/TrainerScreen"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_8uqoa")
+
+[node name="Labels" type="Control" parent="UI/TrainerScreen/Background"]
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="Title" type="RichTextLabel" parent="UI/TrainerScreen/Background/Labels"]
+layout_mode = 0
+offset_left = 185.0
+offset_top = 104.0
+offset_right = 1185.0
+offset_bottom = 204.0
+theme_override_font_sizes/bold_font_size = 50
+bbcode_enabled = true
+text = "[b]Troop Upgrades[/b]"
+
+[node name="Gold" type="RichTextLabel" parent="UI/TrainerScreen/Background/Labels"]
+layout_mode = 0
+offset_left = 185.0
+offset_top = 167.0
+offset_right = 1185.0
+offset_bottom = 267.0
+theme_override_font_sizes/normal_font_size = 25
+bbcode_enabled = true
+text = "Gold:"
+
+[node name="VBoxContainer" type="VBoxContainer" parent="UI/TrainerScreen/Background/Labels"]
+layout_mode = 0
+offset_left = 197.0
+offset_top = 202.0
+offset_right = 1397.0
+offset_bottom = 852.0
+theme_override_constants/separation = 30
+
+[node name="TroopPanel" parent="UI/TrainerScreen/Background/Labels/VBoxContainer" instance=ExtResource("14_vyytf")]
+layout_mode = 2
+
+[node name="Buttons" type="Control" parent="UI/TrainerScreen/Background"]
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="Leave" type="Button" parent="UI/TrainerScreen/Background/Buttons"]
+layout_mode = 0
+offset_left = 185.0
+offset_top = 861.0
+offset_right = 385.0
+offset_bottom = 911.0
+theme_override_font_sizes/font_size = 25
+text = "Exit"
+
 [node name="DetachedCameraHolder" type="CharacterBody3D" parent="."]
 collision_layer = 0
 collision_mask = 0
@@ -610,3 +676,4 @@ settlementType = 0
 [connection signal="button_down" from="UI/BattleUI/VictoryBackground/Button" to="Combat" method="ExitCombat"]
 [connection signal="button_down" from="UI/BattleUI/DefeatBackground/Button" to="Combat" method="ExitCombat"]
 [connection signal="button_down" from="UI/PlayerScreen/Background/Buttons/Leave" to="Player" method="ClosePlayerScreen"]
+[connection signal="button_down" from="UI/TrainerScreen/Background/Buttons/Leave" to="Player" method="CloseTrainerScreen"]

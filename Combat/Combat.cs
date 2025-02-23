@@ -21,19 +21,19 @@ public partial class Combat : Node
 
 	private int getTroopPower(Troop troop)
 	{
-		if (troop.tier == 1)
+		if (troop.tier == 0)
 		{
 			return 10;
 		}
-		else if (troop.tier == 2)
+		else if (troop.tier == 1)
 		{
 			return 20;
 		}
-		else if (troop.tier == 3)
+		else if (troop.tier == 2)
 		{
 			return 40;
 		}
-		else if (troop.tier == 4)
+		else if (troop.tier == 3)
 		{
 			return 80;
 		}
@@ -141,19 +141,19 @@ public partial class Combat : Node
 
 	private double getTroopLossPercent(Troop troop)
 	{
-		if (troop.tier == 1)
+		if (troop.tier == 0)
 		{
 			return 1 / 2;
 		}
-		else if (troop.tier == 2)
+		else if (troop.tier == 1)
 		{
 			return 1 / 4;
 		}
-		else if (troop.tier == 3)
+		else if (troop.tier == 2)
 		{
 			return 1 / 8;
 		}
-		else if (troop.tier == 4)
+		else if (troop.tier == 3)
 		{
 			return 1 / 16;
 		}

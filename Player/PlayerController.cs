@@ -167,6 +167,13 @@ public partial class PlayerController : CharacterBody3D
 					OpenPlayerScreen();
 				}
 			}
+			else if (key.Keycode == Key.T)
+			{
+				if (!GetNode<Control>("/root/BaseNode/UI/TrainerScreen").Visible)
+				{
+					OpenTrainingScreen();
+				}
+			}
 		}
 
 		if (@event is InputEventMouseMotion mouseMotion && isHoldingMiddleMouse)
@@ -247,5 +254,163 @@ public partial class PlayerController : CharacterBody3D
 	{
 		GlobalPauseState.Instance.IsPaused = false;
 		GetNode<Control>("/root/BaseNode/UI/PlayerScreen").Visible = false;
+	}
+
+	void OpenTrainingScreen()
+	{
+		PackedScene troopPanel = GD.Load<PackedScene>("res://Combat/troop_panel.tscn");
+
+		VBoxContainer troopContainer = GetNode<VBoxContainer>("/root/BaseNode/UI/TrainerScreen/Background/Labels/VBoxContainer");
+
+		foreach (Control child in troopContainer.GetChildren())
+		{
+			troopContainer.RemoveChild(child);
+			child.QueueFree();
+		}
+
+		foreach (Troop troop in playerData.troops)
+		{
+			troopContainer.AddChild(CreateTroopPanel(troop, troopPanel));
+		}
+
+		GetNode<RichTextLabel>("/root/BaseNode/UI/TrainerScreen/Background/Labels/Gold").Text = "Gold: " + playerData.gold;
+
+		GetNode<Control>("/root/BaseNode/UI/TrainerScreen").Visible = true;
+	}
+
+	Control CreateTroopPanel(Troop troop, PackedScene troopPanel)
+	{
+		Control panel = troopPanel.Instantiate<Control>();
+
+		UpdateTroopText(panel.GetNode<RichTextLabel>("Title"), troop);
+
+		if (troop.tier == 4)
+		{
+			Button button = panel.GetNode<Button>("Button");
+			panel.RemoveChild(button);
+			button.QueueFree();
+		}
+		else
+		{	
+			panel.GetNode<Button>("Button").Text = "Upgrade 1 for " + GetCostForUpgrade(troop) + " gold";
+		}
+
+		panel.GetNode<TroopInfoHolder>("TroopInfo").troopType = troop.troopType;
+		panel.GetNode<TroopInfoHolder>("TroopInfo").tier = troop.tier;
+
+		return panel;
+	}
+
+	void UpdateTroopText(RichTextLabel label, Troop troop)
+	{
+		string unitType = "";
+
+		switch (troop.troopType)
+		{
+			case TroopType.Infantry:
+				unitType = ((InfantryTroopTier)troop.tier).ToString();
+				break;
+			case TroopType.Archer:
+				unitType = ((ArcherTroopTier)troop.tier).ToString();
+				break;
+			case TroopType.Cavalry:
+				unitType = ((CavalryTroopTier)troop.tier).ToString();
+				break;
+			case TroopType.Mage:
+				unitType = ((MageTroopTier)troop.tier).ToString();
+				break;
+		}
+
+		unitType = unitType.Replace("_", " ");
+
+		label.Text = troop.quantity + " " + unitType + " (" + troop.troopType.ToString() + ")";
+	}
+
+	public void OnUpgradeButtonDown(TroopType type, int tier)
+	{
+		int cost = GetCostForUpgrade(new Troop(0, type, tier));
+
+		if (playerData.gold < cost)
+		{
+			return;
+		}
+
+		playerData.gold -= cost;
+
+		GetNode<RichTextLabel>("/root/BaseNode/UI/TrainerScreen/Background/Labels/Gold").Text = "Gold: " + playerData.gold;
+
+		int toUpgradeIndex = 0;
+		int toUpgradeIntoIndex = -1;
+
+		for (int i = 0; i < playerData.troops.Count; i++)
+		{
+			if (playerData.troops[i].troopType == type)
+			{
+				if (playerData.troops[i].tier == tier)
+				{
+					toUpgradeIndex = i;
+				}
+				else if (playerData.troops[i].tier == tier + 1)
+				{
+					toUpgradeIntoIndex = i;
+				}
+			}
+		}
+
+		if (toUpgradeIntoIndex == -1)
+		{
+			Troop troop = new Troop(1, type, tier + 1);
+			playerData.troops.Add(troop);
+			PackedScene troopPanel = GD.Load<PackedScene>("res://Combat/troop_panel.tscn");
+			GetNode<VBoxContainer>("/root/BaseNode/UI/TrainerScreen/Background/Labels/VBoxContainer").AddChild(CreateTroopPanel(troop, troopPanel));
+		}
+		else
+		{
+			playerData.troops[toUpgradeIntoIndex].quantity++;
+		}
+
+		playerData.troops[toUpgradeIndex].quantity--;
+
+		foreach (Control troopPanel in GetNode<VBoxContainer>("/root/BaseNode/UI/TrainerScreen/Background/Labels/VBoxContainer").GetChildren())
+		{
+			TroopInfoHolder infoHolder = troopPanel.GetNode<TroopInfoHolder>("TroopInfo");
+
+			if (infoHolder.troopType == type && infoHolder.tier == tier)
+			{
+				UpdateTroopText(troopPanel.GetNode<RichTextLabel>("Title"), playerData.troops[toUpgradeIndex]);
+
+				if (playerData.troops[toUpgradeIndex].quantity <= 0)
+				{
+					GetNode<VBoxContainer>("/root/BaseNode/UI/TrainerScreen/Background/Labels/VBoxContainer").RemoveChild(troopPanel);
+					troopPanel.QueueFree();
+				}
+			}
+			else if (infoHolder.troopType == type && infoHolder.tier == tier + 1 && toUpgradeIntoIndex != -1)
+			{
+				UpdateTroopText(troopPanel.GetNode<RichTextLabel>("Title"), playerData.troops[toUpgradeIntoIndex]);
+			}
+		}
+
+		if (playerData.troops[toUpgradeIndex].quantity <= 0)
+		{
+			playerData.troops.Remove(playerData.troops[toUpgradeIndex]);
+		}
+	}
+
+	void CloseTrainerScreen()
+	{
+		GetNode<Control>("/root/BaseNode/UI/TrainerScreen").Visible = false;
+	}
+
+	int GetCostForUpgrade(Troop troop)
+	{
+		float modifier = 1f;
+
+		if (troop.troopType == TroopType.Mage)
+		{
+			modifier = 1.5f;
+		}
+
+		return (int)(troop.tier * 3 * modifier);
 	}
 }
