@@ -14,7 +14,7 @@
 [ext_resource type="Script" path="res://Settlements/SettlementUI.cs" id="5_ukmxp"]
 [ext_resource type="Script" path="res://Core/Player.cs" id="7_8p2op"]
 [ext_resource type="Script" path="res://Trade/TradeUI.cs" id="13_dqaxb"]
-[ext_resource type="PackedScene" path="res://Combat/troop_panel.tscn" id="14_vyytf"]
+[ext_resource type="PackedScene" uid="uid://cyrmdctcfk00i" path="res://Combat/troop_panel.tscn" id="14_vyytf"]
 
 [sub_resource type="Resource" id="Resource_uby4a"]
 script = ExtResource("2_2n0uq")

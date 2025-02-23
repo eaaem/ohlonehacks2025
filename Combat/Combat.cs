@@ -18,6 +18,7 @@ public partial class Combat : Node
 	private Terrain currentTerrain;
 	private int playerPower;
 	private int enemyPower;
+	private bool isInCombat = false;
 
 	private int getTroopPower(Troop troop)
 	{
@@ -318,11 +319,22 @@ public partial class Combat : Node
 		GetNode<Control>("/root/BaseNode/UI/BattleUI").Visible = false;
 		GetNode<Control>("/root/BaseNode/UI/BattleUI/DefeatBackground").Visible = false;
 		GetNode<Control>("/root/BaseNode/UI/BattleUI/VictoryBackground").Visible = false;
+		SetProcess(true);
+		isInCombat = false;
 	}
 
 	public void OpenCombatUI(Player player, OverworldWarband warband, Terrain terrain)
 	{
+		if (isInCombat)
+		{
+			return;
+		}
+
+		isInCombat = true;
+
 		GlobalPauseState.Instance.IsPaused = true;
+
+		SetProcess(false);
 
 		GetNode<Control>("/root/BaseNode/UI/BattleUI").Visible = true;
 
