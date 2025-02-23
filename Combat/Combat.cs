@@ -177,7 +177,7 @@ public partial class Combat : Node
 			// lose 10% of your troops at equal power, and 0% at double power
 			float powerMultiplier = playerPower / enemyPower;
 
-			totalTroopsLost = (int)Math.Floor(totalTroopQuantity * 0.1 / powerMultiplier);
+			totalTroopsLost = (int)Math.Floor(totalTroopQuantity * (0.1f / powerMultiplier));
 		}
 		else
 		{
@@ -330,6 +330,7 @@ public partial class Combat : Node
 		SetProcess(true);
 		isInCombat = false;
 		GetNode<PlayerController>("/root/BaseNode/Player").IsMovementDisabled = false;
+		GlobalPauseState.Instance.IsPaused = false;
 	}
 
 	public void OpenCombatUI(Player player, OverworldWarband warband, Terrain terrain)
@@ -365,7 +366,7 @@ public partial class Combat : Node
 			enemyPower += calculateTroopPower(troop, terrain, random);
 		}
 
-		battleUI.GetNode<RichTextLabel>("Info").Text = "[center]You have been challenged by [b]" + warband.warbandName + "[/b].\nTheir strength "
+		battleUI.GetNode<RichTextLabel>("Info").Text = "[center]You have been challenged by [b]" + warband.warbandName + "[/b] in a [b]" + terrain.ToString() + "[/b] region.\nTheir strength "
 			+ "is " + enemyPower + ".\nYour strength is " + playerPower + ".";
 		battleUI.Visible = true;
 

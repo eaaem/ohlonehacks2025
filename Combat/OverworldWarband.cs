@@ -24,7 +24,26 @@ public partial class OverworldWarband : CharacterBody3D
 
 		MouseEntered += OnMouseEntered;
 		MouseExited += OnMouseExited;
+
+		GetNode<GlobalPauseState>("/root/BaseNode/PauseState").Pause += DisableProcess;
+		GetNode<GlobalPauseState>("/root/BaseNode/PauseState").Unpause += EnableProcess;
     }
+
+    public override void _ExitTree()
+    {
+        GetNode<GlobalPauseState>("/root/BaseNode/PauseState").Pause -= DisableProcess;
+		GetNode<GlobalPauseState>("/root/BaseNode/PauseState").Unpause -= EnableProcess;
+    }
+
+    void EnableProcess()
+	{
+		SetProcess(true);
+	}
+
+	void DisableProcess()
+	{
+		SetProcess(false);
+	}
 
     public void CreateWarband(int numberOfTroops, TroopType favoredTroopType, int averageStrength)
 	{
@@ -175,9 +194,7 @@ public partial class OverworldWarband : CharacterBody3D
 
 			if (result.Count > 0)
 			{
-				GD.Print(result.Count);
 				Area3D area = (Area3D)result["collider"];
-				GD.Print(area.GetParent().Name);
 
 				if (area.GetParent().Name == "River")
 				{
@@ -192,8 +209,6 @@ public partial class OverworldWarband : CharacterBody3D
 					terrain = Terrain.Mountain;
 				}
 			}
-
-			GD.Print(terrain);
 
 			GetNode<Combat>("/root/BaseNode/Combat").OpenCombatUI(player.GetNode<Player>("PlayerData"), this, terrain);
 
@@ -225,6 +240,7 @@ public partial class OverworldWarband : CharacterBody3D
 
 		if (isMoving)
 		{
+			GD.Print("moving");
 			Vector3 velocity = Velocity;
 
 			Vector3 direction = GlobalPosition.DirectionTo(movementTarget);

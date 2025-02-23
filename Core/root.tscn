@@ -308,9 +308,10 @@ text = "Recruit"
 [node name="Trade" type="Button" parent="UI/SettlementScreen/Background/Buttons"]
 layout_mode = 0
 offset_left = 185.0
-offset_top = 600.0
+offset_top = 697.0
 offset_right = 385.0
-offset_bottom = 650.0
+offset_bottom = 747.0
+theme_override_font_sizes/font_size = 25
 text = "Trade"
 
 [node name="Recruit" type="Panel" parent="UI/SettlementScreen"]

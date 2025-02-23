@@ -24,7 +24,7 @@ public partial class CivilizationHolder : Node
     {
         Instance = this;
 
-		for (int i = 0; i < 1; i++)
+		for (int i = 0; i < civilizations.Length; i++)
 		{
 			Node3D settlementParent = GetNode<Node3D>("/root/BaseNode/" + (CivilizationType)i);
 			civilizations[i].settlements = new SettlementData[settlementParent.GetChildCount()];

@@ -25,6 +25,11 @@ public partial class PlayerController : CharacterBody3D
 
 	private Control tooltip = null;
 
+	[Signal]
+	public delegate void OpenedUIEventHandler();
+	[Signal]
+	public delegate void ClosedUIEventHandler();
+
 	public override void _PhysicsProcess(double delta)
 	{
 		if (IsMovementDisabled)
@@ -407,6 +412,7 @@ public partial class PlayerController : CharacterBody3D
 	{
 		GetNode<Control>("/root/BaseNode/UI/TrainerScreen").Visible = false;
 		IsMovementDisabled = false;
+		GlobalPauseState.Instance.IsPaused = false;
 	}
 
 	int GetCostForUpgrade(Troop troop)
