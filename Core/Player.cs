@@ -1,5 +1,6 @@
 using Godot;
 using System;
+using System.Collections.Generic;
 
 public enum Race {
 	Human,
@@ -21,7 +22,6 @@ public class Skill {
 
 public partial class Player : Node
 {
-
 	public string name;
 	public Race race;
 	public int level;
@@ -29,16 +29,12 @@ public partial class Player : Node
 	public int strength;
 	public int charisma;
 	public int intelligence;
-	public Troop[] troops;
+	public List<Troop> troops = new List<Troop>();
 	public Skill[] skills;
 
-	// Called when the node enters the scene tree for the first time.
-	public override void _Ready()
-	{
-	}
-
-	// Called every frame. 'delta' is the elapsed time since the previous frame.
-	public override void _Process(double delta)
-	{
-	}
+    public override void _Ready()
+    {
+        name = "Test";
+		troops.Add(new Troop(5, TroopType.Infantry, 2));
+    }
 }

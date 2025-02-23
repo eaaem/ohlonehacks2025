@@ -1,12 +1,16 @@
-[gd_scene load_steps=20 format=3 uid="uid://dnfji7mj4yoig"]
+[gd_scene load_steps=24 format=3 uid="uid://dnfji7mj4yoig"]
 
+[ext_resource type="Script" path="res://Trade/ItemList.cs" id="1_40pj1"]
+[ext_resource type="Script" path="res://Combat/Combat.cs" id="1_bmbdo"]
 [ext_resource type="Script" path="res://Player/PlayerController.cs" id="1_dssx5"]
 [ext_resource type="Script" path="res://Civilizations/CivilizationHolder.cs" id="1_t52sj"]
 [ext_resource type="Script" path="res://Civilizations/Civilization.cs" id="2_2n0uq"]
+[ext_resource type="Resource" uid="uid://ccphrn31wlya1" path="res://Trade/test_item.tres" id="2_d0ph0"]
 [ext_resource type="Script" path="res://Combat/WarbandGenerator.cs" id="3_p4msl"]
 [ext_resource type="PackedScene" uid="uid://bq3o5scv4qbgn" path="res://Settlements/settlement.tscn" id="4_jbg7a"]
 [ext_resource type="PackedScene" uid="uid://cfnqvwpqt361k" path="res://Combat/warband.tscn" id="4_l5mx6"]
 [ext_resource type="Script" path="res://Settlements/SettlementUI.cs" id="5_ukmxp"]
+[ext_resource type="Script" path="res://Core/Player.cs" id="7_8p2op"]
 
 [sub_resource type="Resource" id="Resource_uby4a"]
 script = ExtResource("2_2n0uq")
@@ -14,10 +18,7 @@ civilizationName = "The Great Expanse"
 leaderName = "Kirana"
 race = 0
 color = Color(0.207247, 0.427666, 1, 1)
-settlements = [Object(Node3D,"_import_path":NodePath(""),"unique_name_in_owner":false,"process_mode":0,"process_priority":0,"process_physics_priority":0,"process_thread_group":0,"physics_interpolation_mode":0,"auto_translate_mode":0,"editor_description":"","transform":Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.49117, 0, -1.46652),"rotation_edit_mode":0,"rotation_order":2,"top_level":false,"visible":true,"visibility_parent":NodePath(""),"script":Resource("res://Settlements/SettlementData.cs"),"settlementName":"Horse's Hoof","prosperityScore":4,"population":552,"militaryStrength":2,"civilizationType":0,"settlementType":2,"troops":[],"buildings":[],"atWar":false)
-, Object(Node3D,"_import_path":NodePath(""),"unique_name_in_owner":false,"process_mode":0,"process_priority":0,"process_physics_priority":0,"process_thread_group":0,"physics_interpolation_mode":0,"auto_translate_mode":0,"editor_description":"","transform":Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.1321, 4.76837e-07, -3.46305),"rotation_edit_mode":0,"rotation_order":2,"top_level":false,"visible":true,"visibility_parent":NodePath(""),"script":Resource("res://Settlements/SettlementData.cs"),"settlementName":"Haven","prosperityScore":4,"population":552,"militaryStrength":2,"civilizationType":0,"settlementType":1,"troops":[],"buildings":[],"atWar":false)
-, Object(Node3D,"_import_path":NodePath(""),"unique_name_in_owner":false,"process_mode":0,"process_priority":0,"process_physics_priority":0,"process_thread_group":0,"physics_interpolation_mode":0,"auto_translate_mode":0,"editor_description":"","transform":Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.7117, 4.76837e-07, -1.01085),"rotation_edit_mode":0,"rotation_order":2,"top_level":false,"visible":true,"visibility_parent":NodePath(""),"script":Resource("res://Settlements/SettlementData.cs"),"settlementName":"Dagger","prosperityScore":4,"population":552,"militaryStrength":2,"civilizationType":0,"settlementType":0,"troops":[],"buildings":[],"atWar":false)
-]
+settlements = [null, null, null]
 
 [sub_resource type="Resource" id="Resource_sfet4"]
 script = ExtResource("2_2n0uq")
@@ -80,10 +81,14 @@ height = 0.5
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_8uqoa"]
 bg_color = Color(0.261333, 0.28, 0.168, 1)
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_2s6jd"]
-bg_color = Color(0.262745, 0.278431, 0.168627, 1)
-
 [node name="BaseNode" type="Node3D"]
+
+[node name="ItemReference" type="Node3D" parent="."]
+script = ExtResource("1_40pj1")
+items = [ExtResource("2_d0ph0")]
+
+[node name="Combat" type="Node3D" parent="."]
+script = ExtResource("1_bmbdo")
 
 [node name="CivilizationHolder" type="Node3D" parent="."]
 script = ExtResource("1_t52sj")
@@ -105,11 +110,12 @@ shape = SubResource("BoxShape3D_7thnd")
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
 transform = Transform3D(0.719776, -0.677672, 0.150609, 0, 0.216951, 0.976183, -0.694206, -0.702633, 0.156156, 0, 4, 0)
 
-[node name="Player" type="CharacterBody3D" parent="." node_paths=PackedStringArray("cameraTarget")]
+[node name="Player" type="CharacterBody3D" parent="." node_paths=PackedStringArray("cameraTarget", "playerData")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.248032, 0)
 collision_layer = 3
 script = ExtResource("1_dssx5")
 cameraTarget = NodePath("CameraTarget")
+playerData = NodePath("PlayerData")
 
 [node name="PlayerMesh" type="MeshInstance3D" parent="Player"]
 mesh = SubResource("CapsuleMesh_ap2np")
@@ -122,6 +128,9 @@ shape = SubResource("CapsuleShape3D_7ri0q")
 
 [node name="PlayerCamera" type="Camera3D" parent="Player/CameraTarget"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.434646, 2.80815)
+
+[node name="PlayerData" type="Node3D" parent="Player"]
+script = ExtResource("7_8p2op")
 
 [node name="UI" type="Control" parent="."]
 layout_mode = 3
@@ -233,5 +242,6 @@ settlementName = "Dagger"
 settlementType = 0
 
 [connection signal="input_event" from="Map/StaticBody3D" to="Player" method="_InputEvent"]
+[connection signal="mouse_entered" from="Player" to="Player" method="OnMouseEntered"]
+[connection signal="mouse_exited" from="Player" to="Player" method="OnMouseExited"]
 [connection signal="button_down" from="UI/SettlementScreen/Background/Buttons/Leave" to="UI/SettlementScreen" method="OnLeaveDown"]
-[connection signal="button_down" from="UI/SettlementScreen/Background/Buttons/Trade" to="UI/SettlementScreen" method="OnTradeDown"]

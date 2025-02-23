@@ -9,11 +9,15 @@ public partial class PlayerController : CharacterBody3D
 
 	[Export]
 	private Node3D cameraTarget;
+	[Export]
+	private Player playerData;
 
 	private Vector3 moveTarget;
 	public bool IsMoving { get; set; }
 	public bool IsMovementDisabled { get; set; }
 	private bool isHoldingMiddleMouse = false;
+
+	private Control tooltip = null;
 
 	public override void _PhysicsProcess(double delta)
 	{
@@ -52,6 +56,62 @@ public partial class PlayerController : CharacterBody3D
 				IsMoving = true;
 			}
 		}
+	}
+
+	public void OnMouseEntered()
+	{
+		// This is the exact same code as in the OverworldWarband tooltip generator and it's ugly
+		CreateTooltip();
+	}
+
+	public void OnMouseExited()
+	{
+		Control tooltip = GetNode<Control>("/root/BaseNode/WarbandTooltip");
+		GetNode<Node3D>("/root/BaseNode").RemoveChild(tooltip);
+		tooltip.QueueFree();
+	}
+
+	public void CreateTooltip()
+	{
+		Control tooltip = GD.Load<PackedScene>("res://Combat/warband_tooltip.tscn").Instantiate<Control>();
+
+		tooltip.GetNode<RichTextLabel>("Title").Text = "[center]" + playerData.name + "'s Party";
+
+		PackedScene unitLabelScene = GD.Load<PackedScene>("res://Combat/unit_label.tscn");
+
+
+		for (int i = 0; i < playerData.troops.Count; i++)
+		{
+			RichTextLabel label = unitLabelScene.Instantiate<RichTextLabel>();
+			string unitType = "";
+
+			switch (playerData.troops[i].troopType)
+			{
+				case TroopType.Infantry:
+					unitType = ((InfantryTroopTier)playerData.troops[i].tier).ToString();
+					break;
+				case TroopType.Archer:
+					unitType = ((ArcherTroopTier)playerData.troops[i].tier).ToString();
+					break;
+				case TroopType.Cavalry:
+					unitType = ((CavalryTroopTier)playerData.troops[i].tier).ToString();
+					break;
+				case TroopType.Mage:
+					unitType = ((MageTroopTier)playerData.troops[i].tier).ToString();
+					break;
+			}
+
+			unitType = unitType.Replace("_", " ");
+
+			label.Text = playerData.troops[i].quantity + " " + unitType + " (" + playerData.troops[i].troopType.ToString() + ")";
+			tooltip.GetNode<VBoxContainer>("VBoxContainer").AddChild(label);
+		}
+
+		tooltip.GetNode<Panel>("Panel").Size = new Vector2(250, 25 + (tooltip.GetNode<VBoxContainer>("VBoxContainer").GetChildCount() * 20));
+
+		tooltip.Name = "WarbandTooltip";
+		tooltip.Position = GetViewport().GetMousePosition();
+		GetNode<Node3D>("/root/BaseNode").AddChild(tooltip);
 	}
 
 	public override void _Input(InputEvent @event)

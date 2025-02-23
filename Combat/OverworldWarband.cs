@@ -105,6 +105,7 @@ public partial class OverworldWarband : CharacterBody3D
 
     public void OnMouseEntered()
 	{
+		GD.Print("eNTERED");
 		Control tooltip = GD.Load<PackedScene>("res://Combat/warband_tooltip.tscn").Instantiate<Control>();
 
 		tooltip.GetNode<RichTextLabel>("Title").Text = "[center]" + warbandName;
@@ -156,7 +157,7 @@ public partial class OverworldWarband : CharacterBody3D
 	{
 		if (isHostileToPlayer)
 		{
-			
+			GetNode<Combat>("/root/BaseNode/Combat").beginCombat(player.GetNode<Player>("PlayerData").troops.ToArray(), troops.ToArray(), Terrain.Plains);
 		}
 	}
 
