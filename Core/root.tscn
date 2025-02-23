@@ -1,4 +1,4 @@
-[gd_scene load_steps=26 format=3 uid="uid://dnfji7mj4yoig"]
+[gd_scene load_steps=27 format=3 uid="uid://dnfji7mj4yoig"]
 
 [ext_resource type="Script" path="res://Trade/ItemList.cs" id="1_40pj1"]
 [ext_resource type="Script" path="res://Combat/Combat.cs" id="1_bmbdo"]
@@ -83,6 +83,8 @@ height = 0.5
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_8uqoa"]
 bg_color = Color(0.261333, 0.28, 0.168, 1)
 
+[sub_resource type="BoxShape3D" id="BoxShape3D_f7ca8"]
+
 [node name="BaseNode" type="Node3D"]
 
 [node name="PauseState" type="Node3D" parent="."]
@@ -115,12 +117,14 @@ shape = SubResource("BoxShape3D_7thnd")
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
 transform = Transform3D(0.719776, -0.677672, 0.150609, 0, 0.216951, 0.976183, -0.694206, -0.702633, 0.156156, 0, 4, 0)
 
-[node name="Player" type="CharacterBody3D" parent="." node_paths=PackedStringArray("cameraTarget", "playerData")]
+[node name="Player" type="CharacterBody3D" parent="." node_paths=PackedStringArray("cameraTarget", "playerData", "detachedCameraTarget", "camera")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.248032, 0)
 collision_layer = 3
 script = ExtResource("1_dssx5")
 cameraTarget = NodePath("CameraTarget")
 playerData = NodePath("PlayerData")
+detachedCameraTarget = NodePath("../DetachedCameraHolder")
+camera = NodePath("CameraTarget/PlayerCamera")
 
 [node name="PlayerMesh" type="MeshInstance3D" parent="Player"]
 mesh = SubResource("CapsuleMesh_ap2np")
@@ -270,6 +274,14 @@ offset_bottom = 40.0
 anchors_preset = 0
 offset_right = 40.0
 offset_bottom = 40.0
+
+[node name="DetachedCameraHolder" type="CharacterBody3D" parent="."]
+collision_layer = 0
+collision_mask = 0
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="DetachedCameraHolder"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.582922, 0)
+shape = SubResource("BoxShape3D_f7ca8")
 
 [node name="GreatExpanse" type="Node3D" parent="."]
 
