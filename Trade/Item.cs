@@ -17,4 +17,7 @@ public partial class Item : Resource
 	public int price;
 	[Export]
 	public ItemType itemType;
+	// high rarity value = more common
+	[Export]
+	public int rarity;
 }

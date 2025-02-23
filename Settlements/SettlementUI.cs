@@ -46,7 +46,6 @@ public partial class SettlementUI : Control
 	public void OnTradeDown()
 	{
 		Visible = false;
-		GetNode<TradeUI>("/root/BaseNode/UI/TradeScreen").Visible = true;
 		GetNode<TradeUI>("/root/BaseNode/UI/TradeScreen").OpenUI(selfSettlementData);
 	}
 
