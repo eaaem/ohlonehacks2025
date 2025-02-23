@@ -37,7 +37,7 @@ public partial class Player : Node
 	public int intelligence;
 	public List<Troop> troops = new List<Troop>();
 	public Skill[] skills;
-	public List<InventoryItem> inventory;
+	public List<InventoryItem> inventory = new List<InventoryItem>();
 
 	public override void _Ready()
 	{
