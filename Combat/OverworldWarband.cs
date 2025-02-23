@@ -157,9 +157,12 @@ public partial class OverworldWarband : CharacterBody3D
 
 	public void OnPlayerEntered(Node3D body)
 	{
+		Random random = new Random();
+		Terrain randomTerrain = (Terrain) (random.NextInt64() % 5);
+		GD.Print(randomTerrain);
 		if (isHostileToPlayer)
 		{
-			GetNode<Combat>("/root/BaseNode/Combat").OpenCombatUI(player.GetNode<Player>("PlayerData"), this, Terrain.Plains);
+			GetNode<Combat>("/root/BaseNode/Combat").OpenCombatUI(player.GetNode<Player>("PlayerData"), this, randomTerrain);
 		}
 	}
 
