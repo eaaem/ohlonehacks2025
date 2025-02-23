@@ -1,0 +1,10 @@
+[gd_resource type="Resource" script_class="Item" load_steps=2 format=3 uid="uid://bw50cfyu6yu8i"]
+
+[ext_resource type="Script" path="res://Trade/Item.cs" id="1_ftd7e"]
+
+[resource]
+script = ExtResource("1_ftd7e")
+itemName = "Bronze Platebody"
+price = 50
+itemType = 0
+rarity = 3

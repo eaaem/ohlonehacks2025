@@ -1,0 +1,10 @@
+[gd_resource type="Resource" script_class="Item" load_steps=2 format=3 uid="uid://badpju0co3l55"]
+
+[ext_resource type="Script" path="res://Trade/Item.cs" id="1_ieo6q"]
+
+[resource]
+script = ExtResource("1_ieo6q")
+itemName = "Bronze Platelegs"
+price = 40
+itemType = 0
+rarity = 4

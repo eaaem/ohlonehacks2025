@@ -1,4 +1,4 @@
-[gd_resource type="Resource" script_class="Item" load_steps=2 format=3 uid="uid://b333dxjcqanjf"]
+[gd_resource type="Resource" script_class="Item" load_steps=2 format=3 uid="uid://de10mb4ljd5b0"]
 
 [ext_resource type="Script" path="res://Trade/Item.cs" id="1_o4rsu"]
 
@@ -7,4 +7,4 @@ script = ExtResource("1_o4rsu")
 itemName = "Leather Armor"
 price = 40
 itemType = 0
-rarity = 10
+rarity = 3

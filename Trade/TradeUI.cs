@@ -226,7 +226,7 @@ public partial class TradeUI : Control
 		float prosperityModifier = determineProsperityModifier(item, false);
 		float warModifier = determineWarfareModifier(item);
 		float sizeModifier = determineSizeModifier(item);
-		return (int)Math.Floor(item.price * prosperityModifier * warModifier * sizeModifier * 0.9);
+		return Math.Min((int)Math.Floor(item.price * prosperityModifier * warModifier * sizeModifier * 0.9), (int) DetemineBuyPrice(item));
 	}
 
 	public int DetermineItemQuantity(Item item)
