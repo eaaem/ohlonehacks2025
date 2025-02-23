@@ -250,7 +250,13 @@ public partial class TradeUI : Control
         foreach (ItemListing item in GetItemListings()) {
             RichTextLabel itemName = shopItemsScene.Instantiate<RichTextLabel>();
             RichTextLabel itemQuantity = shopItemsScene.Instantiate<RichTextLabel>();
+            Button sellItem = shopItemsScene.Instantiate<Button>();
+            Button buyItem = shopItemsScene.Instantiate<Button>();
 
+            itemName.Text = item.item.itemName;
+            itemQuantity.Text = item.quantity.ToString();
+            sellItem.Text = item.sellPrice.ToString();
+            buyItem.Text = item.buyPrice.ToString();
         }
         GetNode<VBoxContainer>("VBoxContainer");
 
