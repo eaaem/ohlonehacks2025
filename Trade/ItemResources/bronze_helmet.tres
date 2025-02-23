@@ -1,0 +1,10 @@
+[gd_resource type="Resource" script_class="Item" load_steps=2 format=3 uid="uid://bawmgmjbonqd5"]
+
+[ext_resource type="Script" path="res://Trade/Item.cs" id="1_jw8q1"]
+
+[resource]
+script = ExtResource("1_jw8q1")
+itemName = "Bronze Helmet"
+price = 20
+itemType = 0
+rarity = 7

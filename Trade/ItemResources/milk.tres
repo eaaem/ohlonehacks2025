@@ -1,0 +1,10 @@
+[gd_resource type="Resource" script_class="Item" load_steps=2 format=3 uid="uid://bfmi6b4yf8wxw"]
+
+[ext_resource type="Script" path="res://Trade/Item.cs" id="1_6d764"]
+
+[resource]
+script = ExtResource("1_6d764")
+itemName = "Milk"
+price = 7
+itemType = 1
+rarity = 8

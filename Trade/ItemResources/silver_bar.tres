@@ -1,0 +1,10 @@
+[gd_resource type="Resource" script_class="Item" load_steps=2 format=3 uid="uid://pg7j0rle3wun"]
+
+[ext_resource type="Script" path="res://Trade/Item.cs" id="1_u1ae7"]
+
+[resource]
+script = ExtResource("1_u1ae7")
+itemName = "Silver Bar"
+price = 100
+itemType = 2
+rarity = 1
