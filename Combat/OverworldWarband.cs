@@ -6,7 +6,7 @@ public partial class OverworldWarband : CharacterBody3D
 {
 	public string warbandName;
 	public CivilizationType civilizationAffiliation;
-	private List<Troop> troops = new List<Troop>();
+	public List<Troop> troops = new List<Troop>();
 	public bool isHostileToPlayer;
 
 	private bool hasGoal = false;
@@ -159,7 +159,7 @@ public partial class OverworldWarband : CharacterBody3D
 	{
 		if (isHostileToPlayer)
 		{
-			GetNode<Combat>("/root/BaseNode/Combat").beginCombat(player.GetNode<Player>("PlayerData").troops.ToArray(), troops.ToArray(), Terrain.Plains);
+			GetNode<Combat>("/root/BaseNode/Combat").beginCombat(player.GetNode<Player>("PlayerData"), this, Terrain.Plains);
 		}
 	}
 

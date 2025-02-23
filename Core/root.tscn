@@ -78,20 +78,25 @@ height = 0.5
 radius = 0.1
 height = 0.5
 
-[sub_resource type="BoxMesh" id="BoxMesh_2t707"]
-size = Vector3(0.25, 0.25, 0.5)
-
-[sub_resource type="BoxShape3D" id="BoxShape3D_73c1e"]
-size = Vector3(0.5, 1, 0.5)
-
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_8uqoa"]
 bg_color = Color(0.261333, 0.28, 0.168, 1)
 
 [node name="BaseNode" type="Node3D"]
 
+[node name="ItemReference" type="Node3D" parent="."]
+script = ExtResource("1_40pj1")
+items = [ExtResource("2_d0ph0"), null, null]
+
+[node name="Combat" type="Node3D" parent="."]
+script = ExtResource("1_bmbdo")
+
 [node name="CivilizationHolder" type="Node3D" parent="."]
 script = ExtResource("1_t52sj")
 civilizations = [SubResource("Resource_uby4a"), SubResource("Resource_sfet4"), SubResource("Resource_hu7tu"), SubResource("Resource_ow0rt"), SubResource("Resource_jty1h"), SubResource("Resource_1ud0i")]
+
+[node name="WarbandGenerator" type="Node3D" parent="."]
+script = ExtResource("3_p4msl")
+warbandScene = ExtResource("4_l5mx6")
 
 [node name="Map" type="MeshInstance3D" parent="."]
 mesh = SubResource("PlaneMesh_02tsx")
@@ -222,52 +227,19 @@ offset_bottom = 911.0
 theme_override_font_sizes/font_size = 25
 text = "Leave"
 
-[node name="Trade" type="Button" parent="UI/SettlementScreen/Background/Buttons"]
-layout_mode = 0
-offset_left = 185.0
-offset_top = 750.0
-offset_right = 385.0
-offset_bottom = 800.0
-theme_override_font_sizes/font_size = 25
-text = "Trade"
+[node name="GreatExpanse" type="Node3D" parent="."]
 
-[node name="TradeScreen" type="Control" parent="UI"]
-visible = false
-anchors_preset = 0
-offset_right = 40.0
-offset_bottom = 40.0
-script = ExtResource("6_286tm")
+[node name="Horse" parent="GreatExpanse" instance=ExtResource("4_jbg7a")]
 
-[node name="Background" type="Panel" parent="UI/TradeScreen"]
-layout_mode = 0
-offset_right = 1920.0
-offset_bottom = 1080.0
-theme_override_styles/panel = SubResource("StyleBoxFlat_2s6jd")
+[node name="Horse2" parent="GreatExpanse" instance=ExtResource("4_jbg7a")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.1321, 4.76837e-07, -3.46305)
+settlementName = "Haven"
+settlementType = 1
 
-[node name="Labels" type="Control" parent="UI/TradeScreen/Background"]
-anchors_preset = 0
-offset_right = 40.0
-offset_bottom = 40.0
-
-[node name="SettlementName" type="RichTextLabel" parent="UI/TradeScreen/Background/Labels"]
-layout_mode = 0
-offset_left = 185.0
-offset_top = 104.0
-offset_right = 1185.0
-offset_bottom = 204.0
-theme_override_font_sizes/bold_font_size = 50
-bbcode_enabled = true
-text = "[b]Settlement Name[/b]"
-
-[node name="Back" type="Button" parent="UI/TradeScreen/Background"]
-layout_mode = 0
-offset_right = 8.0
-offset_bottom = 8.0
-
-[node name="Items" type="Control" parent="UI/TradeScreen/Background"]
-anchors_preset = 0
-offset_right = 40.0
-offset_bottom = 40.0
+[node name="Horse3" parent="GreatExpanse" instance=ExtResource("4_jbg7a")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.7117, 4.76837e-07, -1.01085)
+settlementName = "Dagger"
+settlementType = 0
 
 [connection signal="input_event" from="Map/StaticBody3D" to="Player" method="_InputEvent"]
 [connection signal="mouse_entered" from="Player" to="Player" method="OnMouseEntered"]

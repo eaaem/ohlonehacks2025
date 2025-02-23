@@ -195,28 +195,28 @@ public partial class Combat : Node
 		return lostTroops.ToArray();
 	}
 
-	public void beginCombat(Troop[] playerTroops, Troop[] enemyTroops, Terrain terrain)
+	public void beginCombat(Player player, OverworldWarband warband, Terrain terrain)
 	{
 		// determine the power of both sides, and whoever has more wins
 		// the power differential will determine how many of each side dies after the battle
 		int playerPower = 0;
 		int enemyPower = 0;
 		Random random = new();
-		foreach (Troop troop in playerTroops)
+		foreach (Troop troop in player.troops)
 		{
 			playerPower += calculateTroopPower(troop, terrain, random);
 		}
 
-		foreach (Troop troop in enemyTroops)
+		foreach (Troop troop in warband.troops)
 		{
 			enemyPower += calculateTroopPower(troop, terrain, random);
 		}
 
-		Troop[] lostTroops = calculateTroopLoss(playerTroops, playerPower, enemyPower);
+		Troop[] lostTroops = calculateTroopLoss(player.troops.ToArray(), playerPower, enemyPower);
 		foreach (Troop troop in lostTroops)
 		{
-			Troop existingElement = Array.Find(playerTroops, playerTroop => playerTroop.troopType == troop.troopType && playerTroop.tier == troop.tier);
-			Troop[] newTroops = playerTroops.ToList().ConvertAll(playerTroop =>
+			Troop existingElement = Array.Find(player.troops.ToArray(), playerTroop => playerTroop.troopType == troop.troopType && playerTroop.tier == troop.tier);
+			Troop[] newTroops = player.troops.ConvertAll(playerTroop =>
 			playerTroop.troopType == troop.troopType && playerTroop.tier == troop.tier ?
 				new Troop(playerTroop.quantity - troop.quantity, playerTroop.troopType, playerTroop.tier) :
 				playerTroop)
