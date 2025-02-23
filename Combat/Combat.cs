@@ -195,7 +195,7 @@ public partial class Combat : Node
 		return lostTroops.ToArray();
 	}
 
-	public void beginCombat(Player player, OverworldWarband warband, Terrain terrain)
+	public bool beginCombat(Player player, OverworldWarband warband, Terrain terrain)
 	{
 		// determine the power of both sides, and whoever has more wins
 		// the power differential will determine how many of each side dies after the battle
@@ -221,8 +221,10 @@ public partial class Combat : Node
 				new Troop(playerTroop.quantity - troop.quantity, playerTroop.troopType, playerTroop.tier) :
 				playerTroop)
 			.ToArray();
-			// player troops = new troops
+			player.troops = newTroops.ToList();
 		}
+
+		return playerPower > enemyPower;
 	}
 
 	// Called when the node enters the scene tree for the first time.
