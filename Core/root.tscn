@@ -807,6 +807,13 @@ shape = SubResource("BoxShape3D_f7ca8")
 
 [node name="Horse" parent="GreatExpanse" instance=ExtResource("4_jbg7a")]
 
+[node name="Oasis" parent="GreatExpanse" instance=ExtResource("4_jbg7a")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.79121, 0, 5.03564)
+settlementName = "Oasis"
+prosperityScore = 2
+population = 993
+militaryStrength = 3
+
 [node name="Horse2" parent="GreatExpanse" instance=ExtResource("4_jbg7a")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.1321, 4.76837e-07, -3.46305)
 settlementName = "Haven"
@@ -816,6 +823,222 @@ settlementType = 1
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.7117, 4.76837e-07, -1.01085)
 settlementName = "Dagger"
 settlementType = 0
+
+[node name="Foresthome" type="Node3D" parent="."]
+
+[node name="jungle" parent="Foresthome" instance=ExtResource("4_jbg7a")]
+transform = Transform3D(0.294324, 0, 0.955706, 0, 1, 0, -0.955706, 0, 0.294324, 13.6112, 0, 3.70498)
+settlementName = "Jungleheart"
+prosperityScore = 1
+militaryStrength = 4
+civilizationType = 1
+
+[node name="Oasis" parent="Foresthome" instance=ExtResource("4_jbg7a")]
+transform = Transform3D(0.294324, 0, 0.955706, 0, 1, 0, -0.955706, 0, 0.294324, 18.8541, 0, 8.77258)
+settlementName = "Greatroot"
+population = 233
+militaryStrength = 0
+civilizationType = 1
+settlementType = 1
+
+[node name="Horse2" parent="Foresthome" instance=ExtResource("4_jbg7a")]
+transform = Transform3D(0.294324, 0, 0.955706, 0, 1, 0, -0.955706, 0, 0.294324, 15.9025, 4.76837e-07, 4.31462)
+settlementName = "Longriver"
+prosperityScore = 2
+militaryStrength = 3
+civilizationType = 1
+settlementType = 1
+
+[node name="Horse3" parent="Foresthome" instance=ExtResource("4_jbg7a")]
+transform = Transform3D(0.294324, 0, 0.955706, 0, 1, 0, -0.955706, 0, 0.294324, 13.3931, 4.76837e-07, 5.96127)
+settlementName = "Softfern"
+prosperityScore = 1
+population = 125
+militaryStrength = 1
+civilizationType = 1
+settlementType = 0
+
+[node name="Horse4" parent="Foresthome" instance=ExtResource("4_jbg7a")]
+transform = Transform3D(0.294324, 0, 0.955706, 0, 1, 0, -0.955706, 0, 0.294324, 14.9052, 4.76837e-07, 2.17463)
+settlementName = "Smallbloom"
+prosperityScore = 3
+population = 95
+militaryStrength = 0
+civilizationType = 1
+settlementType = 0
+
+[node name="Athelia" type="Node3D" parent="."]
+
+[node name="jungle" parent="Athelia" instance=ExtResource("4_jbg7a")]
+transform = Transform3D(-0.72727, 0, 0.686352, 0, 1, 0, -0.686352, 0, -0.72727, 3.87995, 0, 16.3219)
+settlementName = "Thelana"
+civilizationType = 2
+
+[node name="Oasis" parent="Athelia" instance=ExtResource("4_jbg7a")]
+transform = Transform3D(-0.72727, 0, 0.686352, 0, 1, 0, -0.686352, 0, -0.72727, 10.7427, 0, 13.8581)
+settlementName = "Thria"
+prosperityScore = 2
+population = 233
+militaryStrength = 4
+civilizationType = 2
+settlementType = 1
+
+[node name="Horse2" parent="Athelia" instance=ExtResource("4_jbg7a")]
+transform = Transform3D(-0.72727, 0, 0.686352, 0, 1, 0, -0.686352, 0, -0.72727, 5.43936, 4.76837e-07, 14.5358)
+settlementName = "Athlis"
+prosperityScore = 2
+population = 295
+militaryStrength = 3
+civilizationType = 2
+settlementType = 1
+
+[node name="Horse3" parent="Athelia" instance=ExtResource("4_jbg7a")]
+transform = Transform3D(-0.72727, 0, 0.686352, 0, 1, 0, -0.686352, 0, -0.72727, 5.80762, 4.76837e-07, 17.5146)
+settlementName = "Athin"
+prosperityScore = 3
+population = 125
+civilizationType = 2
+settlementType = 0
+
+[node name="Horse4" parent="Athelia" instance=ExtResource("4_jbg7a")]
+transform = Transform3D(-0.72727, 0, 0.686352, 0, 1, 0, -0.686352, 0, -0.72727, 3.07891, 4.76837e-07, 14.4849)
+settlementName = "Othnia"
+prosperityScore = 2
+population = 1924
+militaryStrength = 0
+civilizationType = 2
+
+[node name="Thaelanar" type="Node3D" parent="."]
+
+[node name="jungle" parent="Thaelanar" instance=ExtResource("4_jbg7a")]
+transform = Transform3D(-0.72727, 0, 0.686352, 0, 1, 0, -0.686352, 0, -0.72727, 8.19839, 0, -6.00315)
+settlementName = "Priff"
+prosperityScore = 2
+militaryStrength = 4
+civilizationType = 3
+
+[node name="Oasis" parent="Thaelanar" instance=ExtResource("4_jbg7a")]
+transform = Transform3D(-0.72727, 0, 0.686352, 0, 1, 0, -0.686352, 0, -0.72727, 15.0612, 0, -8.46698)
+settlementName = "Llath"
+prosperityScore = 1
+population = 233
+militaryStrength = 3
+civilizationType = 3
+settlementType = 1
+
+[node name="Horse2" parent="Thaelanar" instance=ExtResource("4_jbg7a")]
+transform = Transform3D(-0.72727, 0, 0.686352, 0, 1, 0, -0.686352, 0, -0.72727, 9.7578, 4.76837e-07, -7.7892)
+settlementName = "Aelloth"
+prosperityScore = 0
+population = 295
+militaryStrength = 4
+civilizationType = 3
+settlementType = 1
+
+[node name="Horse3" parent="Thaelanar" instance=ExtResource("4_jbg7a")]
+transform = Transform3D(-0.72727, 0, 0.686352, 0, 1, 0, -0.686352, 0, -0.72727, 10.1261, 4.76837e-07, -4.81048)
+settlementName = "Pranif"
+prosperityScore = 2
+population = 125
+civilizationType = 3
+settlementType = 0
+
+[node name="Horse4" parent="Thaelanar" instance=ExtResource("4_jbg7a")]
+transform = Transform3D(-0.72727, 0, 0.686352, 0, 1, 0, -0.686352, 0, -0.72727, 7.39735, 4.76837e-07, -7.84015)
+settlementName = "Llath"
+prosperityScore = 2
+population = 752
+militaryStrength = 0
+civilizationType = 3
+settlementType = 1
+
+[node name="Korokdaron" type="Node3D" parent="."]
+
+[node name="jungle" parent="Korokdaron" instance=ExtResource("4_jbg7a")]
+transform = Transform3D(-0.72727, 0, 0.686352, 0, 1, 0, -0.686352, 0, -0.72727, -8.79318, 0, 11.7105)
+settlementName = "Ak'dor"
+prosperityScore = 2
+militaryStrength = 4
+civilizationType = 4
+
+[node name="Oasis" parent="Korokdaron" instance=ExtResource("4_jbg7a")]
+transform = Transform3D(-0.72727, 0, 0.686352, 0, 1, 0, -0.686352, 0, -0.72727, -1.93039, 0, 9.24669)
+settlementName = "Lok'din"
+prosperityScore = 1
+population = 233
+militaryStrength = 3
+civilizationType = 4
+settlementType = 1
+
+[node name="Horse2" parent="Korokdaron" instance=ExtResource("4_jbg7a")]
+transform = Transform3D(-0.72727, 0, 0.686352, 0, 1, 0, -0.686352, 0, -0.72727, -7.23377, 4.76837e-07, 9.92447)
+settlementName = "Kro'din"
+prosperityScore = 0
+population = 295
+militaryStrength = 4
+civilizationType = 4
+settlementType = 1
+
+[node name="Horse3" parent="Korokdaron" instance=ExtResource("4_jbg7a")]
+transform = Transform3D(-0.72727, 0, 0.686352, 0, 1, 0, -0.686352, 0, -0.72727, -6.8655, 4.76837e-07, 12.9032)
+settlementName = "Skar'dro"
+prosperityScore = 2
+population = 125
+civilizationType = 4
+settlementType = 0
+
+[node name="Horse4" parent="Korokdaron" instance=ExtResource("4_jbg7a")]
+transform = Transform3D(-0.72727, 0, 0.686352, 0, 1, 0, -0.686352, 0, -0.72727, -9.59422, 4.76837e-07, 9.87352)
+settlementName = "Korak'dro"
+prosperityScore = 2
+population = 752
+militaryStrength = 0
+civilizationType = 4
+settlementType = 1
+
+[node name="Grokaria" type="Node3D" parent="."]
+
+[node name="jungle" parent="Grokaria" instance=ExtResource("4_jbg7a")]
+transform = Transform3D(-0.131858, 0, -0.991269, 0, 1, 0, 0.991269, 0, -0.131858, 10.5907, 0, 7.85785)
+settlementName = "Kardria"
+prosperityScore = 2
+militaryStrength = 4
+civilizationType = 5
+
+[node name="Oasis" parent="Grokaria" instance=ExtResource("4_jbg7a")]
+transform = Transform3D(-0.131858, 0, -0.991269, 0, 1, 0, 0.991269, 0, -0.131858, 7.22276, 0, 4.48586)
+settlementName = "Koris"
+prosperityScore = 1
+population = 233
+militaryStrength = 3
+civilizationType = 5
+settlementType = 1
+
+[node name="Horse2" parent="Grokaria" instance=ExtResource("4_jbg7a")]
+transform = Transform3D(-0.131858, 0, -0.991269, 0, 1, 0, 0.991269, 0, -0.131858, 8.23008, 4.76837e-07, 7.63639)
+settlementName = "Rokdin"
+prosperityScore = 0
+population = 295
+militaryStrength = 4
+civilizationType = 5
+settlementType = 1
+
+[node name="Horse3" parent="Grokaria" instance=ExtResource("4_jbg7a")]
+transform = Transform3D(-0.131858, 0, -0.991269, 0, 1, 0, 0.991269, 0, -0.131858, 10.4318, 4.76837e-07, 5.59662)
+settlementName = "Proth"
+prosperityScore = 2
+population = 125
+civilizationType = 5
+settlementType = 0
+
+[node name="Horse4" parent="Grokaria" instance=ExtResource("4_jbg7a")]
+transform = Transform3D(-0.131858, 0, -0.991269, 0, 1, 0, 0.991269, 0, -0.131858, 9.56833, 4.76837e-07, 9.58149)
+settlementName = "Koris"
+prosperityScore = 2
+population = 752
+militaryStrength = 0
+civilizationType = 5
+settlementType = 1
 
 [connection signal="input_event" from="Map/StaticBody3D" to="Player" method="_InputEvent"]
 [connection signal="mouse_entered" from="Player" to="Player" method="OnMouseEntered"]

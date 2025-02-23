@@ -43,7 +43,7 @@ public partial class Player : Node
 	{
 		name = "Test";
 		gold = 50;
-		troops.Add(new Troop(5, TroopType.Infantry, 1));
+		troops.Add(new Troop(200, TroopType.Infantry, 1));
 		Instance = this;
 	}
 }
