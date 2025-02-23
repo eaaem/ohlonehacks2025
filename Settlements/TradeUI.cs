@@ -248,7 +248,7 @@ public partial class TradeUI : Control
 
         PackedScene shopItemsScene = GD.Load<PackedScene>("res://Settlements/trade.tscn");
         foreach (ItemListing item in GetItemListings()) {
-            RichTextLabel itemName = shopItemsScene.Instantiate();
+            //RichTextLabel itemName = shopItemsScene.Instantiate();
         }
         GetNode<VBoxContainer>("VBoxContainer");
 
