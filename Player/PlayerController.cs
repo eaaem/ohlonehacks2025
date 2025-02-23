@@ -1,5 +1,6 @@
 using Godot;
 using System;
+using System.Runtime.CompilerServices;
 
 public partial class PlayerController : CharacterBody3D
 {
@@ -80,7 +81,7 @@ public partial class PlayerController : CharacterBody3D
 	{
 		if (@event is InputEventMouseButton mouseButton)
 		{
-			if (mouseButton.ButtonIndex == MouseButton.Left)
+			if (mouseButton.ButtonIndex == MouseButton.Left && mouseButton.Pressed)
 			{
 				GlobalPauseState.Instance.IsPaused = false;
 				moveTarget = eventPosition;

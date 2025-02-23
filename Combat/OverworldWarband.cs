@@ -159,10 +159,17 @@ public partial class OverworldWarband : CharacterBody3D
 	{
 		Random random = new Random();
 		Terrain randomTerrain = (Terrain) (random.NextInt64() % 5);
-		GD.Print(randomTerrain);
+
 		if (isHostileToPlayer)
 		{
 			GetNode<Combat>("/root/BaseNode/Combat").OpenCombatUI(player.GetNode<Player>("PlayerData"), this, randomTerrain);
+
+			if (GetNode<Node3D>("/root/BaseNode").HasNode("WarbandTooltip"))
+			{
+				Control tooltip = GetNode<Control>("/root/BaseNode/WarbandTooltip");
+				GetNode<Node3D>("/root/BaseNode").RemoveChild(tooltip);
+				tooltip.QueueFree();
+			}
 		}
 	}
 

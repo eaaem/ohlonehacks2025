@@ -340,8 +340,6 @@ public partial class TradeUI : Control
 		}
 		selfSettlementData.boughtItems = settlementItems.ToArray();
 
-		GD.Print(item.sellPrice);
-
 		GetNode<RichTextLabel>("Background/Labels/Gold").Text = "Gold: " + Player.Instance.gold;
 
 		foreach (Control control in container.GetChildren())
