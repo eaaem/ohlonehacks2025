@@ -5,6 +5,8 @@ public partial class TradeUI : Control
 {
     public static TradeUI Instance { get; set; }
 
+    private SettlementData selfSettlementData;
+
     private float determineProsperityModifier(SettlementData settlementData, Item item, bool playerBuying)
 	{
 		switch (settlementData.prosperityScore)
@@ -195,7 +197,7 @@ public partial class TradeUI : Control
 		return 1f;
 	}
 
-	public int detemineBuyPrice(SettlementData settlementData, Item item)
+	public int DetemineBuyPrice(SettlementData settlementData, Item item)
 	{
 		float prosperityModifier = determineProsperityModifier(settlementData, item, true);
 		float warModifier = determineWarfareModifier(settlementData, item);
@@ -204,13 +206,20 @@ public partial class TradeUI : Control
 		return (int) Math.Floor(item.price * prosperityModifier * warModifier * sizeModifier * 1.1);
 	}
 
-	public int determineSellPrice(SettlementData settlementData, Item item)
+	public int DetermineSellPrice(SettlementData settlementData, Item item)
 	{
 		float prosperityModifier = determineProsperityModifier(settlementData, item, false);
 		float warModifier = determineWarfareModifier(settlementData, item);
 		float sizeModifier = determineSizeModifier(settlementData, item);
 		return (int) Math.Floor(item.price * prosperityModifier * warModifier * sizeModifier * 0.9);
 	}
+
+    public int DetermineItemQuantity(SettlementData settlementData, Item item) {
+        float prosperityModifier = determineProsperityModifier(settlementData, item, false);
+		float warModifier = determineWarfareModifier(settlementData, item);
+		float sizeModifier = determineSizeModifier(settlementData, item);
+		return (int) Math.Floor(item.rarity * prosperityModifier * warModifier * sizeModifier);
+    }
 
     // Called when the node enters the scene tree for the first time.
     public override void _Ready()
@@ -222,12 +231,14 @@ public partial class TradeUI : Control
     {
         GetNode<RichTextLabel>("Background/Labels/SettlementName").Text = "[b]" + settlementData.settlementName + "[/b]";
 
+        
+
         Visible = true;
     }
 
-    public void OnLeaveDown()
-    {
-        Visible = false;
-        GetNode<PlayerController>("/root/BaseNode/Player").IsMovementDisabled = false;
-    }
+    public void OnBackDown()
+	{
+		Visible = false;
+		GetNode<SettlementUI>("/root/BaseNode/UI/SettlementScreen").OpenUI(selfSettlementData);
+	}
 }
