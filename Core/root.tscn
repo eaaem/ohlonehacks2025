@@ -80,6 +80,9 @@ height = 0.5
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_8uqoa"]
 bg_color = Color(0.261333, 0.28, 0.168, 1)
 
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_2s6jd"]
+bg_color = Color(0.262745, 0.278431, 0.168627, 1)
+
 [node name="BaseNode" type="Node3D"]
 
 [node name="CivilizationHolder" type="Node3D" parent="."]
@@ -231,3 +234,4 @@ settlementType = 0
 
 [connection signal="input_event" from="Map/StaticBody3D" to="Player" method="_InputEvent"]
 [connection signal="button_down" from="UI/SettlementScreen/Background/Buttons/Leave" to="UI/SettlementScreen" method="OnLeaveDown"]
+[connection signal="button_down" from="UI/SettlementScreen/Background/Buttons/Trade" to="UI/SettlementScreen" method="OnTradeDown"]

@@ -5,6 +5,8 @@ public partial class SettlementUI : Control
 {
 	public static SettlementUI Instance { get; set; }
 
+	private SettlementData selfSettlementData;
+
 	// Called when the node enters the scene tree for the first time.
 	public override void _Ready()
 	{
@@ -13,6 +15,7 @@ public partial class SettlementUI : Control
 
 	public void OpenUI(SettlementData settlementData)
 	{
+		selfSettlementData = settlementData;
 		GetNode<PlayerController>("/root/BaseNode/Player").IsMovementDisabled = true;
 		GetNode<PlayerController>("/root/BaseNode/Player").IsMoving = false;
 
@@ -38,6 +41,13 @@ public partial class SettlementUI : Control
 		GetNode<RichTextLabel>("Background/Labels/Population").Text = "Its population is [b]" + settlementData.population + "[/b].";
 
 		Visible = true;
+	}
+
+	public void OnTradeDown()
+	{
+		Visible = false;
+		GetNode<TradeUI>("/root/BaseNode/UI/TradeScreen").Visible = true;
+		GetNode<TradeUI>("/root/BaseNode/UI/TradeScreen").OpenUI(selfSettlementData);
 	}
 
 	public void OnLeaveDown()
