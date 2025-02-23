@@ -35,6 +35,6 @@ public partial class Player : Node
     public override void _Ready()
     {
         name = "Test";
-		troops.Add(new Troop(5, TroopType.Infantry, 2));
+		troops.Add(new Troop(5, TroopType.Infantry, 4));
     }
 }

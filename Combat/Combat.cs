@@ -203,7 +203,6 @@ public partial class Combat : Node
 	{
 		// determine the power of both sides, and whoever has more wins
 		// the power differential will determine how many of each side dies after the battle
-		GD.Print("Fighting");
 		Player player = GetNode<Player>("/root/BaseNode/Player/PlayerData");
 		
 		Troop[] lostTroops = calculateTroopLoss(player.troops.ToArray(), playerPower, enemyPower);
@@ -217,14 +216,6 @@ public partial class Combat : Node
 			.ToArray();
 			player.troops = newTroops.ToList();
 		}
-
-		/*foreach (Troop troop in player.troops)
-		{
-			if (troop.quantity <= 0)
-			{
-				player.troops.Remove(troop);
-			}
-		}*/
 
 		for (int i = 0; i < player.troops.Count; i++)
 		{

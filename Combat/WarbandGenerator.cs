@@ -44,7 +44,7 @@ public partial class WarbandGenerator : Node
 				else // Bandit
 				{
 					warband.warbandName = "Bandits";
-					warband.CreateWarband(GD.RandRange(2, 30), TroopType.Infantry, GD.RandRange(1, 2));
+					warband.CreateWarband(GD.RandRange(2, 9), TroopType.Infantry, GD.RandRange(1, 2));
 					warband.isHostileToPlayer = true;
 					warband.civilizationAffiliation = CivilizationType.None;
 					Vector3 playerPosition = GetNode<PlayerController>("/root/BaseNode/Player").Position;
