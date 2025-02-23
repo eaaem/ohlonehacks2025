@@ -7,23 +7,7 @@ using Vector2 = Godot.Vector2;
 
 public partial class TradeUI : Control
 {
-
-	public class ItemListing
-	{
-
-		public ItemListing(Item _item, int _quantity, int _buyPrice, int _sellPrice)
-		{
-			item = _item;
-			quantity = _quantity;
-			buyPrice = _buyPrice;
-			sellPrice = _sellPrice;
-		}
-
-		public Item item;
-		public int quantity;
-		public int buyPrice;
-		public int sellPrice;
-	}
+	private bool isBuying = true;
 
 	public static TradeUI Instance { get; set; }
 
@@ -273,12 +257,15 @@ public partial class TradeUI : Control
 		Instance = this;
 	}
 
-	private static void BuyItem(ItemListing item, SettlementData settlementData, int itemQuantity)
+	public static void BuyItem(ItemListing item, SettlementData settlementData, int itemQuantity)
 	{
 		List<InventoryItem> settlementItems = new();
-		foreach(InventoryItem invItem in settlementData.boughtItems) {
-			if (invItem.Name == item.item.itemName) {
-				if (itemQuantity <= invItem.quantity) {
+		foreach(InventoryItem invItem in settlementData.boughtItems) 
+		{
+			if (invItem.Name == item.item.itemName) 
+			{
+				if (itemQuantity <= invItem.quantity) 
+				{
 					return;
 				}
 				settlementItems.Add(new InventoryItem(invItem.item, invItem.quantity + 1));
@@ -287,21 +274,28 @@ public partial class TradeUI : Control
 		settlementData.boughtItems = settlementItems.ToArray();
 		Player.Instance.gold -= item.buyPrice;
 		List<InventoryItem> newInventory = new();
-		foreach (InventoryItem invItem in Player.Instance.inventory) {
-			if (invItem.Name == item.item.itemName) {
+		foreach (InventoryItem invItem in Player.Instance.inventory) 
+		{
+			if (invItem.Name == item.item.itemName) 
+			{
 				newInventory.Add(new InventoryItem(invItem.item, invItem.quantity + 1));
-			} else {
+			} 
+			else 
+			{
 				newInventory.Add(invItem);
 			}
 		}
 		Player.Instance.inventory = newInventory;
 	}
 
-	private void SellItem(ItemListing item, SettlementData settlementData) {
+	public void SellItem(ItemListing item, SettlementData settlementData) 
+	{
 		Player.Instance.gold += item.sellPrice;
 		List<InventoryItem> settlementItems = new();
-		foreach(InventoryItem invItem in settlementData.boughtItems) {
-			if (invItem.Name == item.item.itemName) {
+		foreach(InventoryItem invItem in settlementData.boughtItems) 
+		{
+			if (invItem.Name == item.item.itemName) 
+			{
 				settlementItems.Add(new InventoryItem(invItem.item, invItem.quantity - 1));
 			}
 		}
@@ -310,19 +304,21 @@ public partial class TradeUI : Control
 
 	public void OpenUI(SettlementData settlementData)
 	{
-		GetNode<RichTextLabel>("Background/Labels/SettlementName").Text = "[b]" + settlementData.settlementName + "[/b]";
+		GetNode<RichTextLabel>("Background/Labels/Title").Text = "[b]Trading with " + settlementData.settlementName + "[/b]";
 
-		Control tradeItems = GetNode<Control>("Background/TradeItems");
+		VBoxContainer container = GetNode<VBoxContainer>("Background/Labels/ScrollContainer/VBoxContainer");
 		PackedScene shopItemsScene = GD.Load<PackedScene>("res://Settlements/trade.tscn");
 		foreach (ItemListing item in GetItemListings(settlementData))
 		{
 			Control control = shopItemsScene.Instantiate<Control>();
+			control.GetNode<RichTextLabel>("Name").Text = item.item.itemName + " (" + item.quantity + "; cost for 1: " 
+								+ (isBuying ? item.buyPrice : item.sellPrice) + ")"; 
 
-			control.GetNode<RichTextLabel>("Name").Text = item.item.itemName;
+			/*control.GetNode<RichTextLabel>("Name").Text = item.item.itemName;
 			control.GetNode<RichTextLabel>("Quantity").Text = Math.Max(item.quantity, 0).ToString();
 			control.GetNode<Button>("Buy").Text = item.buyPrice.ToString();
 			control.GetNode<Button>("Buy").ButtonDown += () => BuyItem(item, settlementData, item.quantity);
-			tradeItems.GetNode<VBoxContainer>("VBoxContainer").AddChild(control); ; ; ; ; ; ; ; ; ; ; ; ;
+			tradeItems.GetNode<VBoxContainer>("VBoxContainer").AddChild(control); ; ; ; ; ; ; ; ; ; ; ; ;*/
 		}
 
 		Visible = true;
@@ -333,4 +329,22 @@ public partial class TradeUI : Control
 		Visible = false;
 		GetNode<SettlementUI>("/root/BaseNode/UI/SettlementScreen").OpenUI(selfSettlementData);
 	}
+}
+
+
+public partial class ItemListing
+{
+
+	public ItemListing(Item _item, int _quantity, int _buyPrice, int _sellPrice)
+	{
+		item = _item;
+		quantity = _quantity;
+		buyPrice = _buyPrice;
+		sellPrice = _sellPrice;
+	}
+
+	public Item item;
+	public int quantity;
+	public int buyPrice;
+	public int sellPrice;
 }

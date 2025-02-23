@@ -6,21 +6,17 @@ anchors_preset = 0
 offset_right = 40.0
 offset_bottom = 40.0
 
-[node name="Name" type="RichTextLabel" parent="."]
+[node name="Name" type="Button" parent="."]
 custom_minimum_size = Vector2(0, 50)
 layout_mode = 0
 offset_right = 296.0
 offset_bottom = 50.0
-
-[node name="Buy" type="Button" parent="."]
-custom_minimum_size = Vector2(0, 50)
-layout_mode = 0
-offset_left = 481.0
-offset_right = 652.0
-offset_bottom = 50.0
+text = "Item Name"
 
 [node name="Quantity" type="RichTextLabel" parent="."]
+visible = false
 layout_mode = 0
 offset_left = 345.0
 offset_right = 443.0
 offset_bottom = 40.0
+text = "Item Quantity"
