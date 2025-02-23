@@ -147,6 +147,22 @@ public partial class RecruitScreen : Control
 			}
 		}
 
+		List<Troop> newRecruitedTroops = new();
+		foreach (Troop recruitedTroop in settlement.recruitedTroops)
+		{
+			if (recruitedTroop.troopType == troop.troopType && recruitedTroop.tier == troop.tier)
+			{
+				newRecruitedTroops.Add(new Troop(recruitedTroop.quantity + 1, recruitedTroop.troopType, recruitedTroop.tier));
+			}
+			else
+			{
+				newRecruitedTroops.Add(recruitedTroop);
+			}
+		}
+		if (!newRecruitedTroops.Any(recruitedTroop => recruitedTroop.troopType == troop.troopType && recruitedTroop.tier == troop.tier)) {
+			newRecruitedTroops.Add(new Troop(1, troop.troopType, troop.tier));
+		}
+
 		Player.Instance.troops.Add(new Troop(1, troop.troopType, troop.tier));
 		return true;
 	}
