@@ -1,0 +1,30 @@
+[gd_scene load_steps=3 format=3 uid="uid://cyrmdctcfk00i"]
+
+[ext_resource type="Script" path="res://Combat/TroopInfoHolder.cs" id="1_hnss0"]
+[ext_resource type="Script" path="res://Combat/TroopUpgradeButton.cs" id="1_pmsbd"]
+
+[node name="TroopPanel" type="Control"]
+layout_mode = 3
+anchors_preset = 0
+
+[node name="Title" type="RichTextLabel" parent="."]
+layout_mode = 0
+offset_right = 1000.0
+offset_bottom = 40.0
+theme_override_font_sizes/normal_font_size = 25
+text = "# Blanks (TroopType)"
+
+[node name="Button" type="Button" parent="."]
+layout_mode = 0
+offset_left = 391.0
+offset_top = 6.0
+offset_right = 544.0
+offset_bottom = 37.0
+text = "Upgrade 1 for # gold"
+script = ExtResource("1_pmsbd")
+
+[node name="TroopInfo" type="Control" parent="."]
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+script = ExtResource("1_hnss0")
