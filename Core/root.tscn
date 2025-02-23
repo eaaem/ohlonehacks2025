@@ -321,8 +321,8 @@ offset_bottom = 40.0
 
 [node name="Background" type="Panel" parent="UI/TradeScreen"]
 layout_mode = 0
-offset_right = 40.0
-offset_bottom = 40.0
+offset_right = 1920.0
+offset_bottom = 1080.0
 
 [node name="Labels" type="Control" parent="UI/TradeScreen/Background"]
 anchors_preset = 0
