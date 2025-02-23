@@ -167,17 +167,19 @@ public partial class Combat : Node
 	private Troop[] calculateTroopLoss(Troop[] playerTroops, int playerPower, int enemyPower)
 	{
 		List<Troop> lostTroops = new List<Troop>();
-		int totalTroopsLost = 0;
+		int totalTroopsLost;
 		if (playerPower > enemyPower)
 		{
 			int totalTroopQuantity = 0;
-			foreach (Troop troop in  playerTroops) {
+			foreach (Troop troop in playerTroops) {
 				totalTroopQuantity += troop.quantity;
 			}
-			// lose 10% of your troops at equal power, and 0% at double power
+			// lose 10% of your troops at equal power, 5% at double power, etc
 			float powerMultiplier = playerPower / enemyPower;
 
-			totalTroopsLost = (int)Math.Floor(totalTroopQuantity * (0.1f / powerMultiplier));
+			int maximumLostTroops = totalTroopQuantity / 10;
+
+			totalTroopsLost = (int)Math.Floor((double) maximumLostTroops / totalTroopQuantity);
 		}
 		else
 		{
@@ -198,8 +200,8 @@ public partial class Combat : Node
 		{
 			foreach (Troop troop in troops)
 			{
-				int lostAmount = (int)Math.Floor(totalTroopsLost * getTroopLossPercent(troop) / 3);
-				lostTroops.Add(new Troop(troop.quantity - lostAmount, troop.troopType, troop.tier));
+				int lostAmount = (int)Math.Floor(totalTroopsLost * (getTroopLossPercent(troop) / 3));
+				lostTroops.Add(new Troop(lostAmount, troop.troopType, troop.tier));
 			}
 		}
 		return lostTroops.ToArray();
